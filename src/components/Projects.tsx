@@ -45,7 +45,8 @@ export const Projects = () => {
                         <motion.article
                             key={index}
                             variants={cardVariants}
-                            className="group flex flex-col bg-white dark:bg-black rounded-xl p-6 border border-slate-200 dark:border-white/10 hover:border-brand/50 dark:hover:border-tech/50 transition-colors"
+                            whileHover={{ y: -8 }}
+                            className="group flex flex-col bg-white dark:bg-zinc-900/50 rounded-xl p-6 border border-slate-200 dark:border-white/5 hover:border-brand/50 dark:hover:border-tech/50 hover:shadow-2xl hover:shadow-brand/5 dark:hover:shadow-tech/5 transition-all duration-300"
                         >
                             {/* Type + Title */}
                             <div className="mb-4">
