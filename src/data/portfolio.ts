@@ -1,4 +1,68 @@
-export const portfolioData = {
+export interface Project {
+    title: string;
+    type: string;
+    description: string;
+    problem: string;
+    solution: string;
+    tech: string[];
+    impact: string;
+    demoUrl: string;
+    repoUrl: string;
+}
+
+export interface HeroSection {
+    headline: string;
+    subtitle: string;
+    intro: string;
+    cta: string;
+    contactCta: string;
+}
+
+export interface AboutSection {
+    description: string[];
+    quickData: { label: string; value: string }[];
+}
+
+export interface SkillGroup {
+    category: string;
+    techs: string[];
+}
+
+export interface SkillsSection {
+    core: {
+        title: string;
+        items: SkillGroup[];
+    };
+    secondary: {
+        title: string;
+        items: string[];
+    };
+    background: {
+        title: string;
+        items: string[];
+    };
+    tools: {
+        title: string;
+        items: string[];
+    };
+}
+
+export interface ContactSection {
+    message: string;
+    email: string;
+    linkedin: string;
+    github: string;
+}
+
+export interface PortfolioData {
+    hero: HeroSection;
+    about: AboutSection;
+    projects: Project[];
+    skills: SkillsSection;
+    contact: ContactSection;
+}
+
+export const portfolioData: PortfolioData = {
     hero: {
         headline: "Ingeniería Front-End Escalable con Next.js y TypeScript.",
         subtitle: "Creo arquitecturas robustas y performantes. Código limpio, tipado estricto y optimización Core Web Vitals.",
