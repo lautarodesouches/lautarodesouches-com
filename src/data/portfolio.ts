@@ -8,6 +8,7 @@ export interface Project {
     impact: string;
     demoUrl: string;
     repoUrl: string;
+    image?: string;
 }
 
 export interface HeroSection {
@@ -85,37 +86,59 @@ export const portfolioData: PortfolioData = {
     },
     projects: [
         {
-            title: "Proyecto de Prueba Alpha",
-            type: "Testing Placeholders",
-            description: "Esta es una descripción de prueba para validar el diseño sin contenido real.",
-            problem: "Texto simulado para el problema. Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-            solution: "Texto simulado para la solución. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-            tech: ["Tech A", "Tech B", "Tech C"],
-            impact: "Impacto simulado: 100% de cobertura de prueba.",
-            demoUrl: "#",
-            repoUrl: "#"
+            title: "Recetas con Essen - E-commerce & Catálogo de Productos",
+            type: "Full-Stack Web Application",
+            description: "Plataforma web moderna para mostrar productos Essen (ollas y utensilios de cocina premium) con catálogo completo, recetas inspiradoras y sistema de contacto integrado.",
+            problem: "La empresa necesitaba mostrar 888 productos organizados, generar engagement con recetas y facilitar contacto con clientes en un sitio moderno y fácil de mantener.",
+            solution: "Desarrollé una app con Next.js 15 (SSG/ISR), categorizando productos por líneas (Capri, Terra, Nuit), con Google Analytics, SEO optimizado, sitemap automático y diseño responsive.",
+            tech: [
+                "Next.js 15",
+                "React 19",
+                "TypeScript",
+                "CSS Modules",
+                "Font Awesome",
+                "Google Analytics/GTM",
+                "Static Site Generation (SSG/ISR)"
+            ],
+            impact: "Sitio estático optimizado con ISR horaria, 888 productos organizados con filtros dinámicos, deployment automatizado y mejora significativa en UX y performance.",
+            demoUrl: "https://recetasconessen.com",
+            repoUrl: "https://github.com/lautarodesouches/ollas-essen",
+            image: "/projects/ollas.png"
         },
         {
-            title: "Proyecto de Prueba Beta",
-            type: "Mock Data",
-            description: "Otro proyecto con datos falsos para visualizar la estructura de la tarjeta.",
-            problem: "Este es un problema ficticio diseñado para ocupar espacio visual.",
-            solution: "Esta es una solución ficticia que demuestra cómo se vería el texto.",
-            tech: ["MockFramework", "DummyDB"],
-            impact: "Nulo impacto real, alto impacto visual.",
-            demoUrl: "#",
-            repoUrl: "#"
+            title: "Gusto - Social Restaurant Discovery",
+            type: "Full Stack Web Application",
+            description: "Plataforma social para descubrir, calificar y compartir restaurantes con amigos. Combina exploración interactiva mediante mapas, funcionalidades sociales y un dashboard completo para dueños de restaurantes.",
+            problem: "Los usuarios necesitaban descubrir restaurantes basándose en recomendaciones confiables de amigos, algo que las plataformas existentes con reviews de desconocidos no ofrecían.",
+            solution: "Integré sistema social con mapas interactivos, autenticación múltiple, perfiles de restaurantes completos, dashboard para dueños y gamificación con niveles y logros.",
+            tech: ["Next.js 15", "React", "TypeScript", "CSS Modules", "Firebase Auth", "Google Maps API", ".NET Core API", "FontAwesome"],
+            impact: "App social completa con autenticación multi-proveedor, mapas en tiempo real y arquitectura escalable con Next.js App Router.",
+            demoUrl: "https://gusto-dusky.vercel.app/",
+            repoUrl: "https://github.com/lautarodesouches/gusto",
+            image: "/projects/gusto.png"
+        }, {
+            title: "Desouches Propiedades - Sitio Web Inmobiliario",
+            type: "Desarrollo Web • Inmobiliaria",
+            description: "Sitio web profesional para una inmobiliaria argentina, con diseño premium, UI/UX moderna y rendimiento óptimo.",
+            problem: "El cliente necesitaba un sitio web premium para mostrar servicios inmobiliarios con integración a ZonaProp, manteniendo excelente performance y SEO.",
+            solution: "Desarrollé con Astro, TypeScript y CSS vanilla. Diseño glassmorphic, Core Web Vitals optimizados, SEO completo con Schema.org, 10 categorías de propiedades y formulario con WhatsApp.",
+            tech: ["Astro 5.16.8", "TypeScript", "CSS3", "HTML5", "Google Analytics 4", "Schema.org"],
+            impact: "Lighthouse: 95+ Performance, 100 Accesibilidad, 100 SEO. WCAG 2.1 AAA, LCP < 2.5s y experiencia premium en todos los dispositivos.",
+            demoUrl: "https://desouchespropiedades.com.ar",
+            repoUrl: "https://github.com/lautarodesouches/desouches-propiedades",
+            image: "/projects/desouches-propiedades.png"
         },
         {
-            title: "Proyecto de Prueba Gamma",
-            type: "Placeholder",
-            description: "Tercer elemento para completar la grilla con contenido de prueba.",
-            problem: "El usuario necesitaba ver cómo se comporta el layout con textos genéricos.",
-            solution: "Se implementó un set de datos de prueba claramente identificables.",
-            tech: ["TestTool", "FakeAPI"],
-            impact: "Validación exitosa del layout.",
-            demoUrl: "#",
-            repoUrl: "#"
+            title: "Estudio Jurídico Desouches y Asociados",
+            type: "Website Corporativo",
+            description: "Sitio web oficial modernizado para estudio jurídico especializado en sucesiones, divorcios y asesoramiento legal integral, con diseño responsivo y optimización SEO.",
+            problem: "El estudio necesitaba modernizar su presencia digital con un sitio profesional que reflejara su solidez y facilitara el contacto con clientes.",
+            solution: "Next.js 15 estático, animaciones con Framer Motion, WhatsApp integrado, mapas interactivos, optimización de imágenes automática y diseño premium responsive.",
+            tech: ["Next.js 15", "React 19", "TypeScript", "CSS Modules", "Framer Motion", "FontAwesome", "Swiper", "next-image-export-optimizer"],
+            impact: "Sitio estático ultra-rápido sin servidor Node.js, imágenes WEBP optimizadas, SEO completo y widget WhatsApp para comunicación directa.",
+            demoUrl: "https://estudiodesouchesyasociados.com.ar/",
+            repoUrl: "https://github.com/lautarodesouches/estudio-desouches-y-asociados",
+            image: "/projects/estudio-juridico.png"
         }
     ],
     skills: {
