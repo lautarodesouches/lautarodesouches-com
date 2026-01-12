@@ -1,36 +1,66 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Portfolio - Lautaro Desouches
 
-## Getting Started
+Este repositorio contiene el código fuente de mi portafolio personal, desarrollado con tecnologías web modernas para garantizar alto rendimiento, accesibilidad y una experiencia de usuario fluida.
 
-First, run the development server:
+## 🚀 Tecnologías
+
+El proyecto está construido sobre un stack robusto y moderno:
+
+- **Framework**: [Next.js 16](https://nextjs.org/) (App Router)
+- **Lenguaje**: [TypeScript](https://www.typescriptlang.org/)
+- **Estilos**: [Tailwind CSS 4](https://tailwindcss.com/)
+- **Animaciones**: [Framer Motion](https://www.framer.com/motion/)
+- **Testing E2E**: [Playwright](https://playwright.dev/)
+- **Iconos**: [React Icons](https://react-icons.github.io/react-icons/)
+- **Temas**: [Next Themes](https://github.com/pacocoursey/next-themes) (Soporte Dark/Light mode)
+
+## 🛠️ Instalación y Uso
+
+### Prerrequisitos
+
+Asegúrate de tener instalado Node.js y [pnpm](https://pnpm.io/).
+
+### Pasos
+
+1. **Clonar el repositorio:**
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone <url-del-repositorio>
+cd lautarodesouches-com
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. **Instalar dependencias:**
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+pnpm install
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+3. **Correr el servidor de desarrollo:**
 
-## Learn More
+```bash
+pnpm dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+Abre [http://localhost:3000](http://localhost:3000) en tu navegador para ver el resultado.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📜 Scripts Disponibles
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `pnpm dev`: Inicia el servidor de desarrollo.
+- `pnpm build`: Construye la aplicación para producción.
+- `pnpm start`: Inicia el servidor de producción.
+- `pnpm lint`: Ejecuta el linter (ESLint).
+- `pnpm test:e2e`: Ejecuta los tests end-to-end con Playwright.
+- `pnpm test:e2e:ui`: Abre la interfaz interactiva de Playwright para los tests.
 
-## Deploy on Vercel
+## 📂 Estructura del Proyecto
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+El proyecto utiliza la estructura recomendada por Next.js con el App Router:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `src/app`: Rutas, páginas y layouts.
+- `src/components`: Componentes reutilizables.
+- `public`: Archivos estáticos.
+- `tests`: Tests E2E con Playwright.
+
+---
+
+Desarrollado por [Lautaro Desouches](https://lautarodesouches.com)
