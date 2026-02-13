@@ -8,7 +8,7 @@ on:
 # ⚙️ VARIABLES DEL PROYECTO
 # ----------------------------------------------------------------------
 env:
-  DEPLOY_PATH: "/home/runcloud/webapps/lautarodesouches-com"
+  DEPLOY_PATH: "/home/runcloud/webapps/lautarodesouches"
   PNPM_VERSION: "10"
 
 jobs:
