@@ -56,12 +56,14 @@ export const Hero = () => {
                         variants={itemVariants}
                         className="text-5xl md:text-7xl font-bold tracking-tight text-slate-900 dark:text-white leading-[1.1]"
                     >
-                        Ingeniería <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand to-tech">Front-End</span> Escalable.
+                        Ingeniería <br />
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand to-tech">Full-Stack</span> <br />
+                        Escalable.
                     </motion.h1>
 
                     <motion.div variants={itemVariants} className="pl-4 border-l-2 border-brand/30">
                         <p className="text-sm md:text-base font-mono text-brand mb-2 font-medium">
-                            Next.js • TypeScript • Tailwind
+                            Next.js • NestJS • Java Spring
                         </p>
                         <p className="text-lg text-slate-700 dark:text-gray-400 leading-relaxed max-w-lg font-medium dark:font-normal">
                             {hero.intro}
@@ -120,14 +122,14 @@ export const Hero = () => {
                         {/* Code Content */}
                         <div className="p-6 font-mono text-xs md:text-sm leading-7 text-slate-800 dark:text-gray-300 overflow-x-auto selection:bg-brand/10">
                             <p><span className="text-purple-600 dark:text-purple-400">interface</span> <span className="text-amber-600 dark:text-yellow-200">Developer</span> <span className="text-slate-500 dark:text-gray-500">{"{"}</span></p>
-                            <p className="pl-4"><span className="text-blue-600 dark:text-brand-light">role</span>: <span className="text-emerald-600 dark:text-tech">'Front-End Engineer'</span>;</p>
+                            <p className="pl-4"><span className="text-blue-600 dark:text-brand-light">role</span>: <span className="text-emerald-600 dark:text-tech">'Full-Stack Engineer'</span>;</p>
                             <p className="pl-4"><span className="text-blue-600 dark:text-brand-light">location</span>: <span className="text-emerald-600 dark:text-tech">'Argentina'</span>;</p>
                             <p className="pl-4"><span className="text-blue-600 dark:text-brand-light">stack</span>: <span className="text-slate-500 dark:text-gray-500">{"["}</span></p>
-                            <p className="pl-8"><span className="text-emerald-600 dark:text-tech">'Next.js 15'</span>, <span className="text-slate-400 dark:text-gray-500">// App Router</span></p>
-                            <p className="pl-8"><span className="text-emerald-600 dark:text-tech">'TypeScript'</span>, <span className="text-slate-400 dark:text-gray-500">// Strict Mode</span></p>
-                            <p className="pl-8"><span className="text-emerald-600 dark:text-tech">'Tailwind CSS'</span>  <span className="text-slate-400 dark:text-gray-500">// v4</span></p>
+                            <p className="pl-8"><span className="text-emerald-600 dark:text-tech">'Next.js'</span>, <span className="text-slate-400 dark:text-gray-500">// Frontend</span></p>
+                            <p className="pl-8"><span className="text-emerald-600 dark:text-tech">'NestJS'</span>, <span className="text-slate-400 dark:text-gray-500">// Backend</span></p>
+                            <p className="pl-8"><span className="text-emerald-600 dark:text-tech">'Java Spring'</span>  <span className="text-slate-400 dark:text-gray-500">// Enterprise Backend</span></p>
                             <p className="pl-4"><span className="text-slate-500 dark:text-gray-500">{"]"}</span>;</p>
-                            <p className="pl-4"><span className="text-blue-600 dark:text-brand-light">focus</span>: <span className="text-emerald-600 dark:text-tech">'User Experience & Performance'</span>;</p>
+                            <p className="pl-4"><span className="text-blue-600 dark:text-brand-light">focus</span>: <span className="text-emerald-600 dark:text-tech">'End-to-End Scalability'</span>;</p>
                             <p className="text-slate-500 dark:text-gray-500">{"}"}</p>
                             <br />
                             <p className="text-slate-400 dark:text-gray-500">// Let's build something amazing</p>

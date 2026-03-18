@@ -3,7 +3,7 @@ import { ImageResponse } from 'next/og';
 export const runtime = 'edge';
 export const dynamic = 'force-static';
 
-export const alt = 'Lautaro Desouches - Front-End Developer';
+export const alt = 'Lautaro Desouches - Full-Stack Developer';
 export const size = {
     width: 1200,
     height: 630,
@@ -65,7 +65,7 @@ export default async function Image() {
                     Lautaro Desouches
                 </h1>
                 <p style={{ fontSize: '32px', color: '#94a3b8', margin: '20px 0 0 0', fontWeight: 500, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
-                    Front-End Developer
+                    Full-Stack Developer
                 </p>
 
                 {/* Tech Badges Row */}
@@ -77,7 +77,7 @@ export default async function Image() {
                         TypeScript
                     </div>
                     <div style={{ background: 'rgba(255,255,255,0.05)', padding: '10px 24px', borderRadius: '30px', border: '1px solid rgba(255,255,255,0.1)', fontSize: '20px', color: '#cbd5e1' }}>
-                        Performance
+                        Java Spring
                     </div>
                 </div>
             </div>

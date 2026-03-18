@@ -65,23 +65,23 @@ export interface PortfolioData {
 
 export const portfolioData: PortfolioData = {
     hero: {
-        headline: "Ingeniería Front-End Escalable con Next.js y TypeScript.",
-        subtitle: "Creo arquitecturas robustas y performantes. Código limpio, tipado estricto y optimización Core Web Vitals.",
-        intro: "Transformo requerimientos complejos en aplicaciones web mantenibles. Me especializo en el ecosistema React moderno (App Router, Server Actions) asegurando calidad desde la primera línea de código.",
+        headline: "Ingeniería Full-Stack Escalable con Next.js, NestJS y Java Spring.",
+        subtitle: "Creo arquitecturas robustas y performantes. Código limpio, tipado estricto y escalabilidad end-to-end.",
+        intro: "Transformo requerimientos complejos en sistemas web modernos y mantenibles. Me especializo en el desarrollo Full-Stack interactuando con ecosistemas de React moderno, y backends sólidos asegurando calidad desde la primera línea.",
         cta: "Ver Código",
         contactCta: "Mi Tech Stack"
     },
     about: {
         description: [
-            "Llevo más de 3 años desarrollando interfaces para productos web. Mi trabajo no termina en el código: entiendo métricas, colaboro con diseño y tomo decisiones técnicas que impactan en el negocio.",
-            "Especializado en Next.js y TypeScript. Priorizo arquitecturas mantenibles, tipado estricto y performance medible. No escribo código para impresionar; escribo código para que otros puedan entenderlo y escalarlo.",
-            "Me interesa trabajar en equipos orientados a producto, donde la calidad del código y la experiencia de usuario sean prioridades reales. Mi foco está en construir interfaces claras, robustas y medibles en términos de performance."
+            "Llevo más de 5 años desarrollando soluciones integrales para productos web. Mi trabajo cubre todo ciclo de vida: desde el diseño de la arquitectura backend hasta la experiencia de usuario y su performance.",
+            "Especializado en Next.js, NestJS y Java Spring. Priorizo arquitecturas limpias, APIs robustas y tipado estricto. Busco aportar tanto en el servidor como en el cliente para lograr un flujo de datos limpio y robusto.",
+            "Me interesa trabajar en equipos orientados a producto, donde la calidad del software y la solidez técnica sean prioridades reales. Mi foco está en construir aplicaciones integrales, escalables de principio a fin."
         ],
         quickData: [
-            { label: "Stack", value: "Next.js, TypeScript, Tailwind" },
-            { label: "Enfoque", value: "Performance y Accesibilidad" },
-            { label: "Experiencia", value: "+3 años en producto" },
-            { label: "Perfil", value: "Front-End Developer · Semi-Senior" }
+            { label: "Stack", value: "Next.js, NestJS, Java Spring" },
+            { label: "Enfoque", value: "Arquitectura y Escalabilidad" },
+            { label: "Experiencia", value: "+5 años en producto" },
+            { label: "Perfil", value: "Full-Stack Developer · Semi-Senior" }
         ]
     },
     projects: [
@@ -145,27 +145,27 @@ export const portfolioData: PortfolioData = {
         core: {
             title: "Stack Principal",
             items: [
-                { category: "Lenguajes", techs: ["TypeScript", "JavaScript (ES6+)"] },
-                { category: "Frameworks", techs: ["React.js", "Next.js"] },
-                { category: "Estilos", techs: ["HTML5", "CSS3", "Tailwind CSS"] },
-                { category: "Integración", techs: ["APIs REST", "Async/Await"] }
+                { category: "Lenguajes", techs: ["TypeScript", "Java", "JavaScript"] },
+                { category: "Frontend", techs: ["Next.js", "React.js", "Tailwind CSS"] },
+                { category: "Backend", techs: ["NestJS", "Spring Boot", "Node.js"] },
+                { category: "Integración", techs: ["APIs REST", "SQL", "WebSockets"] }
             ]
         },
         secondary: {
             title: "Stack Secundario",
-            items: ["Node.js/Express", "Bootstrap", "React Native", "Vue.js", "Angular"]
+            items: ["Express", "React Native", "MongoDB", "Vue.js", "Angular"]
         },
         background: {
             title: "Background Técnico",
-            items: ["Java & Spring", "Python", "SQL"]
+            items: ["Python", "HTML5", "CSS3", "Docker"]
         },
         tools: {
             title: "Herramientas",
-            items: ["Git", "GitHub", "Figma", "VS Code", "GA4", "Lighthouse"]
+            items: ["Git", "GitHub", "Postman", "Figma", "VS Code", "Lighthouse"]
         }
     },
     contact: {
-        message: "¿Buscas un desarrollador Front-End que entienda tanto de código como de producto? Estoy disponible para nuevos desafíos técnicos.",
+        message: "¿Buscas un desarrollador Full-Stack que entienda tanto de arquitectura backend como de producto en el frontend? Estoy disponible para nuevos desafíos técnicos.",
         email: "lautarodesouches@outlook.com",
         linkedin: "https://linkedin.com/in/lautarodesouches",
         github: "https://github.com/lautarodesouches"

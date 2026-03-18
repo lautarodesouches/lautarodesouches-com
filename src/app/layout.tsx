@@ -17,17 +17,17 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://lautarodesouches.com"),
   title: {
-    default: "Lautaro Desouches | Front-End Developer",
+    default: "Lautaro Desouches | Full-Stack Developer",
     template: "%s | Lautaro Desouches",
   },
   description:
-    "Portfolio profesional de Lautaro Desouches. Desarrollador Front-End especializado en Next.js, React y TypeScript. Creando experiencias web performantes y accesibles.",
+    "Portfolio profesional de Lautaro Desouches. Desarrollador Full-Stack especializado en Next.js, NestJS y Java Spring. Creando arquitecturas robustas y escalables.",
   keywords: [
-    "Front-End Developer",
+    "Full-Stack Developer",
     "Next.js",
-    "React",
+    "NestJS",
+    "Java Spring",
     "TypeScript",
-    "Tailwind CSS",
     "Web Development",
     "Argentina",
     "Software Engineer",
@@ -38,9 +38,9 @@ export const metadata: Metadata = {
     type: "website",
     locale: "es_ES",
     url: "https://lautarodesouches.com",
-    title: "Lautaro Desouches | Front-End Developer",
+    title: "Lautaro Desouches | Full-Stack Developer",
     description:
-      "Ingeniería Front-End Escalable. Especialista en Next.js y ecosistema React moderno.",
+      "Ingeniería Full-Stack Escalable. Especialista en Next.js, NestJS y ecosistemas backend sólidos.",
     siteName: "Lautaro Desouches Portfolio",
     images: [
       {
@@ -53,8 +53,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Lautaro Desouches | Front-End Developer",
-    description: "Ingeniería Front-End Escalable. Next.js, TypeScript, Tailwind.",
+    title: "Lautaro Desouches | Full-Stack Developer",
+    description: "Ingeniería Full-Stack Escalable. Next.js, NestJS, Java Spring.",
     creator: "@lautarodesouches", // Update if known, otherwise keep generic or remove
     images: ["/opengraph-image"],
   },
