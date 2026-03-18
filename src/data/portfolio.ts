@@ -87,7 +87,7 @@ export const portfolioData: PortfolioData = {
     projects: [
         {
             title: "Recetas con Essen - E-commerce & Catálogo de Productos",
-            type: "Full-Stack Web Application",
+            type: "E-Commerce Full-Stack",
             description: "Plataforma web moderna para mostrar productos Essen (ollas y utensilios de cocina premium) con catálogo completo, recetas inspiradoras y sistema de contacto integrado.",
             problem: "La empresa necesitaba mostrar 888 productos organizados, generar engagement con recetas y facilitar contacto con clientes en un sitio moderno y fácil de mantener.",
             solution: "Desarrollé una app con Next.js 15 (SSG/ISR), categorizando productos por líneas (Capri, Terra, Nuit), con Google Analytics, SEO optimizado, sitemap automático y diseño responsive.",
@@ -107,7 +107,7 @@ export const portfolioData: PortfolioData = {
         },
         {
             title: "Gusto - Social Restaurant Discovery",
-            type: "Full Stack Web Application",
+            type: "Plataforma Social",
             description: "Plataforma social para descubrir, calificar y compartir restaurantes con amigos. Combina exploración interactiva mediante mapas, funcionalidades sociales y un dashboard completo para dueños de restaurantes.",
             problem: "Los usuarios necesitaban descubrir restaurantes basándose en recomendaciones confiables de amigos, algo que las plataformas existentes con reviews de desconocidos no ofrecían.",
             solution: "Integré sistema social con mapas interactivos, autenticación múltiple, perfiles de restaurantes completos, dashboard para dueños y gamificación con niveles y logros.",
@@ -118,7 +118,7 @@ export const portfolioData: PortfolioData = {
             image: "/projects/gusto.png"
         }, {
             title: "Desouches Propiedades - Sitio Web Inmobiliario",
-            type: "Desarrollo Web • Inmobiliaria",
+            type: "Real-Estate Web App",
             description: "Sitio web profesional para una inmobiliaria argentina, con diseño premium, UI/UX moderna y rendimiento óptimo.",
             problem: "El cliente necesitaba un sitio web premium para mostrar servicios inmobiliarios con integración a ZonaProp, manteniendo excelente performance y SEO.",
             solution: "Desarrollé con Astro, TypeScript y CSS vanilla. Diseño glassmorphic, Core Web Vitals optimizados, SEO completo con Schema.org, 10 categorías de propiedades y formulario con WhatsApp.",
