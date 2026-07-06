@@ -10,17 +10,25 @@ export const Projects = () => {
     const scrollContainerRef = useRef<HTMLDivElement>(null);
     const [activeIndex, setActiveIndex] = useState(0);
 
-    // Duplicamos el array por 3 para lograr scroll infinito continuo
-    const tripleProjects = [...projects, ...projects, ...projects];
-
     const scroll = (direction: "left" | "right") => {
         if (scrollContainerRef.current) {
             const container = scrollContainerRef.current;
             const scrollAmount = container.clientWidth * 0.8;
-            container.scrollTo({
-                left: container.scrollLeft + (direction === "left" ? -scrollAmount : scrollAmount),
-                behavior: "smooth",
-            });
+            
+            // Tolerancia de 10px para detectar límites físicos
+            const isAtEnd = container.scrollLeft + container.clientWidth >= container.scrollWidth - 10;
+            const isAtStart = container.scrollLeft <= 10;
+
+            if (direction === "right" && isAtEnd) {
+                container.scrollTo({ left: 0, behavior: "smooth" });
+            } else if (direction === "left" && isAtStart) {
+                container.scrollTo({ left: container.scrollWidth, behavior: "smooth" });
+            } else {
+                container.scrollBy({
+                    left: direction === "left" ? -scrollAmount : scrollAmount,
+                    behavior: "smooth",
+                });
+            }
         }
     };
 
@@ -28,55 +36,24 @@ export const Projects = () => {
         const container = scrollContainerRef.current;
         if (!container) return;
 
-        // Posicionamiento inicial en el set del medio
-        const initializeScroll = () => {
-            const oneSetWidth = container.scrollWidth / 3;
-            if (oneSetWidth > 0) {
-                container.scrollLeft = oneSetWidth;
-            }
-        };
-
-        initializeScroll();
-        const timer = setTimeout(initializeScroll, 100);
-
         const handleScroll = () => {
             const scrollLeft = container.scrollLeft;
-            const oneSetWidth = container.scrollWidth / 3;
-
-            if (oneSetWidth <= 0) return;
-
-            // Salto invisible cuando cruzamos los límites del set del medio
-            if (scrollLeft >= oneSetWidth * 2) {
-                container.scrollLeft = scrollLeft - oneSetWidth;
-            } else if (scrollLeft <= 0) {
-                container.scrollLeft = scrollLeft + oneSetWidth;
-            }
-
-            // Calculamos el índice activo relativo a un único set
-            const itemWidth = oneSetWidth / projects.length;
-            const relativeScroll = container.scrollLeft - oneSetWidth;
-            const newIndex = Math.round(relativeScroll / itemWidth);
+            const itemWidth = container.scrollWidth / projects.length;
+            const newIndex = Math.round(scrollLeft / itemWidth);
             if (newIndex >= 0 && newIndex < projects.length) {
                 setActiveIndex(newIndex);
             }
         };
 
         container.addEventListener("scroll", handleScroll, { passive: true });
-        return () => {
-            clearTimeout(timer);
-            container.removeEventListener("scroll", handleScroll);
-        };
+        return () => container.removeEventListener("scroll", handleScroll);
     }, [projects.length]);
 
     const scrollToProject = (index: number) => {
         if (scrollContainerRef.current) {
             const container = scrollContainerRef.current;
-            const oneSetWidth = container.scrollWidth / 3;
-            const itemWidth = oneSetWidth / projects.length;
-            container.scrollTo({
-                left: oneSetWidth + (itemWidth * index),
-                behavior: "smooth"
-            });
+            const itemWidth = container.scrollWidth / projects.length;
+            container.scrollTo({ left: itemWidth * index, behavior: "smooth" });
             setActiveIndex(index);
         }
     };
@@ -95,7 +72,7 @@ export const Projects = () => {
                 </div>
 
                 {/* Carousel */}
-                <div className="relative">
+                <div className="relative group">
                     <button
                         onClick={() => scroll("left")}
                         className="hidden md:flex absolute -left-5 top-[40%] -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white dark:bg-zinc-800 border-2 border-slate-200 dark:border-white/10 shadow-lg hover:scale-105 transition-all duration-200 items-center justify-center text-slate-600 dark:text-white hover:text-brand dark:hover:text-tech"
@@ -111,12 +88,11 @@ export const Projects = () => {
                         <FaChevronRight className="w-5 h-5 mr-[-2px]" />
                     </button>
 
-                    {/* Nota: Eliminamos la clase 'scroll-smooth' del contenedor para permitir los saltos instantáneos e invisibles */}
                     <div
                         ref={scrollContainerRef}
-                        className="flex gap-4 md:gap-6 overflow-x-auto snap-x snap-mandatory pt-2 pb-8 md:pb-12 px-1 md:-mx-4 md:px-4 hide-scrollbar"
+                        className="flex gap-4 md:gap-6 overflow-x-auto snap-x snap-mandatory pt-2 pb-8 md:pb-12 scroll-smooth px-1 md:-mx-4 md:px-4 hide-scrollbar"
                     >
-                        {tripleProjects.map((project, index) => (
+                        {projects.map((project, index) => (
                             <article
                                 key={`${index}-${project.title}`}
                                 className="group flex flex-col bg-white dark:bg-zinc-900/40 rounded-2xl overflow-hidden border border-slate-200 dark:border-white/10 hover:border-brand/30 dark:hover:border-tech/30 transition-all duration-200 shrink-0 w-[85vw] sm:w-[60vw] md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] snap-center md:snap-start shadow-sm hover:shadow-xl active:scale-[0.98] outline-none"
