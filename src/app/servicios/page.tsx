@@ -1,246 +1,27 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
-import { useRef, type ReactNode } from "react";
+import { motion } from "framer-motion";
 import {
     FaWhatsapp,
     FaEnvelope,
-    FaBolt,
-    FaCartShopping,
-    FaServer,
-    FaChartBar,
-    FaEnvelopeOpenText,
-    FaRobot,
-    FaMobileScreen,
     FaCircleCheck,
     FaArrowRight,
     FaXmark,
     FaArrowUpRightFromSquare,
-    FaStar,
-    FaUserTie,
-    FaShieldHalved,
-    FaRocket,
     FaPhone,
 } from "react-icons/fa6";
 
-// ─────────────────────────────────────────────────────────────────────────────
-// CONSTANTS
-// ─────────────────────────────────────────────────────────────────────────────
-
-const WHATSAPP_URL =
-    "https://wa.me/541130111503?text=Hola%20Lautaro%2C%20quiero%20coordinar%20una%20charla%20sobre%20mi%20proyecto";
-const EMAIL = "lautarodesouches@outlook.com";
-const MAILTO = `mailto:${EMAIL}`;
-
-// ─────────────────────────────────────────────────────────────────────────────
-// TYPES
-// ─────────────────────────────────────────────────────────────────────────────
-
-interface ServiceCard {
-    icon: ReactNode;
-    eyebrow: string;
-    title: string;
-    description: string;
-    highlights: string[];
-}
-
-interface PainItem {
-    problem: string;
-    solution: string;
-}
-
-interface TrustItem {
-    icon: ReactNode;
-    metric: string;
-    label: string;
-    description: string;
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// DATA
-// ─────────────────────────────────────────────────────────────────────────────
-
-const services: ServiceCard[] = [
-    {
-        icon: <FaBolt />,
-        eyebrow: "Presencia digital",
-        title: "Páginas Web Corporativas de Alta Velocidad",
-        description:
-            "Tu sitio web es el primer apretón de manos con cada cliente. Diseñamos páginas que cargan en segundos, se adaptan a cualquier dispositivo y ranquean en Google desde el primer día.",
-        highlights: ["Velocidad 100/100 en PageSpeed", "SEO técnico incluido", "Diseño 100% responsive"],
-    },
-    {
-        icon: <FaCartShopping />,
-        eyebrow: "E-commerce",
-        title: "Tiendas Virtuales y Paneles E-commerce Avanzados",
-        description:
-            "Vendé online con un sistema propio: stock en tiempo real, gestión de pedidos, múltiples medios de pago y catálogos que se actualizan solos. Sin comisiones de terceros, sin límites.",
-        highlights: ["Control de stock en tiempo real", "Mercado Pago y tarjetas integradas", "Panel de gestión propio"],
-    },
-    {
-        icon: <FaServer />,
-        eyebrow: "Infraestructura",
-        title: "Modernización, Hosting y Mantenimiento",
-        description:
-            "Migramos tu plataforma obsoleta a infraestructura moderna. Más velocidad, más seguridad y un costo mensual significativamente menor. Gestión técnica delegada al 100%.",
-        highlights: ["Reducción de costos de servidor", "Migración sin tiempo de caída", "Soporte técnico continuo"],
-    },
-    {
-        icon: <FaChartBar />,
-        eyebrow: "Analítica",
-        title: "Auditoría de Ventas y Analítica Web",
-        description:
-            "Instalamos mapas de calor, embudos de conversión y métricas clave para entender exactamente por qué tus visitantes entran y no compran, y cómo corregirlo.",
-        highlights: ["Mapas de calor y grabaciones", "Embudos de conversión", "Informe ejecutivo de diagnóstico"],
-    },
-    {
-        icon: <FaEnvelopeOpenText />,
-        eyebrow: "CRM & Email",
-        title: "Sincronización con Emails y CRM",
-        description:
-            "Conectamos tu base de datos con Mailchimp, HubSpot u otras plataformas para automatizar campañas, segmentar contactos y hacer seguimiento sin esfuerzo manual.",
-        highlights: ["Integración Mailchimp / HubSpot", "Automatización de campañas", "Segmentación de contactos"],
-    },
-    {
-        icon: <FaRobot />,
-        eyebrow: "Inteligencia Artificial",
-        title: "Automatizaciones y Bots Inteligentes",
-        description:
-            "Asistentes de respuesta automática, flujos de atención al cliente y procesos repetitivos convertidos en sistemas que trabajan solos mientras vos te enfocás en lo que importa.",
-        highlights: ["Atención al cliente 24/7", "Respuestas automáticas por WhatsApp", "Flujos de tareas sin intervención"],
-    },
-    {
-        icon: <FaMobileScreen />,
-        eyebrow: "Desarrollo a medida",
-        title: "Aplicaciones Móviles e Interfaces a Medida",
-        description:
-            "Cuando tu negocio necesita algo único. Desarrollamos apps y herramientas internas diseñadas exactamente para tus procesos, sin compromisos de plataformas genéricas.",
-        highlights: ["Apps iOS y Android", "Interfaces administrativas internas", "Integración con sistemas existentes"],
-    },
-];
-
-const painPoints: PainItem[] = [
-    { problem: "Tu sitio tarda 8 segundos en cargar",       solution: "Carga instantánea con velocidad 100/100" },
-    { problem: "Gestionás el stock en planillas de Excel",   solution: "Panel digital con stock en tiempo real" },
-    { problem: "Pagás un hosting caro que nadie entiende",   solution: "Infraestructura moderna al mínimo costo" },
-    { problem: "No sabés por qué los visitantes no convierten", solution: "Analítica y mapas de calor que lo revelan" },
-    { problem: "Respondés consultas manualmente todo el día", solution: "Bots y automatizaciones que trabajan solos" },
-];
-
-const trustItems: TrustItem[] = [
-    {
-        icon: <FaStar />,
-        metric: "+5",
-        label: "años de experiencia",
-        description: "Proyectos reales en rubros como el jurídico, inmobiliario y comercio mayorista.",
-    },
-    {
-        icon: <FaUserTie />,
-        metric: "100%",
-        label: "trato directo",
-        description: "Hablás conmigo desde el día uno hasta el cierre. Sin intermediarios, sin ruidos.",
-    },
-    {
-        icon: <FaShieldHalved />,
-        metric: "Llave",
-        label: "en mano",
-        description: "Me hago cargo del diseño, desarrollo, configuración y lanzamiento completo.",
-    },
-    {
-        icon: <FaRocket />,
-        metric: "100/100",
-        label: "PageSpeed Score",
-        description: "Sitios auditados con velocidad máxima en Google, comprobado en producción.",
-    },
-];
-
-// ─────────────────────────────────────────────────────────────────────────────
-// ANIMATION HELPER
-// Wrapper que anima hijos al entrar al viewport (once: true para performance)
-// ─────────────────────────────────────────────────────────────────────────────
-
-function FadeUp({
-    children,
-    delay = 0,
-    className = "",
-}: {
-    children: ReactNode;
-    delay?: number;
-    className?: string;
-}) {
-    const ref = useRef<HTMLDivElement>(null);
-    const inView = useInView(ref, { once: true, margin: "-60px" });
-
-    return (
-        <motion.div
-            ref={ref}
-            initial={{ opacity: 0, y: 28 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.55, delay, ease: [0.22, 1, 0.36, 1] }}
-            className={className}
-        >
-            {children}
-        </motion.div>
-    );
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// SHARED UI ATOMS
-// Usan dark: prefix para responder al ThemeToggle global
-// ─────────────────────────────────────────────────────────────────────────────
-
-/** Badge de sección (eyebrow) — indigo en light, teal en dark */
-function Eyebrow({ children }: { children: ReactNode }) {
-    return (
-        <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold tracking-widest uppercase
-            bg-indigo-50 text-indigo-600 border border-indigo-200
-            dark:bg-teal-500/10 dark:text-teal-400 dark:border-teal-500/20">
-            {children}
-        </span>
-    );
-}
-
-/** CTA principal — indigo en light, teal en dark */
-function ButtonPrimary({ href, children, icon }: { href: string; children: ReactNode; icon?: ReactNode }) {
-    return (
-        <motion.a
-            href={href}
-            target="_blank"
-            rel="noopener noreferrer"
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
-            className="inline-flex items-center gap-3 px-7 py-4 rounded-xl font-bold text-sm transition-colors
-                bg-brand text-white shadow-lg shadow-brand/20 hover:bg-brand-dark
-                dark:bg-teal-500 dark:text-zinc-950 dark:shadow-teal-500/20 dark:hover:bg-teal-400"
-        >
-            {icon && <span className="text-base">{icon}</span>}
-            {children}
-        </motion.a>
-    );
-}
-
-/** Botón secundario / ghost */
-function ButtonGhost({ href, children, icon, external = false }: { href: string; children: ReactNode; icon?: ReactNode; external?: boolean }) {
-    return (
-        <motion.a
-            href={href}
-            target={external ? "_blank" : "_self"}
-            rel={external ? "noopener noreferrer" : undefined}
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
-            className="inline-flex items-center gap-3 px-7 py-4 rounded-xl font-semibold text-sm transition-colors
-                border border-slate-300 text-slate-700 hover:border-slate-500 hover:text-slate-900 bg-white
-                dark:border-zinc-700 dark:text-zinc-200 dark:hover:border-zinc-500 dark:hover:text-white dark:bg-transparent"
-        >
-            {icon && <span className="text-base">{icon}</span>}
-            {children}
-        </motion.a>
-    );
-}
+// Feature modules
+import { services, painPoints, trustItems } from "@/features/servicios/data/servicios.data";
+import { WHATSAPP_URL, EMAIL, MAILTO } from "@/features/servicios/constants/contact";
+import { FadeUp }        from "@/features/servicios/components/FadeUp";
+import { Eyebrow }       from "@/features/servicios/components/Eyebrow";
+import { ButtonPrimary } from "@/features/servicios/components/ButtonPrimary";
+import { ButtonGhost }   from "@/features/servicios/components/ButtonGhost";
+import type { ServiceCard } from "@/features/servicios/types/servicios.types";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // PAGE
-// Cada sección alterna bg-surface-card y bg-surface, igual que Home
 // ─────────────────────────────────────────────────────────────────────────────
 
 export default function ServiciosPage() {
@@ -249,45 +30,29 @@ export default function ServiciosPage() {
 
             {/* ══════════════════════════════════════════════════════════════
                 HERO
-                bg-surface con glow radial sutil — adapta en light y dark
             ══════════════════════════════════════════════════════════════ */}
             <section className="relative min-h-screen flex flex-col justify-center px-6 pt-28 pb-20 overflow-hidden
                 bg-surface border-b border-surface-border">
 
-                {/* Glow radial — usa colores indigo/teal según tema */}
-                <div
-                    aria-hidden
-                    className="pointer-events-none absolute inset-0
-                        [background:radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(99,102,241,0.08)_0%,transparent_70%)]
-                        dark:[background:radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(45,212,191,0.1)_0%,transparent_70%)]"
-                />
+                {/* Glow radial */}
+                <div aria-hidden className="pointer-events-none absolute inset-0
+                    [background:radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(99,102,241,0.08)_0%,transparent_70%)]
+                    dark:[background:radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(45,212,191,0.1)_0%,transparent_70%)]" />
 
                 {/* Grid overlay */}
-                <div
-                    aria-hidden
-                    className="pointer-events-none absolute inset-0 opacity-[0.03] dark:opacity-[0.04]"
+                <div aria-hidden className="pointer-events-none absolute inset-0 opacity-[0.03] dark:opacity-[0.04]"
                     style={{
-                        backgroundImage:
-                            "linear-gradient(rgba(0,0,0,1) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,1) 1px, transparent 1px)",
+                        backgroundImage: "linear-gradient(rgba(0,0,0,1) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,1) 1px, transparent 1px)",
                         backgroundSize: "48px 48px",
-                    }}
-                />
+                    }} />
 
                 <div className="relative z-10 max-w-5xl mx-auto w-full">
-
-                    {/* Badge de disponibilidad */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 16 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5 }}
-                        className="mb-8"
-                    >
+                    {/* Badge */}
+                    <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="mb-8">
                         <Eyebrow>
                             <span className="relative flex h-1.5 w-1.5">
-                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75
-                                    bg-indigo-500 dark:bg-teal-400" />
-                                <span className="relative inline-flex rounded-full h-1.5 w-1.5
-                                    bg-indigo-600 dark:bg-teal-400" />
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 bg-indigo-500 dark:bg-teal-400" />
+                                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-indigo-600 dark:bg-teal-400" />
                             </span>
                             Disponible para nuevos proyectos
                         </Eyebrow>
@@ -295,71 +60,42 @@ export default function ServiciosPage() {
 
                     {/* H1 */}
                     <motion.h1
-                        initial={{ opacity: 0, y: 24 }}
-                        animate={{ opacity: 1, y: 0 }}
+                        initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
                         className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-[0.95] mb-8
                             text-slate-900 dark:text-white"
                     >
                         Transformá la{" "}
-                        {/* Gradiente: indigo→cyan en light, teal→cyan en dark */}
-                        <span className="text-transparent bg-clip-text
-                            bg-gradient-to-r from-brand to-tech
-                            dark:from-teal-400 dark:to-cyan-400">
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand to-tech dark:from-teal-400 dark:to-cyan-400">
                             tecnología
                         </span>
                         <br />
                         de tu empresa en{" "}
-                        <span className="italic text-slate-600 dark:text-zinc-300">
-                            resultados reales.
-                        </span>
+                        <span className="italic text-slate-600 dark:text-zinc-300">resultados reales.</span>
                     </motion.h1>
 
                     {/* Subtítulo */}
                     <motion.p
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.55, delay: 0.22 }}
-                        className="max-w-2xl text-lg md:text-xl leading-relaxed mb-12
-                            text-slate-600 dark:text-zinc-400"
+                        initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55, delay: 0.22 }}
+                        className="max-w-2xl text-lg md:text-xl leading-relaxed mb-12 text-slate-600 dark:text-zinc-400"
                     >
-                        Desarrollo soluciones digitales a medida para constructoras, inmobiliarias,
-                        estudios, comercios y distribuidoras. Sin tecnicismos. Sin intermediarios.
-                        Con resultados medibles desde el primer día.
+                        Desarrollo soluciones digitales a medida para constructoras, inmobiliarias, estudios, comercios
+                        y distribuidoras. Sin tecnicismos. Sin intermediarios. Con resultados medibles desde el primer día.
                     </motion.p>
 
                     {/* CTAs */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 16 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5, delay: 0.35 }}
-                        className="flex flex-wrap gap-4"
-                    >
-                        <ButtonPrimary href={WHATSAPP_URL} icon={<FaWhatsapp />}>
-                            Hablemos de tu proyecto
-                        </ButtonPrimary>
-                        <ButtonGhost href="#servicios" icon={<FaArrowRight />}>
-                            Ver mis servicios
-                        </ButtonGhost>
+                    <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.35 }}
+                        className="flex flex-wrap gap-4">
+                        <ButtonPrimary href={WHATSAPP_URL} icon={<FaWhatsapp />}>Hablemos de tu proyecto</ButtonPrimary>
+                        <ButtonGhost href="#servicios" icon={<FaArrowRight />}>Ver mis servicios</ButtonGhost>
                     </motion.div>
 
-                    {/* Social proof strip */}
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 0.6, delay: 0.55 }}
-                        className="mt-20 flex flex-wrap items-center gap-x-8 gap-y-3 text-sm
-                            text-slate-400 dark:text-zinc-500"
-                    >
-                        {[
-                            "+5 años de experiencia",
-                            "Trato directo sin intermediarios",
-                            "Proyectos llave en mano",
-                            "Velocidad 100/100 garantizada",
-                        ].map((item) => (
+                    {/* Social proof */}
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6, delay: 0.55 }}
+                        className="mt-20 flex flex-wrap items-center gap-x-8 gap-y-3 text-sm text-slate-400 dark:text-zinc-500">
+                        {["+5 años de experiencia", "Trato directo sin intermediarios", "Proyectos llave en mano", "Velocidad 100/100 garantizada"].map((item) => (
                             <span key={item} className="flex items-center gap-2">
-                                <FaCircleCheck className="text-tech dark:text-teal-500 shrink-0" />
-                                {item}
+                                <FaCircleCheck className="text-tech dark:text-teal-500 shrink-0" />{item}
                             </span>
                         ))}
                     </motion.div>
@@ -367,74 +103,56 @@ export default function ServiciosPage() {
             </section>
 
             {/* ══════════════════════════════════════════════════════════════
-                DIAGNÓSTICO — Tabla Problema vs Solución
-                bg-white / dark:bg-black (alterna con hero)
+                DIAGNÓSTICO
             ══════════════════════════════════════════════════════════════ */}
             <section id="diagnostico" className="py-24 px-6 bg-white dark:bg-black">
                 <div className="max-w-5xl mx-auto">
-
                     <FadeUp>
                         <div className="text-center mb-16 space-y-4">
                             <Eyebrow>Diagnóstico</Eyebrow>
-                            <h2 className="text-4xl md:text-5xl font-black tracking-tighter
-                                text-slate-900 dark:text-white">
+                            <h2 className="text-4xl md:text-5xl font-black tracking-tighter text-slate-900 dark:text-white">
                                 ¿Te suena familiar alguno de estos?
                             </h2>
                             <p className="max-w-xl mx-auto leading-relaxed text-slate-500 dark:text-zinc-400">
-                                Trabajé con decenas de negocios con los mismos problemas.
-                                Todos tienen solución concreta.
+                                Trabajé con decenas de negocios con los mismos problemas. Todos tienen solución concreta.
                             </p>
                         </div>
                     </FadeUp>
 
-                    {/* Grid 2 columnas: rojo (problemas) — verde (soluciones) */}
                     <div className="grid md:grid-cols-2 gap-6">
-
-                        {/* Columna Problemas */}
+                        {/* Problemas */}
                         <FadeUp delay={0.1} className="flex flex-col">
                             <div className="flex items-center gap-3 mb-4">
-                                <div className="w-8 h-8 rounded-full flex items-center justify-center
-                                    bg-red-100 border border-red-200
-                                    dark:bg-red-500/10 dark:border-red-500/20">
+                                <div className="w-8 h-8 rounded-full flex items-center justify-center bg-red-100 border border-red-200 dark:bg-red-500/10 dark:border-red-500/20">
                                     <FaXmark className="text-red-500 dark:text-red-400 text-sm" />
                                 </div>
-                                <span className="text-sm font-semibold uppercase tracking-wider
-                                    text-slate-500 dark:text-zinc-400">
-                                    El problema actual
-                                </span>
+                                <span className="text-sm font-semibold uppercase tracking-wider text-slate-500 dark:text-zinc-400">El problema actual</span>
                             </div>
                             <ul className="flex flex-col gap-3 flex-1">
                                 {painPoints.map((item, i) => (
                                     <li key={i} className="flex items-center gap-4 px-5 py-4 rounded-xl text-sm
                                         bg-red-50 border border-red-100 text-slate-700
                                         dark:bg-red-950/20 dark:border-red-500/10 dark:text-zinc-300">
-                                        <FaXmark className="text-red-400 shrink-0" />
-                                        {item.problem}
+                                        <FaXmark className="text-red-400 shrink-0" />{item.problem}
                                     </li>
                                 ))}
                             </ul>
                         </FadeUp>
 
-                        {/* Columna Soluciones */}
+                        {/* Soluciones */}
                         <FadeUp delay={0.2} className="flex flex-col">
                             <div className="flex items-center gap-3 mb-4">
-                                <div className="w-8 h-8 rounded-full flex items-center justify-center
-                                    bg-emerald-100 border border-emerald-200
-                                    dark:bg-teal-500/10 dark:border-teal-500/20">
+                                <div className="w-8 h-8 rounded-full flex items-center justify-center bg-emerald-100 border border-emerald-200 dark:bg-teal-500/10 dark:border-teal-500/20">
                                     <FaCircleCheck className="text-emerald-600 dark:text-teal-400 text-sm" />
                                 </div>
-                                <span className="text-sm font-semibold uppercase tracking-wider
-                                    text-slate-500 dark:text-zinc-400">
-                                    Lo que entrego
-                                </span>
+                                <span className="text-sm font-semibold uppercase tracking-wider text-slate-500 dark:text-zinc-400">Lo que entrego</span>
                             </div>
                             <ul className="flex flex-col gap-3 flex-1">
                                 {painPoints.map((item, i) => (
                                     <li key={i} className="flex items-center gap-4 px-5 py-4 rounded-xl text-sm font-medium
                                         bg-emerald-50 border border-emerald-100 text-slate-800
                                         dark:bg-teal-950/20 dark:border-teal-500/10 dark:text-zinc-200">
-                                        <FaCircleCheck className="text-emerald-500 dark:text-teal-400 shrink-0" />
-                                        {item.solution}
+                                        <FaCircleCheck className="text-emerald-500 dark:text-teal-400 shrink-0" />{item.solution}
                                     </li>
                                 ))}
                             </ul>
@@ -442,140 +160,90 @@ export default function ServiciosPage() {
                     </div>
 
                     <FadeUp delay={0.3} className="mt-12 text-center">
-                        <ButtonPrimary href={WHATSAPP_URL} icon={<FaWhatsapp />}>
-                            Quiero resolver estos problemas
-                        </ButtonPrimary>
+                        <ButtonPrimary href={WHATSAPP_URL} icon={<FaWhatsapp />}>Quiero resolver estos problemas</ButtonPrimary>
                     </FadeUp>
                 </div>
             </section>
 
             {/* ══════════════════════════════════════════════════════════════
-                SERVICIOS — Grid asimétrico de 7 tarjetas
-                bg-slate-50 / dark:bg-zinc-950 (alternado)
+                SERVICIOS — Grid asimétrico 7 cards
             ══════════════════════════════════════════════════════════════ */}
             <section id="servicios" className="py-24 px-6 relative bg-slate-50 dark:bg-zinc-950">
-
-                {/* Separador visual sutil */}
-                <div
-                    aria-hidden
-                    className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-px h-24
-                        bg-gradient-to-b from-transparent via-brand/30 to-transparent
-                        dark:via-teal-500/30"
-                />
+                <div aria-hidden className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-px h-24
+                    bg-gradient-to-b from-transparent via-brand/30 to-transparent dark:via-teal-500/30" />
 
                 <div className="max-w-6xl mx-auto">
                     <FadeUp className="text-center mb-16 space-y-4">
                         <Eyebrow>Servicios</Eyebrow>
-                        <h2 className="text-4xl md:text-5xl font-black tracking-tighter
-                            text-slate-900 dark:text-white">
+                        <h2 className="text-4xl md:text-5xl font-black tracking-tighter text-slate-900 dark:text-white">
                             Lo que hago, en resultados concretos
                         </h2>
                         <p className="max-w-xl mx-auto leading-relaxed text-slate-500 dark:text-zinc-400">
-                            Sin tecnicismos. Cada servicio está diseñado para resolver un problema
-                            real de tu negocio y generar retorno tangible.
+                            Sin tecnicismos. Cada servicio está diseñado para resolver un problema real y generar retorno tangible.
                         </p>
                     </FadeUp>
 
-                    {/*
-                        Layout asimétrico 12 cols:
-                        Fila 1 → 2 grandes (6+6)
-                        Fila 2 → 3 medianas (4+4+4)
-                        Fila 3 → 2 asimétricas (5+7)
-                    */}
                     <div className="grid grid-cols-1 md:grid-cols-12 gap-5">
-                        <ServiceCardLarge service={services[0]} delay={0.05} colSpan="md:col-span-6" />
-                        <ServiceCardLarge service={services[1]} delay={0.10} colSpan="md:col-span-6" />
+                        <ServiceCardLarge  service={services[0]} delay={0.05} colSpan="md:col-span-6" />
+                        <ServiceCardLarge  service={services[1]} delay={0.10} colSpan="md:col-span-6" />
                         <ServiceCardMedium service={services[2]} delay={0.15} colSpan="md:col-span-4" />
                         <ServiceCardMedium service={services[3]} delay={0.20} colSpan="md:col-span-4" />
                         <ServiceCardMedium service={services[4]} delay={0.25} colSpan="md:col-span-4" />
-                        <ServiceCardLarge service={services[5]} delay={0.30} colSpan="md:col-span-5" />
-                        <ServiceCardLarge service={services[6]} delay={0.35} colSpan="md:col-span-7" />
+                        <ServiceCardLarge  service={services[5]} delay={0.30} colSpan="md:col-span-5" />
+                        <ServiceCardLarge  service={services[6]} delay={0.35} colSpan="md:col-span-7" />
                     </div>
                 </div>
             </section>
 
             {/* ══════════════════════════════════════════════════════════════
-                AUTORIDAD / CONFIANZA — Split layout
-                bg-white / dark:bg-black
+                AUTORIDAD
             ══════════════════════════════════════════════════════════════ */}
             <section id="autoridad" className="py-24 px-6 bg-white dark:bg-black">
                 <div className="max-w-6xl mx-auto">
                     <div className="grid lg:grid-cols-2 gap-16 items-center">
 
-                        {/* Bloque de texto izquierdo */}
                         <FadeUp>
                             <div className="space-y-6">
                                 <Eyebrow>Por qué trabajar conmigo</Eyebrow>
-                                <h2 className="text-4xl md:text-5xl font-black tracking-tighter leading-tight
-                                    text-slate-900 dark:text-white">
-                                    Clientes exigentes <br />
-                                    eligen el{" "}
-                                    <span className="text-transparent bg-clip-text
-                                        bg-gradient-to-r from-brand to-tech
-                                        dark:from-teal-400 dark:to-cyan-400">
+                                <h2 className="text-4xl md:text-5xl font-black tracking-tighter leading-tight text-slate-900 dark:text-white">
+                                    Clientes exigentes <br /> eligen el{" "}
+                                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand to-tech dark:from-teal-400 dark:to-cyan-400">
                                         trato directo.
                                     </span>
                                 </h2>
                                 <p className="text-lg leading-relaxed text-slate-600 dark:text-zinc-400">
-                                    No soy una agencia. Soy un profesional independiente con más de cinco años
-                                    resolviendo problemas reales para negocios reales. Lo que acordamos, eso entrego.
-                                    Sin sorpresas al final, sin costos extra, sin ruidos.
+                                    No soy una agencia. Soy un profesional independiente con más de cinco años resolviendo problemas reales para negocios reales.
+                                    Lo que acordamos, eso entrego. Sin sorpresas, sin costos extra, sin ruidos.
                                 </p>
-
                                 <ul className="space-y-3 pt-2">
-                                    {[
-                                        "Presupuestos cerrados y sin sorpresas",
-                                        "Comunicación clara en cada etapa del proyecto",
-                                        "Primera consulta sin costo ni compromiso",
-                                        "Soporte post-lanzamiento incluido",
-                                    ].map((item) => (
-                                        <li key={item} className="flex items-start gap-3 text-sm
-                                            text-slate-600 dark:text-zinc-300">
-                                            <FaCircleCheck className="text-tech dark:text-teal-400 shrink-0 mt-0.5" />
-                                            {item}
+                                    {["Presupuestos cerrados y sin sorpresas", "Comunicación clara en cada etapa", "Primera consulta sin costo ni compromiso", "Soporte post-lanzamiento incluido"].map((item) => (
+                                        <li key={item} className="flex items-start gap-3 text-sm text-slate-600 dark:text-zinc-300">
+                                            <FaCircleCheck className="text-tech dark:text-teal-400 shrink-0 mt-0.5" />{item}
                                         </li>
                                     ))}
                                 </ul>
-
                                 <div className="pt-4">
-                                    <ButtonPrimary href={WHATSAPP_URL} icon={<FaPhone />}>
-                                        Agendá tu charla de 10 min
-                                    </ButtonPrimary>
+                                    <ButtonPrimary href={WHATSAPP_URL} icon={<FaPhone />}>Agendá tu charla de 10 min</ButtonPrimary>
                                 </div>
                             </div>
                         </FadeUp>
 
-                        {/* Grid de métricas derecho */}
                         <FadeUp delay={0.15}>
                             <div className="grid grid-cols-2 gap-4">
                                 {trustItems.map((item, i) => (
-                                    <motion.div
-                                        key={i}
-                                        whileHover={{ y: -4 }}
-                                        transition={{ duration: 0.2 }}
-                                        className="p-6 rounded-2xl space-y-3
-                                            bg-slate-50 border border-slate-200
-                                            dark:bg-zinc-900 dark:border-zinc-800
-                                            hover:border-brand/30 dark:hover:border-teal-500/30 transition-colors"
-                                    >
+                                    <motion.div key={i} whileHover={{ y: -4 }} transition={{ duration: 0.2 }}
+                                        className="p-6 rounded-2xl space-y-3 transition-colors
+                                            bg-slate-50 border border-slate-200 hover:border-brand/30
+                                            dark:bg-zinc-900 dark:border-zinc-800 dark:hover:border-teal-500/30">
                                         <div className="w-9 h-9 rounded-lg flex items-center justify-center
-                                            bg-indigo-100 text-brand
-                                            dark:bg-teal-500/10 dark:text-teal-400">
+                                            bg-indigo-100 text-brand dark:bg-teal-500/10 dark:text-teal-400">
                                             {item.icon}
                                         </div>
                                         <div>
-                                            <p className="text-3xl font-black tracking-tight
-                                                text-slate-900 dark:text-white">
-                                                {item.metric}
-                                            </p>
-                                            <p className="text-xs font-semibold uppercase tracking-wider mt-0.5
-                                                text-brand dark:text-teal-400">
-                                                {item.label}
-                                            </p>
+                                            <p className="text-3xl font-black tracking-tight text-slate-900 dark:text-white">{item.metric}</p>
+                                            <p className="text-xs font-semibold uppercase tracking-wider mt-0.5 text-brand dark:text-teal-400">{item.label}</p>
                                         </div>
-                                        <p className="text-xs leading-relaxed text-slate-500 dark:text-zinc-500">
-                                            {item.description}
-                                        </p>
+                                        <p className="text-xs leading-relaxed text-slate-500 dark:text-zinc-500">{item.description}</p>
                                     </motion.div>
                                 ))}
                             </div>
@@ -585,77 +253,52 @@ export default function ServiciosPage() {
             </section>
 
             {/* ══════════════════════════════════════════════════════════════
-                CTA FINAL — Cierre de alto impacto
-                bg-slate-50 / dark:bg-zinc-950
+                CTA FINAL
             ══════════════════════════════════════════════════════════════ */}
-            <section id="contacto" className="py-32 px-6 relative overflow-hidden
-                bg-slate-50 dark:bg-zinc-950">
-
-                {/* Glow de fondo — adapta al tema */}
-                <div
-                    aria-hidden
-                    className="pointer-events-none absolute inset-0
-                        [background:radial-gradient(ellipse_80%_70%_at_50%_110%,rgba(99,102,241,0.08)_0%,transparent_70%)]
-                        dark:[background:radial-gradient(ellipse_80%_70%_at_50%_110%,rgba(45,212,191,0.1)_0%,transparent_70%)]"
-                />
+            <section id="contacto" className="py-32 px-6 relative overflow-hidden bg-slate-50 dark:bg-zinc-950">
+                <div aria-hidden className="pointer-events-none absolute inset-0
+                    [background:radial-gradient(ellipse_80%_70%_at_50%_110%,rgba(99,102,241,0.08)_0%,transparent_70%)]
+                    dark:[background:radial-gradient(ellipse_80%_70%_at_50%_110%,rgba(45,212,191,0.1)_0%,transparent_70%)]" />
 
                 <div className="relative z-10 max-w-3xl mx-auto text-center space-y-8">
-
                     <FadeUp><Eyebrow>Empezamos</Eyebrow></FadeUp>
 
                     <FadeUp delay={0.1}>
-                        <h2 className="text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter leading-tight
-                            text-slate-900 dark:text-white">
-                            10 minutos pueden
-                            <br />
-                            <span className="text-transparent bg-clip-text
-                                bg-gradient-to-r from-brand to-tech
-                                dark:from-teal-400 dark:to-cyan-400">
+                        <h2 className="text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter leading-tight text-slate-900 dark:text-white">
+                            10 minutos pueden <br />
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand to-tech dark:from-teal-400 dark:to-cyan-400">
                                 cambiar tu negocio.
                             </span>
                         </h2>
                     </FadeUp>
 
                     <FadeUp delay={0.2}>
-                        <p className="text-lg leading-relaxed max-w-xl mx-auto
-                            text-slate-500 dark:text-zinc-400">
-                            No necesitás tener todo claro todavía. Con una charla breve puedo decirte
-                            si lo que necesitás es viable, cuánto tiempo llevaría y cuánto costaría.
-                            Sin compromiso.
+                        <p className="text-lg leading-relaxed max-w-xl mx-auto text-slate-500 dark:text-zinc-400">
+                            No necesitás tener todo claro todavía. Con una charla breve puedo decirte si lo que necesitás
+                            es viable, cuánto tiempo llevaría y cuánto costaría. Sin compromiso.
                         </p>
                     </FadeUp>
 
                     <FadeUp delay={0.3}>
                         <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
-                            <ButtonPrimary href={WHATSAPP_URL} icon={<FaWhatsapp />}>
-                                Escribime por WhatsApp
-                            </ButtonPrimary>
-                            <ButtonGhost href={MAILTO} icon={<FaEnvelope />} external>
-                                Mandame un mail
-                            </ButtonGhost>
+                            <ButtonPrimary href={WHATSAPP_URL} icon={<FaWhatsapp />}>Escribime por WhatsApp</ButtonPrimary>
+                            <ButtonGhost href={MAILTO} icon={<FaEnvelope />} external>Mandame un mail</ButtonGhost>
                         </div>
                     </FadeUp>
 
-                    {/* Datos de contacto */}
                     <FadeUp delay={0.4}>
-                        <div className="pt-6 flex flex-col sm:flex-row items-center justify-center gap-6 text-sm font-mono
-                            text-slate-400 dark:text-zinc-600">
+                        <div className="pt-6 flex flex-col sm:flex-row items-center justify-center gap-6 text-sm font-mono">
                             <span>
                                 <span className="text-slate-400 dark:text-zinc-500">WhatsApp: </span>
                                 <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer"
-                                    className="transition-colors
-                                        text-slate-600 hover:text-brand
-                                        dark:text-zinc-400 dark:hover:text-teal-400">
+                                    className="transition-colors text-slate-600 hover:text-brand dark:text-zinc-400 dark:hover:text-teal-400">
                                     +54 11 3011-1503
                                 </a>
                             </span>
                             <span className="hidden sm:block text-slate-200 dark:text-zinc-800">·</span>
                             <span>
                                 <span className="text-slate-400 dark:text-zinc-500">Mail: </span>
-                                <a href={MAILTO}
-                                    className="transition-colors
-                                        text-slate-600 hover:text-brand
-                                        dark:text-zinc-400 dark:hover:text-teal-400">
+                                <a href={MAILTO} className="transition-colors text-slate-600 hover:text-brand dark:text-zinc-400 dark:hover:text-teal-400">
                                     {EMAIL}
                                 </a>
                             </span>
@@ -665,13 +308,9 @@ export default function ServiciosPage() {
                         </p>
                     </FadeUp>
 
-                    {/* Link de vuelta al portfolio */}
                     <FadeUp delay={0.5}>
                         <div className="pt-8 border-t border-slate-200 dark:border-zinc-800/50">
-                            <a href="/"
-                                className="inline-flex items-center gap-2 text-sm font-mono transition-colors
-                                    text-slate-400 hover:text-slate-600
-                                    dark:text-zinc-600 dark:hover:text-zinc-400">
+                            <a href="/" className="inline-flex items-center gap-2 text-sm font-mono transition-colors text-slate-400 hover:text-slate-600 dark:text-zinc-600 dark:hover:text-zinc-400">
                                 ← Volver al portfolio técnico
                             </a>
                         </div>
@@ -683,66 +322,36 @@ export default function ServiciosPage() {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// SERVICE CARD VARIANTS
-// Ambas responden al tema con dark: prefixes consistentes
+// SERVICE CARD COMPONENTS (colocated en page ya que solo se usan aquí)
 // ─────────────────────────────────────────────────────────────────────────────
 
 function ServiceCardLarge({ service, delay, colSpan }: { service: ServiceCard; delay: number; colSpan: string }) {
     return (
         <FadeUp delay={delay} className={colSpan}>
-            <motion.div
-                whileHover={{ y: -6 }}
-                transition={{ duration: 0.25 }}
+            <motion.div whileHover={{ y: -6 }} transition={{ duration: 0.25 }}
                 className="h-full flex flex-col p-7 rounded-2xl group cursor-default transition-colors
                     bg-white border border-slate-200 hover:border-brand/30
-                    dark:bg-zinc-900 dark:border-zinc-800 dark:hover:border-teal-500/25"
-            >
-                {/* Ícono + Eyebrow */}
+                    dark:bg-zinc-900 dark:border-zinc-800 dark:hover:border-teal-500/25">
                 <div className="flex items-center gap-3 mb-5">
                     <div className="w-10 h-10 rounded-xl flex items-center justify-center transition-colors
                         bg-indigo-50 border border-indigo-100 text-brand group-hover:bg-indigo-100
                         dark:bg-teal-500/10 dark:border-teal-500/20 dark:text-teal-400 dark:group-hover:bg-teal-500/15">
                         {service.icon}
                     </div>
-                    <span className="text-xs font-semibold uppercase tracking-widest
-                        text-brand/70 dark:text-teal-400/80">
-                        {service.eyebrow}
-                    </span>
+                    <span className="text-xs font-semibold uppercase tracking-widest text-brand/70 dark:text-teal-400/80">{service.eyebrow}</span>
                 </div>
-
-                {/* Título */}
-                <h3 className="text-xl font-bold mb-3 leading-snug transition-colors
-                    text-slate-900 group-hover:text-brand
-                    dark:text-white dark:group-hover:text-teal-100">
-                    {service.title}
-                </h3>
-
-                {/* Descripción */}
-                <p className="text-sm leading-relaxed mb-6 flex-grow text-slate-500 dark:text-zinc-400">
-                    {service.description}
-                </p>
-
-                {/* Highlights */}
+                <h3 className="text-xl font-bold mb-3 leading-snug transition-colors text-slate-900 group-hover:text-brand dark:text-white dark:group-hover:text-teal-100">{service.title}</h3>
+                <p className="text-sm leading-relaxed mb-6 flex-grow text-slate-500 dark:text-zinc-400">{service.description}</p>
                 <ul className="space-y-2">
                     {service.highlights.map((h) => (
                         <li key={h} className="flex items-center gap-2 text-xs text-slate-500 dark:text-zinc-400">
-                            <FaCircleCheck className="text-tech dark:text-teal-500 shrink-0" />
-                            {h}
+                            <FaCircleCheck className="text-tech dark:text-teal-500 shrink-0" />{h}
                         </li>
                     ))}
                 </ul>
-
-                {/* Hover CTA */}
-                <a
-                    href={WHATSAPP_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-5 inline-flex items-center gap-1.5 text-xs font-medium transition-colors
-                        text-slate-300 group-hover:text-brand
-                        dark:text-zinc-600 dark:group-hover:text-teal-400"
-                >
-                    Consultar
-                    <FaArrowUpRightFromSquare className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer"
+                    className="mt-5 inline-flex items-center gap-1.5 text-xs font-medium transition-colors text-slate-300 group-hover:text-brand dark:text-zinc-600 dark:group-hover:text-teal-400">
+                    Consultar <FaArrowUpRightFromSquare className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                 </a>
             </motion.div>
         </FadeUp>
@@ -752,50 +361,21 @@ function ServiceCardLarge({ service, delay, colSpan }: { service: ServiceCard; d
 function ServiceCardMedium({ service, delay, colSpan }: { service: ServiceCard; delay: number; colSpan: string }) {
     return (
         <FadeUp delay={delay} className={colSpan}>
-            <motion.div
-                whileHover={{ y: -6 }}
-                transition={{ duration: 0.25 }}
+            <motion.div whileHover={{ y: -6 }} transition={{ duration: 0.25 }}
                 className="h-full flex flex-col p-6 rounded-2xl group cursor-default transition-colors
                     bg-white border border-slate-200 hover:border-brand/30
-                    dark:bg-zinc-900 dark:border-zinc-800 dark:hover:border-teal-500/25"
-            >
-                {/* Ícono */}
+                    dark:bg-zinc-900 dark:border-zinc-800 dark:hover:border-teal-500/25">
                 <div className="w-9 h-9 rounded-xl flex items-center justify-center mb-4 transition-colors
                     bg-indigo-50 border border-indigo-100 text-brand group-hover:bg-indigo-100
                     dark:bg-teal-500/10 dark:border-teal-500/20 dark:text-teal-400 dark:group-hover:bg-teal-500/15">
                     {service.icon}
                 </div>
-
-                {/* Eyebrow */}
-                <span className="text-xs font-semibold uppercase tracking-widest mb-2
-                    text-brand/70 dark:text-teal-400/80">
-                    {service.eyebrow}
-                </span>
-
-                {/* Título */}
-                <h3 className="text-base font-bold mb-3 leading-snug transition-colors flex-grow
-                    text-slate-900 group-hover:text-brand
-                    dark:text-white dark:group-hover:text-teal-100">
-                    {service.title}
-                </h3>
-
-                {/* Descripción truncada */}
-                <p className="text-xs leading-relaxed line-clamp-3 mb-4
-                    text-slate-500 dark:text-zinc-500">
-                    {service.description}
-                </p>
-
-                {/* Hover CTA */}
-                <a
-                    href={WHATSAPP_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 text-xs font-medium mt-auto transition-colors
-                        text-slate-300 group-hover:text-brand
-                        dark:text-zinc-600 dark:group-hover:text-teal-400"
-                >
-                    Consultar
-                    <FaArrowUpRightFromSquare className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                <span className="text-xs font-semibold uppercase tracking-widest mb-2 text-brand/70 dark:text-teal-400/80">{service.eyebrow}</span>
+                <h3 className="text-base font-bold mb-3 leading-snug transition-colors flex-grow text-slate-900 group-hover:text-brand dark:text-white dark:group-hover:text-teal-100">{service.title}</h3>
+                <p className="text-xs leading-relaxed line-clamp-3 mb-4 text-slate-500 dark:text-zinc-500">{service.description}</p>
+                <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 text-xs font-medium mt-auto transition-colors text-slate-300 group-hover:text-brand dark:text-zinc-600 dark:group-hover:text-teal-400">
+                    Consultar <FaArrowUpRightFromSquare className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                 </a>
             </motion.div>
         </FadeUp>
