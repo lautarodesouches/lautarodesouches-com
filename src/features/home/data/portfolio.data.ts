@@ -56,7 +56,7 @@ export const portfolioData: PortfolioData = {
             image: "/projects/desouches-propiedades.png",
         },
         {
-            title: "Chichess 🧸🪁 (v1.0.0)",
+            title: "Chichess - Fábrica de Juguetes",
             type: "Catálogo B2B & Admin Panel",
             description:
                 "El catálogo digital mayorista y panel interno administrativo de Chichess, fábrica argentina de juguetes de playa, jardín y didácticos desde 1993. Cumpliendo estrictamente con las normas de seguridad IRAM NM 300.",

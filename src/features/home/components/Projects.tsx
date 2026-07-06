@@ -10,12 +10,15 @@ export const Projects = () => {
     const scrollContainerRef = useRef<HTMLDivElement>(null);
     const [activeIndex, setActiveIndex] = useState(0);
 
+    // Duplicamos el array por 3 para lograr scroll infinito continuo
+    const tripleProjects = [...projects, ...projects, ...projects];
+
     const scroll = (direction: "left" | "right") => {
         if (scrollContainerRef.current) {
             const container = scrollContainerRef.current;
             const scrollAmount = container.clientWidth * 0.8;
-            container.scrollBy({
-                left: direction === "left" ? -scrollAmount : scrollAmount,
+            container.scrollTo({
+                left: container.scrollLeft + (direction === "left" ? -scrollAmount : scrollAmount),
                 behavior: "smooth",
             });
         }
@@ -25,24 +28,55 @@ export const Projects = () => {
         const container = scrollContainerRef.current;
         if (!container) return;
 
+        // Posicionamiento inicial en el set del medio
+        const initializeScroll = () => {
+            const oneSetWidth = container.scrollWidth / 3;
+            if (oneSetWidth > 0) {
+                container.scrollLeft = oneSetWidth;
+            }
+        };
+
+        initializeScroll();
+        const timer = setTimeout(initializeScroll, 100);
+
         const handleScroll = () => {
             const scrollLeft = container.scrollLeft;
-            const itemWidth = container.scrollWidth / projects.length;
-            const newIndex = Math.round(scrollLeft / itemWidth);
+            const oneSetWidth = container.scrollWidth / 3;
+
+            if (oneSetWidth <= 0) return;
+
+            // Salto invisible cuando cruzamos los límites del set del medio
+            if (scrollLeft >= oneSetWidth * 2) {
+                container.scrollLeft = scrollLeft - oneSetWidth;
+            } else if (scrollLeft <= 0) {
+                container.scrollLeft = scrollLeft + oneSetWidth;
+            }
+
+            // Calculamos el índice activo relativo a un único set
+            const itemWidth = oneSetWidth / projects.length;
+            const relativeScroll = container.scrollLeft - oneSetWidth;
+            const newIndex = Math.round(relativeScroll / itemWidth);
             if (newIndex >= 0 && newIndex < projects.length) {
                 setActiveIndex(newIndex);
             }
         };
 
         container.addEventListener("scroll", handleScroll, { passive: true });
-        return () => container.removeEventListener("scroll", handleScroll);
+        return () => {
+            clearTimeout(timer);
+            container.removeEventListener("scroll", handleScroll);
+        };
     }, [projects.length]);
 
     const scrollToProject = (index: number) => {
         if (scrollContainerRef.current) {
             const container = scrollContainerRef.current;
-            const itemWidth = container.scrollWidth / projects.length;
-            container.scrollTo({ left: itemWidth * index, behavior: "smooth" });
+            const oneSetWidth = container.scrollWidth / 3;
+            const itemWidth = oneSetWidth / projects.length;
+            container.scrollTo({
+                left: oneSetWidth + (itemWidth * index),
+                behavior: "smooth"
+            });
             setActiveIndex(index);
         }
     };
@@ -77,13 +111,14 @@ export const Projects = () => {
                         <FaChevronRight className="w-5 h-5 mr-[-2px]" />
                     </button>
 
+                    {/* Nota: Eliminamos la clase 'scroll-smooth' del contenedor para permitir los saltos instantáneos e invisibles */}
                     <div
                         ref={scrollContainerRef}
-                        className="flex gap-4 md:gap-6 overflow-x-auto snap-x snap-mandatory pt-2 pb-8 md:pb-12 scroll-smooth px-1 md:-mx-4 md:px-4 hide-scrollbar"
+                        className="flex gap-4 md:gap-6 overflow-x-auto snap-x snap-mandatory pt-2 pb-8 md:pb-12 px-1 md:-mx-4 md:px-4 hide-scrollbar"
                     >
-                        {projects.map((project, index) => (
+                        {tripleProjects.map((project, index) => (
                             <article
-                                key={index}
+                                key={`${index}-${project.title}`}
                                 className="group flex flex-col bg-white dark:bg-zinc-900/40 rounded-2xl overflow-hidden border border-slate-200 dark:border-white/10 hover:border-brand/30 dark:hover:border-tech/30 transition-all duration-200 shrink-0 w-[85vw] sm:w-[60vw] md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] snap-center md:snap-start shadow-sm hover:shadow-xl active:scale-[0.98] outline-none"
                             >
                                 {project.image && (
