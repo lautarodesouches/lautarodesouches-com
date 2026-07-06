@@ -16,10 +16,10 @@ export const portfolioData: PortfolioData = {
             "Me interesa trabajar en equipos orientados a producto, donde la calidad del software y la solidez técnica sean prioridades reales. Mi foco está en construir aplicaciones integrales, escalables de principio a fin.",
         ],
         quickData: [
-            { label: "Stack",       value: "Next.js, NestJS, Java Spring" },
-            { label: "Enfoque",     value: "Arquitectura y Escalabilidad" },
+            { label: "Stack", value: "Next.js, NestJS, Java Spring" },
+            { label: "Enfoque", value: "Arquitectura y Escalabilidad" },
             { label: "Experiencia", value: "+5 años en producto" },
-            { label: "Perfil",      value: "Full-Stack Developer · Semi-Senior" },
+            { label: "Perfil", value: "Full-Stack Developer · Semi-Senior" },
         ],
     },
     projects: [
@@ -67,8 +67,8 @@ export const portfolioData: PortfolioData = {
             tech: ["Next.js 16", "TypeScript", "Zustand", "TailwindCSS v4", "Prisma ORM", "NextAuth.js", "@dnd-kit", "Husky v9", "Vitest", "Playwright"],
             impact:
                 "Ordenamiento global drag & drop, generación de PDFs en tiempo real, testing trophy completo (unitario, integración y E2E), CD con Runcloud y PM2.",
-            demoUrl: "https://github.com/lautarodesouches",
-            repoUrl: "https://github.com/lautarodesouches",
+            demoUrl: "https://www.chichess.com.ar/",
+            repoUrl: "",
             image: "/projects/chichess.png",
         },
         {
@@ -107,7 +107,7 @@ export const portfolioData: PortfolioData = {
             ],
             impact:
                 "Sitio estático optimizado con ISR horaria, 888 productos organizados con filtros dinámicos, deployment automatizado y mejora significativa en UX y performance.",
-            demoUrl: "https://recetasconessen.com",
+            demoUrl: "https://lautarodesouches.github.io/ollas-essen/",
             repoUrl: "https://github.com/lautarodesouches/ollas-essen",
             image: "/projects/ollas.png",
         },
@@ -116,10 +116,10 @@ export const portfolioData: PortfolioData = {
         core: {
             title: "Stack Principal",
             items: [
-                { category: "Lenguajes",    techs: ["TypeScript", "Java", "JavaScript"] },
-                { category: "Frontend",     techs: ["Next.js", "React.js", "Tailwind CSS"] },
-                { category: "Backend",      techs: ["NestJS", "Spring Boot", "Node.js"] },
-                { category: "Integración",  techs: ["APIs REST", "SQL", "WebSockets"] },
+                { category: "Lenguajes", techs: ["TypeScript", "Java", "JavaScript"] },
+                { category: "Frontend", techs: ["Next.js", "React.js", "Tailwind CSS"] },
+                { category: "Backend", techs: ["NestJS", "Spring Boot", "Node.js"] },
+                { category: "Integración", techs: ["APIs REST", "SQL", "WebSockets"] },
             ],
         },
         secondary: {
