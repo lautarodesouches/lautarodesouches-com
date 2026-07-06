@@ -24,30 +24,6 @@ export const portfolioData: PortfolioData = {
     },
     projects: [
         {
-            title: "Recetas con Essen - E-commerce & Catálogo de Productos",
-            type: "E-Commerce Full-Stack",
-            description:
-                "Plataforma web moderna para mostrar productos Essen (ollas y utensilios de cocina premium) con catálogo completo, recetas inspiradoras y sistema de contacto integrado.",
-            problem:
-                "La empresa necesitaba mostrar 888 productos organizados, generar engagement con recetas y facilitar contacto con clientes en un sitio moderno y fácil de mantener.",
-            solution:
-                "Desarrollé una app con Next.js 15 (SSG/ISR), categorizando productos por líneas (Capri, Terra, Nuit), con Google Analytics, SEO optimizado, sitemap automático y diseño responsive.",
-            tech: [
-                "Next.js 15",
-                "React 19",
-                "TypeScript",
-                "CSS Modules",
-                "Font Awesome",
-                "Google Analytics/GTM",
-                "Static Site Generation (SSG/ISR)",
-            ],
-            impact:
-                "Sitio estático optimizado con ISR horaria, 888 productos organizados con filtros dinámicos, deployment automatizado y mejora significativa en UX y performance.",
-            demoUrl: "https://recetasconessen.com",
-            repoUrl: "https://github.com/lautarodesouches/ollas-essen",
-            image: "/projects/ollas.png",
-        },
-        {
             title: "Gusto - Social Restaurant Discovery",
             type: "Plataforma Social",
             description:
@@ -80,6 +56,22 @@ export const portfolioData: PortfolioData = {
             image: "/projects/desouches-propiedades.png",
         },
         {
+            title: "Chichess 🧸🪁 (v1.0.0)",
+            type: "Catálogo B2B & Admin Panel",
+            description:
+                "El catálogo digital mayorista y panel interno administrativo de Chichess, fábrica argentina de juguetes de playa, jardín y didácticos desde 1993. Cumpliendo estrictamente con las normas de seguridad IRAM NM 300.",
+            problem:
+                "Necesitaban digitalizar su catálogo mayorista, permitir al administrador ordenar productos dinámicamente mediante drag & drop, y automatizar la generación de catálogos en PDF.",
+            solution:
+                "Desarrollé una plataforma con Next.js 16 y Zustand, integrando ordenamiento Drag & Drop con @dnd-kit, NextAuth.js para sesiones B2B de larga duración, Prisma con MariaDB/MySQL, y un pipeline con Husky v9.",
+            tech: ["Next.js 16", "TypeScript", "Zustand", "TailwindCSS v4", "Prisma ORM", "NextAuth.js", "@dnd-kit", "Husky v9", "Vitest", "Playwright"],
+            impact:
+                "Ordenamiento global drag & drop, generación de PDFs en tiempo real, testing trophy completo (unitario, integración y E2E), CD con Runcloud y PM2.",
+            demoUrl: "https://github.com/lautarodesouches",
+            repoUrl: "https://github.com/lautarodesouches",
+            image: "/projects/chichess.png",
+        },
+        {
             title: "Estudio Jurídico Desouches y Asociados",
             type: "Website Corporativo",
             description:
@@ -94,6 +86,30 @@ export const portfolioData: PortfolioData = {
             demoUrl: "https://estudiodesouchesyasociados.com.ar/",
             repoUrl: "https://github.com/lautarodesouches/estudio-desouches-y-asociados",
             image: "/projects/estudio-juridico.png",
+        },
+        {
+            title: "Recetas con Essen - E-commerce & Catálogo de Productos",
+            type: "E-Commerce Full-Stack",
+            description:
+                "Plataforma web moderna para mostrar productos Essen (ollas y utensilios de cocina premium) con catálogo completo, recetas inspiradoras y sistema de contacto integrado.",
+            problem:
+                "La empresa necesitaba mostrar 888 productos organizados, generar engagement con recetas y facilitar contacto con clientes en un sitio moderno y fácil de mantener.",
+            solution:
+                "Desarrollé una app con Next.js 15 (SSG/ISR), categorizando productos por líneas (Capri, Terra, Nuit), con Google Analytics, SEO optimizado, sitemap automático y diseño responsive.",
+            tech: [
+                "Next.js 15",
+                "React 19",
+                "TypeScript",
+                "CSS Modules",
+                "Font Awesome",
+                "Google Analytics/GTM",
+                "Static Site Generation (SSG/ISR)",
+            ],
+            impact:
+                "Sitio estático optimizado con ISR horaria, 888 productos organizados con filtros dinámicos, deployment automatizado y mejora significativa en UX y performance.",
+            demoUrl: "https://recetasconessen.com",
+            repoUrl: "https://github.com/lautarodesouches/ollas-essen",
+            image: "/projects/ollas.png",
         },
     ],
     skills: {
