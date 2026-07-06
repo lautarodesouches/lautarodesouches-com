@@ -95,7 +95,7 @@ export const Projects = () => {
                 </div>
 
                 {/* Carousel */}
-                <div className="relative group">
+                <div className="relative">
                     <button
                         onClick={() => scroll("left")}
                         className="hidden md:flex absolute -left-5 top-[40%] -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white dark:bg-zinc-800 border-2 border-slate-200 dark:border-white/10 shadow-lg hover:scale-105 transition-all duration-200 items-center justify-center text-slate-600 dark:text-white hover:text-brand dark:hover:text-tech"
