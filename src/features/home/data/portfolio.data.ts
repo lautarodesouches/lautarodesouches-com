@@ -1,4 +1,5 @@
 import type { PortfolioData } from "../types/portfolio.types";
+import { EMAIL, LINKEDIN_URL, GITHUB_URL } from "@/shared/constants/contact";
 
 export const portfolioData: PortfolioData = {
     hero: {
@@ -121,8 +122,8 @@ export const portfolioData: PortfolioData = {
     contact: {
         message:
             "¿Buscas un desarrollador Full-Stack que entienda tanto de arquitectura backend como de producto en el frontend? Estoy disponible para nuevos desafíos técnicos.",
-        email: "lautarodesouches@outlook.com",
-        linkedin: "https://linkedin.com/in/lautarodesouches",
-        github: "https://github.com/lautarodesouches",
+        email: EMAIL,
+        linkedin: LINKEDIN_URL,
+        github: GITHUB_URL,
     },
 };
