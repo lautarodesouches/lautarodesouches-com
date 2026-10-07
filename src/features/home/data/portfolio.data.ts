@@ -72,20 +72,20 @@ export const portfolioData: PortfolioData = {
             image: "/projects/chichess.png",
         },
         {
-            title: "Estudio Jurídico Desouches y Asociados",
+            title: "Zabala Ingenieros",
             type: "Website Corporativo",
             description:
-                "Sitio web oficial modernizado para estudio jurídico especializado en sucesiones, divorcios y asesoramiento legal integral, con diseño responsivo y optimización SEO.",
+                "Sitio web oficial de Zabala Ingenieros, empresa constructora y de ingeniería estructural con presencia en Colombia y Panamá. Especialistas en poliurea proyectada y obras civiles.",
             problem:
-                "El estudio necesitaba modernizar su presencia digital con un sitio profesional que reflejara su solidez y facilitara el contacto con clientes.",
+                "La empresa necesitaba una presencia digital moderna para exhibir sus servicios especializados de ingeniería, con alcance internacional, captación de clientes e información precisa de sus obras.",
             solution:
-                "Next.js 15 estático, animaciones con Framer Motion, WhatsApp integrado, mapas interactivos, optimización de imágenes automática y diseño premium responsive.",
-            tech: ["Next.js 15", "React 19", "TypeScript", "CSS Modules", "Framer Motion", "FontAwesome", "Swiper", "next-image-export-optimizer"],
+                "Se desarrolló una aplicación utilizando Next.js App Router, implementando mapas interactivos geográficos, animaciones fluidas con Motion, y un robusto sistema de correos usando Resend.",
+            tech: ["Next.js", "React 19", "TypeScript", "Motion", "React Simple Maps", "Resend", "Tailwind CSS"],
             impact:
-                "Sitio estático ultra-rápido sin servidor Node.js, imágenes WEBP optimizadas, SEO completo y widget WhatsApp para comunicación directa.",
-            demoUrl: "https://estudiodesouchesyasociados.com.ar/",
-            repoUrl: "https://github.com/lautarodesouches/estudio-desouches-y-asociados",
-            image: "/projects/estudio-juridico.png",
+                "Sitio internacional ultra-rápido con alta conversión de leads y visualización de cobertura mediante mapas dinámicos. Diseño responsive con transiciones y UI moderna.",
+            demoUrl: "https://zabalaingenieros.com/",
+            repoUrl: "https://github.com/lautarodesouches/zabalaingenieros",
+            image: "/projects/zabalaingenieros.png",
         },
         {
             title: "Recetas con Essen - E-commerce & Catálogo de Productos",
