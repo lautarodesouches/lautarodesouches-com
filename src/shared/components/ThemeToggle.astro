@@ -1,0 +1,56 @@
+<div class="fixed bottom-6 right-6 z-50">
+  <button
+    id="theme-toggle"
+    class="flex items-center justify-center w-12 h-12 rounded-full bg-surface-card border border-surface-border shadow-lg hover:shadow-xl transition-all outline-none focus:ring-2 focus:ring-brand"
+    aria-label="Cambiar tema"
+  >
+    <span id="theme-icon-light" class="hidden text-amber-500 text-lg">☀</span>
+    <span id="theme-icon-dark" class="hidden text-brand-light text-lg">☾</span>
+    <span id="theme-icon-system" class="hidden text-gray-400 text-lg">⊙</span>
+  </button>
+</div>
+
+<script>
+  type Theme = 'light' | 'dark' | 'system'
+
+  function initThemeToggle() {
+    const root = document.documentElement
+    const btn = document.getElementById('theme-toggle')
+    if (!btn) return
+
+    const icons: Record<Theme, HTMLElement | null> = {
+      light: document.getElementById('theme-icon-light'),
+      dark: document.getElementById('theme-icon-dark'),
+      system: document.getElementById('theme-icon-system'),
+    }
+
+    function getTheme(): Theme {
+      return (localStorage.getItem('theme') as Theme) ?? 'system'
+    }
+
+    function applyTheme(theme: Theme) {
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+      const isDark = theme === 'dark' || (theme === 'system' && prefersDark)
+      root.classList.toggle('dark', isDark)
+
+      Object.entries(icons).forEach(([key, el]) => {
+        if (el) el.classList.toggle('hidden', key !== theme)
+      })
+
+      localStorage.setItem('theme', theme)
+    }
+
+    function cycleTheme() {
+      const order: Theme[] = ['light', 'dark', 'system']
+      const current = getTheme()
+      const next = order[(order.indexOf(current) + 1) % order.length]
+      applyTheme(next)
+    }
+
+    applyTheme(getTheme())
+    btn.onclick = cycleTheme
+  }
+
+  initThemeToggle()
+  document.addEventListener('astro:page-load', initThemeToggle)
+</script>
