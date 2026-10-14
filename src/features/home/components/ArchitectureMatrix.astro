@@ -1,0 +1,141 @@
+---
+const architecturalPillars = [
+  {
+    category: '01 // FRONTEND CORE & RENDERIZADO',
+    headline: 'Arquitectura de Islas & Despliegue Estático Híbrido',
+    tools: ['Astro 5', 'Next.js 16', 'React 19', 'Tailwind CSS v4'],
+    criteria: [
+      {
+        tech: 'Astro 5 (Zero-JS by Default)',
+        why: 'Elección prioritaria para sitios de alto impacto, portfolios y portales donde el 100/100 en Core Web Vitals y el SEO son indispensables. Elimina el runtime de JavaScript en el cliente para contenido estático.',
+      },
+      {
+        tech: 'Next.js 16 (App Router & SSR)',
+        why: 'Reservado para plataformas con autenticación de sesiones complejas, dashboards administrativos en tiempo real y renderizado en servidor (SSR) dinámico bajo demanda.',
+      },
+      {
+        tech: 'React 19 (Islas Interactivas)',
+        why: 'Se encapsula exclusivamente como isla hidratada (`client:visible` o `client:idle`) solo en componentes con interacción táctica (ej. manipuladores de estado o canvas), evitando penalizar el hilo principal.',
+      },
+    ],
+  },
+  {
+    category: '02 // BACKEND & CONCURRENCIA',
+    headline: 'Servicios Modulares, Tipado Extremo & Transaccionalidad',
+    tools: ['NestJS', 'Java Spring Boot', 'Node.js', 'REST & WebSockets'],
+    criteria: [
+      {
+        tech: 'NestJS (TypeScript Modular)',
+        why: 'Arquitectura orientada a dominio con inyección de dependencias, DTOs con validación estricta y contratos compartidos de TypeScript entre frontend y backend.',
+      },
+      {
+        tech: 'Java Spring Boot (Enterprise Grade)',
+        why: 'Seleccionado para microservicios y sistemas empresariales donde se requiere estricta concurrencia multihilo, transacciones ACID complejas y alta tolerancia a fallos.',
+      },
+      {
+        tech: 'WebSockets & Event-Driven',
+        why: 'Comunicación bidireccional de baja latencia para sincronización de estados distribuidos y notificaciones en tiempo real.',
+      },
+    ],
+  },
+  {
+    category: '03 // PERSISTENCIA & MODELADO',
+    headline: 'Integridad Referencial, Normalización & Estado Atómico',
+    tools: ['PostgreSQL', 'Prisma ORM', 'Zustand', 'TypeScript Strict'],
+    criteria: [
+      {
+        tech: 'TypeScript (Modo Estricto Sin any)',
+        why: 'Elimina clases enteras de bugs en tiempo de desarrollo. Tipado genérico, estrechamiento de tipos (type narrowing) y validación en runtime con Zod.',
+      },
+      {
+        tech: 'PostgreSQL & Prisma ORM',
+        why: 'Modelado relacional con claves foráneas, índices optimizados para lecturas frecuentes y migraciones automatizadas e inmutables.',
+      },
+      {
+        tech: 'Zustand (Estado Atómico)',
+        why: 'Gestión de estado global ultraligera en el cliente sin la sobrecarga ni los re-renders en cascada comunes en React Context o Redux.',
+      },
+    ],
+  },
+  {
+    category: '04 // CALIDAD & PIPELINES CI/CD',
+    headline: 'Testing Trophy Automatizado & Verificación Continua',
+    tools: ['Playwright', 'Vitest', 'GitHub Actions', 'Docker'],
+    criteria: [
+      {
+        tech: 'Playwright (E2E Multi-Navegador)',
+        why: 'Validación automatizada de flujos críticos de usuario (navegación, formularios, renderizado) en Chromium, Firefox y WebKit en entornos headless reales.',
+      },
+      {
+        tech: 'Vitest (Pruebas Unitarias)',
+        why: 'Ejecución instantánea impulsada por Vite de pruebas de lógica pura, helpers y transformadores de datos.',
+      },
+      {
+        tech: 'Docker & GitHub Actions',
+        why: 'Entornos de build reproducibles, escaneo de linter, compilación estricta y despliegues automáticos con cero tiempo de inactividad.',
+      },
+    ],
+  },
+]
+---
+
+<section id="skills" class="py-28 px-4 sm:px-6 border-b border-surface-border bg-surface">
+  <div class="max-w-7xl mx-auto space-y-16">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-surface-border pb-8">
+      <div class="space-y-3">
+        <div class="flex items-center gap-2 font-mono text-xs text-signal-emerald">
+          <span class="inline-block w-2 h-2 bg-signal-emerald"></span>
+          <span>SEC // 03 — MATRIZ DE ARQUITECTURA & CRITERIO TÉCNICO</span>
+        </div>
+        <h2 class="text-3xl sm:text-5xl font-black uppercase tracking-tight text-slate-950 dark:text-white">
+          Criterio de Decisión Tecnológica
+        </h2>
+      </div>
+
+      <div class="font-mono text-xs text-slate-500 dark:text-zinc-400">
+        <span>FILOSOFÍA: HERRAMIENTAS ADECUADAS PARA EL PROBLEMA CORRECTO</span>
+      </div>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-8">
+      {
+        architecturalPillars.map((pillar) => (
+          <div class="border border-surface-border bg-surface-card p-6 sm:p-8 flex flex-col justify-between space-y-6 fade-in-view hover:border-slate-800 dark:hover:border-zinc-500 transition-colors">
+            <div class="space-y-4">
+              <div class="flex items-center justify-between font-mono text-xs text-slate-400 dark:text-zinc-500 pb-2 border-b border-surface-border">
+                <span>{pillar.category}</span>
+                <span class="text-signal-emerald">ESTÁNDAR // ACTIVO</span>
+              </div>
+
+              <h3 class="text-xl sm:text-2xl font-bold text-slate-950 dark:text-white tracking-tight">
+                {pillar.headline}
+              </h3>
+
+              <div class="flex flex-wrap gap-1.5 font-mono text-xs pt-1">
+                {pillar.tools.map((tool) => (
+                  <span class="px-2 py-0.5 bg-surface border border-surface-border text-slate-800 dark:text-zinc-200 font-medium">
+                    {tool}
+                  </span>
+                ))}
+              </div>
+
+              <div class="space-y-4 pt-4 border-t border-surface-border">
+                {pillar.criteria.map((item) => (
+                  <div class="space-y-1 text-sm font-sans">
+                    <p class="font-mono text-xs font-bold text-slate-900 dark:text-zinc-100 flex items-center gap-1.5">
+                      <span class="text-signal-emerald">▪</span>
+                      <span>{item.tech}</span>
+                    </p>
+                    <p class="text-slate-600 dark:text-zinc-400 leading-relaxed text-xs sm:text-sm pl-4">
+                      {item.why}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

@@ -1,0 +1,292 @@
+---
+import { EMAIL, WHATSAPP_URL, GITHUB_URL, LINKEDIN_URL } from '@/shared/constants/contact'
+---
+
+<section
+  id="about"
+  class="relative border-b border-surface-border blueprint-grid overflow-hidden selection:bg-signal-emerald selection:text-black"
+>
+  <div class="absolute inset-0 bg-gradient-to-b from-transparent via-surface/40 to-surface pointer-events-none"></div>
+
+  <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 pt-16 pb-20">
+    <div
+      class="flex flex-wrap items-center justify-between gap-4 py-2 px-3 border border-surface-border bg-surface-card/80 text-xs font-mono text-slate-500 dark:text-zinc-400 mb-10"
+    >
+      <div class="flex items-center gap-3">
+        <span class="inline-block w-2 h-2 bg-signal-emerald animate-ping"></span>
+        <span>LAT: 34°36'12"S · LON: 58°22'54"W</span>
+        <span class="text-slate-300 dark:text-zinc-700 hidden sm:inline">|</span>
+        <span class="hidden sm:inline">NODO: BUENOS AIRES</span>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <span class="text-signal-emerald">MOTOR: ASTRO v5 (CERO-JS EN CLIENTE)</span>
+        <span class="text-slate-300 dark:text-zinc-700 hidden md:inline">|</span>
+        <span id="viewport-metric" class="hidden md:inline tabular-nums">PANTALLA: 1920x1080</span>
+      </div>
+    </div>
+
+    <div class="space-y-6 max-w-5xl">
+      <div class="inline-flex items-center gap-2 px-3 py-1 font-mono text-xs border border-surface-border bg-surface-card text-slate-800 dark:text-zinc-300">
+        <span class="w-1.5 h-1.5 bg-signal-emerald"></span>
+        <span>SISTEMA // ROL: DESARROLLADOR FRONTEND SENIOR & FULL-STACK</span>
+      </div>
+
+      <h1
+        class="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tight uppercase text-slate-950 dark:text-white leading-[0.95]"
+      >
+        Ingeniería <br />
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-slate-900 via-slate-700 to-slate-950 dark:from-white dark:via-zinc-300 dark:to-zinc-500">
+          Full-Stack
+        </span>
+        <span class="block text-signal-emerald text-3xl sm:text-5xl md:text-6xl mt-2 font-mono font-medium tracking-normal">
+          [ 0ms BLOQUEO DE HILO ]
+        </span>
+      </h1>
+
+      <p class="text-lg sm:text-xl text-slate-700 dark:text-zinc-400 font-sans max-w-3xl leading-relaxed pt-2">
+        Arquitecturas web modulares y reactivas con tipado estricto. Diseño y construyo interfaces de alto impacto visual,
+        optimizadas al 100% en Core Web Vitals, respaldadas por servicios transaccionales en <span class="text-slate-950 dark:text-white font-medium">NestJS</span>, <span class="text-slate-950 dark:text-white font-medium">Java Spring</span> y <span class="text-slate-950 dark:text-white font-medium">Next.js / Astro</span>.
+      </p>
+    </div>
+
+    <div class="mt-14 pt-8 border-t border-surface-border">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+        <div class="flex items-center gap-2 font-mono text-xs text-slate-500 dark:text-zinc-400">
+          <span class="text-signal-emerald font-bold">&gt;</span>
+          <span>MODALIDAD DE VISTA TÁCTICA:</span>
+        </div>
+
+        <div class="inline-flex p-1 border border-surface-border bg-surface-card" role="tablist">
+          <button
+            id="btn-view-recruiter"
+            type="button"
+            role="tab"
+            aria-selected="true"
+            aria-controls="panel-recruiter"
+            class="px-4 py-2 font-mono text-xs font-semibold transition-all flex items-center gap-2 bg-slate-900 text-white dark:bg-white dark:text-black shadow-sm"
+          >
+            <span class="w-2 h-2 rounded-full bg-signal-emerald"></span>
+            <span>VISTA RECLUTADOR / LÍDER TÉCNICO</span>
+          </button>
+
+          <button
+            id="btn-view-client"
+            type="button"
+            role="tab"
+            aria-selected="false"
+            aria-controls="panel-client"
+            class="px-4 py-2 font-mono text-xs font-semibold transition-all flex items-center gap-2 text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white"
+          >
+            <span class="w-2 h-2 rounded-full bg-signal-amber"></span>
+            <span>VISTA CLIENTE / PRODUCTO B2B</span>
+          </button>
+        </div>
+      </div>
+
+      <div
+        id="panel-recruiter"
+        role="tabpanel"
+        class="border border-surface-border bg-surface-card p-6 sm:p-8 space-y-8"
+      >
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 pb-6 border-b border-surface-border">
+          <div class="space-y-1">
+            <span class="font-mono text-xs text-slate-400 dark:text-zinc-500">PUNTAJE LIGHTHOUSE</span>
+            <p class="font-mono text-2xl sm:text-3xl font-black text-signal-emerald">100 / 100</p>
+            <p class="text-xs text-slate-600 dark:text-zinc-400">Rendimiento · A11y · SEO · Calidad</p>
+          </div>
+
+          <div class="space-y-1">
+            <span class="font-mono text-xs text-slate-400 dark:text-zinc-500">PRIMER DESPLIEGUE VISUAL</span>
+            <p class="font-mono text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">&lt; 0.6s</p>
+            <p class="text-xs text-slate-600 dark:text-zinc-400">Cero sobrecarga de hidratación</p>
+          </div>
+
+          <div class="space-y-1">
+            <span class="font-mono text-xs text-slate-400 dark:text-zinc-500">DISCIPLINA TYPESCRIPT</span>
+            <p class="font-mono text-2xl sm:text-3xl font-black text-signal-cyan">ESTRICTO</p>
+            <p class="text-xs text-slate-600 dark:text-zinc-400">Sin 'any' · Contratos DTO limpios</p>
+          </div>
+
+          <div class="space-y-1">
+            <span class="font-mono text-xs text-slate-400 dark:text-zinc-500">SUITE DE TESTING</span>
+            <p class="font-mono text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">E2E + UNIT</p>
+            <p class="text-xs text-slate-600 dark:text-zinc-400">Playwright y pipelines de CI</p>
+          </div>
+        </div>
+
+        <div class="grid md:grid-cols-12 gap-8 items-center">
+          <div class="md:col-span-8 space-y-4">
+            <p class="font-mono text-xs uppercase tracking-wider text-slate-400 dark:text-zinc-500">
+              CAPACIDADES DE INGENIERÍA // CONCURRENCIA & ARQUITECTURA
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-2.5 py-1 font-mono text-xs border border-surface-border bg-surface text-slate-800 dark:text-zinc-200">
+                Next.js 16 (App Router)
+              </span>
+              <span class="px-2.5 py-1 font-mono text-xs border border-surface-border bg-surface text-slate-800 dark:text-zinc-200">
+                Arquitectura de Islas Astro
+              </span>
+              <span class="px-2.5 py-1 font-mono text-xs border border-surface-border bg-surface text-slate-800 dark:text-zinc-200">
+                NestJS / Node.js
+              </span>
+              <span class="px-2.5 py-1 font-mono text-xs border border-surface-border bg-surface text-slate-800 dark:text-zinc-200">
+                Java Spring Boot
+              </span>
+              <span class="px-2.5 py-1 font-mono text-xs border border-surface-border bg-surface text-slate-800 dark:text-zinc-200">
+                Prisma / PostgreSQL
+              </span>
+              <span class="px-2.5 py-1 font-mono text-xs border border-surface-border bg-surface text-slate-800 dark:text-zinc-200">
+                Docker & GitHub Actions
+              </span>
+              <span class="px-2.5 py-1 font-mono text-xs border border-surface-border bg-surface text-slate-800 dark:text-zinc-200">
+                Tailwind CSS v4
+              </span>
+            </div>
+            <p class="text-sm text-slate-600 dark:text-zinc-400 leading-relaxed">
+              Más de 5 años construyendo soluciones de software integrales. Código autodocumentado, separación estricta de capas mediante arquitectura orientada a dominio (Feature-Based) y foco continuo en estabilidad bajo tráfico real.
+            </p>
+          </div>
+
+          <div class="md:col-span-4 flex flex-col gap-3">
+            <a
+              href={`mailto:${EMAIL}?subject=Oportunidad%20Laboral%20-%20Lautaro%20Desouches`}
+              class="w-full py-3 px-4 font-mono text-xs font-semibold text-center bg-slate-900 text-white dark:bg-white dark:text-black hover:bg-signal-emerald hover:text-black dark:hover:bg-signal-emerald dark:hover:text-black transition-colors flex items-center justify-center gap-2"
+            >
+              <span>SOLICITAR CV / CONTACTAR</span>
+              <span>→</span>
+            </a>
+            <div class="grid grid-cols-2 gap-2">
+              <a
+                href={GITHUB_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="py-2.5 px-3 font-mono text-xs text-center border border-surface-border text-slate-700 dark:text-zinc-300 hover:border-slate-800 dark:hover:border-zinc-500 transition-colors"
+              >
+                GITHUB [REPOS]
+              </a>
+              <a
+                href={LINKEDIN_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="py-2.5 px-3 font-mono text-xs text-center border border-surface-border text-slate-700 dark:text-zinc-300 hover:border-slate-800 dark:hover:border-zinc-500 transition-colors"
+              >
+                LINKEDIN ↗
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        id="panel-client"
+        role="tabpanel"
+        class="hidden border border-surface-border bg-surface-card p-6 sm:p-8 space-y-8"
+      >
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 pb-6 border-b border-surface-border">
+          <div class="space-y-1">
+            <span class="font-mono text-xs text-signal-amber font-semibold">01 // VELOCIDAD DE SALIDA</span>
+            <p class="font-mono text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">2X RAPIDEZ</p>
+            <p class="text-xs text-slate-600 dark:text-zinc-400">Entregables iterativos y modulares listos para producción.</p>
+          </div>
+
+          <div class="space-y-1">
+            <span class="font-mono text-xs text-signal-amber font-semibold">02 // RETENCIÓN Y CONVERSIÓN</span>
+            <p class="font-mono text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">+40% VELOCIDAD</p>
+            <p class="text-xs text-slate-600 dark:text-zinc-400">Páginas instantáneas que reducen el abandono de usuarios.</p>
+          </div>
+
+          <div class="space-y-1">
+            <span class="font-mono text-xs text-signal-amber font-semibold">03 // REDUCCIÓN DE COSTOS</span>
+            <p class="font-mono text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">-60% CLOUD</p>
+            <p class="text-xs text-slate-600 dark:text-zinc-400">Arquitecturas estáticas y serverless sin sobrecostos de servidores.</p>
+          </div>
+        </div>
+
+        <div class="grid md:grid-cols-12 gap-8 items-center">
+          <div class="md:col-span-8 space-y-4">
+            <p class="font-mono text-xs uppercase tracking-wider text-slate-400 dark:text-zinc-500">
+              VALOR DE NEGOCIO // DE LA IDEA AL SOFTWARE EN PRODUCCIÓN
+            </p>
+            <p class="text-base text-slate-800 dark:text-zinc-200 font-medium leading-relaxed">
+              No construyo webs genéricas: desarrollo plataformas digitales que resuelven cuellos de botella de negocio, automatizan flujos operativos y posicionan tu marca con estándares internacionales de diseño y velocidad.
+            </p>
+            <div class="flex flex-wrap gap-2 text-xs font-mono">
+              <span class="px-2.5 py-1 bg-surface border border-surface-border text-slate-700 dark:text-zinc-300">
+                ✓ Catálogos mayoristas B2B con gestión de PDF en tiempo real
+              </span>
+              <span class="px-2.5 py-1 bg-surface border border-surface-border text-slate-700 dark:text-zinc-300">
+                ✓ Portales inmobiliarios con 100/100 en SEO y captación directa
+              </span>
+              <span class="px-2.5 py-1 bg-surface border border-surface-border text-slate-700 dark:text-zinc-300">
+                ✓ Aplicaciones interactivas con geolocalización y mapas dinámicos
+              </span>
+            </div>
+          </div>
+
+          <div class="md:col-span-4 flex flex-col gap-3">
+            <a
+              href={WHATSAPP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="w-full py-3.5 px-4 font-mono text-xs font-semibold text-center bg-signal-emerald text-black hover:bg-emerald-400 transition-colors flex items-center justify-center gap-2 shadow-sm"
+            >
+              <span>INICIAR CHAT DE WHATSAPP</span>
+              <span>→</span>
+            </a>
+            <a
+              href="/servicios"
+              class="w-full py-2.5 px-3 font-mono text-xs text-center border border-surface-border text-slate-700 dark:text-zinc-300 hover:border-slate-800 dark:hover:border-zinc-500 transition-colors"
+            >
+              EXPLORAR SERVICIOS Y PLANES ↗
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  function setupDualView() {
+    const btnRecruiter = document.getElementById('btn-view-recruiter')
+    const btnClient = document.getElementById('btn-view-client')
+    const panelRecruiter = document.getElementById('panel-recruiter')
+    const panelClient = document.getElementById('panel-client')
+    const viewportMetric = document.getElementById('viewport-metric')
+
+    if (!btnRecruiter || !btnClient || !panelRecruiter || !panelClient) return
+
+    function updateViewport() {
+      if (viewportMetric) {
+        viewportMetric.textContent = `PANTALLA: ${window.innerWidth}x${window.innerHeight}`
+      }
+    }
+    updateViewport()
+    window.addEventListener('resize', updateViewport, { passive: true })
+
+    function setMode(mode: 'recruiter' | 'client') {
+      const isRecruiter = mode === 'recruiter'
+
+      btnRecruiter.setAttribute('aria-selected', isRecruiter ? 'true' : 'false')
+      btnClient.setAttribute('aria-selected', isRecruiter ? 'false' : 'true')
+
+      btnRecruiter.className = isRecruiter
+        ? 'px-4 py-2 font-mono text-xs font-semibold transition-all flex items-center gap-2 bg-slate-900 text-white dark:bg-white dark:text-black shadow-sm'
+        : 'px-4 py-2 font-mono text-xs font-semibold transition-all flex items-center gap-2 text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white'
+
+      btnClient.className = isRecruiter
+        ? 'px-4 py-2 font-mono text-xs font-semibold transition-all flex items-center gap-2 text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white'
+        : 'px-4 py-2 font-mono text-xs font-semibold transition-all flex items-center gap-2 bg-slate-900 text-white dark:bg-white dark:text-black shadow-sm'
+
+      panelRecruiter.classList.toggle('hidden', !isRecruiter)
+      panelClient.classList.toggle('hidden', isRecruiter)
+    }
+
+    btnRecruiter.addEventListener('click', () => setMode('recruiter'))
+    btnClient.addEventListener('click', () => setMode('client'))
+  }
+
+  setupDualView()
+  document.addEventListener('astro:page-load', setupDualView)
+</script>
