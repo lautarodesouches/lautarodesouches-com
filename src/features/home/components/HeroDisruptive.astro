@@ -64,7 +64,7 @@ import { EMAIL, WHATSAPP_URL, GITHUB_URL, LINKEDIN_URL } from '@/shared/constant
             role="tab"
             aria-selected="true"
             aria-controls="panel-recruiter"
-            class="px-4 py-2 font-mono text-xs font-semibold transition-all flex items-center gap-2 bg-slate-900 text-white dark:bg-white dark:text-black shadow-sm"
+            class="px-4 py-2 font-mono text-xs font-semibold transition-all flex items-center gap-2 bg-slate-900 text-white dark:bg-white dark:text-black shadow-sm cursor-pointer"
           >
             <span class="w-2 h-2 rounded-full bg-signal-emerald"></span>
             <span>VISTA RECLUTADOR / LÍDER TÉCNICO</span>
@@ -76,7 +76,7 @@ import { EMAIL, WHATSAPP_URL, GITHUB_URL, LINKEDIN_URL } from '@/shared/constant
             role="tab"
             aria-selected="false"
             aria-controls="panel-client"
-            class="px-4 py-2 font-mono text-xs font-semibold transition-all flex items-center gap-2 text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white"
+            class="px-4 py-2 font-mono text-xs font-semibold transition-all flex items-center gap-2 text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white cursor-pointer"
           >
             <span class="w-2 h-2 rounded-full bg-signal-amber"></span>
             <span>VISTA CLIENTE / PRODUCTO B2B</span>
@@ -272,12 +272,12 @@ import { EMAIL, WHATSAPP_URL, GITHUB_URL, LINKEDIN_URL } from '@/shared/constant
       btnClient.setAttribute('aria-selected', isRecruiter ? 'false' : 'true')
 
       btnRecruiter.className = isRecruiter
-        ? 'px-4 py-2 font-mono text-xs font-semibold transition-all flex items-center gap-2 bg-slate-900 text-white dark:bg-white dark:text-black shadow-sm'
-        : 'px-4 py-2 font-mono text-xs font-semibold transition-all flex items-center gap-2 text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white'
+        ? 'px-4 py-2 font-mono text-xs font-semibold transition-all flex items-center gap-2 bg-slate-900 text-white dark:bg-white dark:text-black shadow-sm cursor-pointer'
+        : 'px-4 py-2 font-mono text-xs font-semibold transition-all flex items-center gap-2 text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white cursor-pointer'
 
       btnClient.className = isRecruiter
-        ? 'px-4 py-2 font-mono text-xs font-semibold transition-all flex items-center gap-2 text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white'
-        : 'px-4 py-2 font-mono text-xs font-semibold transition-all flex items-center gap-2 bg-slate-900 text-white dark:bg-white dark:text-black shadow-sm'
+        ? 'px-4 py-2 font-mono text-xs font-semibold transition-all flex items-center gap-2 text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white cursor-pointer'
+        : 'px-4 py-2 font-mono text-xs font-semibold transition-all flex items-center gap-2 bg-slate-900 text-white dark:bg-white dark:text-black shadow-sm cursor-pointer'
 
       panelRecruiter.classList.toggle('hidden', !isRecruiter)
       panelClient.classList.toggle('hidden', isRecruiter)

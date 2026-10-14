@@ -22,7 +22,7 @@ import { GITHUB_URL, LINKEDIN_URL, EMAIL } from '@/shared/constants/contact'
         <span class="inline-block w-2 h-2 rounded-full bg-signal-emerald"></span>
         <span>DISPONIBLE PARA PROYECTOS</span>
         <span class="text-slate-300 dark:text-zinc-700">|</span>
-        <span id="header-live-clock" class="text-slate-700 dark:text-zinc-300 tabular-nums">--:--:-- ART</span>
+        <span id="header-live-clock" class="text-slate-700 dark:text-zinc-300 tabular-nums">--:--:-- GMT-3 (Bs As)</span>
       </div>
     </div>
 
@@ -111,7 +111,7 @@ import { GITHUB_URL, LINKEDIN_URL, EMAIL } from '@/shared/constants/contact'
       second: '2-digit',
       hour12: false,
     }
-    clockEl.textContent = `${new Intl.DateTimeFormat('es-AR', options).format(now)} ART`
+    clockEl.textContent = `${new Intl.DateTimeFormat('es-AR', options).format(now)} GMT-3 (Bs As)`
   }
 
   updateClock()
