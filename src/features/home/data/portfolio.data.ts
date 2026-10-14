@@ -40,22 +40,6 @@ export const portfolioData: PortfolioData = {
             image: "/projects/gusto.png",
         },
         {
-            title: "Desouches Propiedades - Sitio Web Inmobiliario",
-            type: "Real-Estate Web App",
-            description:
-                "Sitio web profesional para una inmobiliaria argentina, con diseño premium, UI/UX moderna y rendimiento óptimo.",
-            problem:
-                "El cliente necesitaba un sitio web premium para mostrar servicios inmobiliarios con integración a ZonaProp, manteniendo excelente performance y SEO.",
-            solution:
-                "Desarrollé con Astro, TypeScript y CSS vanilla. Diseño glassmorphic, Core Web Vitals optimizados, SEO completo con Schema.org, 10 categorías de propiedades y formulario con WhatsApp.",
-            tech: ["Astro 5.16.8", "TypeScript", "CSS3", "HTML5", "Google Analytics 4", "Schema.org"],
-            impact:
-                "Lighthouse: 95+ Performance, 100 Accesibilidad, 100 SEO. WCAG 2.1 AAA, LCP < 2.5s y experiencia premium en todos los dispositivos.",
-            demoUrl: "https://desouchespropiedades.com.ar",
-            repoUrl: "https://github.com/lautarodesouches/desouches-propiedades",
-            image: "/projects/desouches-propiedades.png",
-        },
-        {
             title: "Chichess - Fábrica de Juguetes",
             type: "Catálogo B2B & Admin Panel",
             description:
@@ -110,6 +94,22 @@ export const portfolioData: PortfolioData = {
             demoUrl: "https://lautarodesouches.github.io/ollas-essen/",
             repoUrl: "https://github.com/lautarodesouches/ollas-essen",
             image: "/projects/ollas.png",
+        },
+        {
+            title: "Desouches Propiedades - Sitio Web Inmobiliario",
+            type: "Real-Estate Web App",
+            description:
+                "Sitio web profesional para una inmobiliaria argentina, con diseño premium, UI/UX moderna y rendimiento óptimo.",
+            problem:
+                "El cliente necesitaba un sitio web premium para mostrar servicios inmobiliarios con integración a ZonaProp, manteniendo excelente performance y SEO.",
+            solution:
+                "Desarrollé con Astro, TypeScript y CSS vanilla. Diseño glassmorphic, Core Web Vitals optimizados, SEO completo con Schema.org, 10 categorías de propiedades y formulario con WhatsApp.",
+            tech: ["Astro 5.16.8", "TypeScript", "CSS3", "HTML5", "Google Analytics 4", "Schema.org"],
+            impact:
+                "Lighthouse: 95+ Performance, 100 Accesibilidad, 100 SEO. WCAG 2.1 AAA, LCP < 2.5s y experiencia premium en todos los dispositivos.",
+            demoUrl: "https://desouchespropiedades.com.ar",
+            repoUrl: "https://github.com/lautarodesouches/desouches-propiedades",
+            image: "/projects/desouches-propiedades.png",
         },
     ],
     skills: {
