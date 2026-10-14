@@ -1,0 +1,392 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import FadeUp from '../features/servicios/components/FadeUp.astro'
+import Eyebrow from '../features/servicios/components/Eyebrow.astro'
+import ButtonPrimary from '../features/servicios/components/ButtonPrimary.astro'
+import ButtonGhost from '../features/servicios/components/ButtonGhost.astro'
+import ThemeToggle from '../shared/components/ThemeToggle.astro'
+import { services, painPoints, trustItems } from '../features/servicios/data/servicios.data'
+import { WHATSAPP_URL, EMAIL, MAILTO } from '../features/servicios/constants/contact'
+import type { ServiceCard, TrustItem } from '../features/servicios/types/servicios.types'
+import '../styles/globals.css'
+
+const serviceIcons: Record<string, string> = {
+  bolt: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path fill-rule="evenodd" d="M14.615 1.595a.75.75 0 01.359.852L12.982 9.75h7.268a.75.75 0 01.548 1.262l-10.5 11.25a.75.75 0 01-1.272-.71l1.992-7.302H3.75a.75.75 0 01-.548-1.262l10.5-11.25a.75.75 0 01.913-.143z" clip-rule="evenodd" /></svg>`,
+  cart: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path d="M2.25 2.25a.75.75 0 000 1.5h1.386c.17 0 .318.114.362.278l2.558 9.592a3.752 3.752 0 00-2.806 3.63c0 .414.336.75.75.75h15.75a.75.75 0 000-1.5H5.378A2.25 2.25 0 017.5 15h11.218a.75.75 0 00.674-.421 60.358 60.358 0 002.96-7.228.75.75 0 00-.525-.965A60.864 60.864 0 005.68 4.509l-.232-.867A1.875 1.875 0 003.636 2.25H2.25zM3.75 20.25a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zM16.5 20.25a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0z" /></svg>`,
+  server: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path d="M4.08 5.227A3 3 0 016.979 3H17.02a3 3 0 012.9 2.227l2.113 7.926A5.228 5.228 0 0018.75 12.75h-13.5a5.228 5.228 0 00-3.284 1.153L4.08 5.227z" /><path fill-rule="evenodd" d="M5.25 14.25a3.75 3.75 0 100 7.5h13.5a3.75 3.75 0 100-7.5H5.25zm10.5 3.75a.75.75 0 000-1.5h-1.5a.75.75 0 000 1.5h1.5zm3.75-.75a.75.75 0 01-.75.75h-1.5a.75.75 0 010-1.5h1.5a.75.75 0 01.75.75z" clip-rule="evenodd" /></svg>`,
+  chart: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path d="M18.375 2.25c-1.035 0-1.875.84-1.875 1.875v15.75c0 1.035.84 1.875 1.875 1.875h.75c1.035 0 1.875-.84 1.875-1.875V4.125c0-1.036-.84-1.875-1.875-1.875h-.75zM9.75 8.625c0-1.036.84-1.875 1.875-1.875h.75c1.036 0 1.875.84 1.875 1.875v11.25c0 1.035-.84 1.875-1.875 1.875h-.75a1.875 1.875 0 01-1.875-1.875V8.625zM3 13.125c0-1.036.84-1.875 1.875-1.875h.75c1.036 0 1.875.84 1.875 1.875v6.75c0 1.035-.84 1.875-1.875 1.875h-.75A1.875 1.875 0 013 19.875v-6.75z" /></svg>`,
+  email: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path d="M1.5 8.67v8.58a3 3 0 003 3h15a3 3 0 003-3V8.67l-8.928 5.493a3 3 0 01-3.144 0L1.5 8.67z" /><path d="M22.5 6.908V6.75a3 3 0 00-3-3h-15a3 3 0 00-3 3v.158l9.714 5.978a1.5 1.5 0 001.572 0L22.5 6.908z" /></svg>`,
+  robot: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path fill-rule="evenodd" d="M11.25 2.25a.75.75 0 000 1.5h.75v.75a9 9 0 00-9 9v1.5a.75.75 0 001.5 0v-1.5a7.5 7.5 0 017.5-7.5h1.5a7.5 7.5 0 017.5 7.5v1.5a.75.75 0 001.5 0v-1.5a9 9 0 00-9-9v-.75h.75a.75.75 0 000-1.5h-2.25zm-4.5 10.5a1.5 1.5 0 100 3 1.5 1.5 0 000-3zm6.75 1.5a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zM5.25 18a.75.75 0 01.75-.75h12a.75.75 0 010 1.5h-12a.75.75 0 01-.75-.75z" clip-rule="evenodd" /></svg>`,
+  mobile: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path d="M10.5 18.75a.75.75 0 000 1.5h3a.75.75 0 000-1.5h-3z" /><path fill-rule="evenodd" d="M8.625.75A3.375 3.375 0 005.25 4.125v15.75a3.375 3.375 0 003.375 3.375h6.75a3.375 3.375 0 003.375-3.375V4.125A3.375 3.375 0 0015.375.75h-6.75zM7.5 4.125C7.5 3.504 8.004 3 8.625 3H9.75v.375c0 .621.504 1.125 1.125 1.125h2.25c.621 0 1.125-.504 1.125-1.125V3h1.125c.621 0 1.125.504 1.125 1.125v15.75c0 .621-.504 1.125-1.125 1.125h-6.75A1.125 1.125 0 017.5 19.875V4.125z" clip-rule="evenodd" /></svg>`,
+  star: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" /></svg>`,
+  user: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path fill-rule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clip-rule="evenodd" /></svg>`,
+  shield: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path fill-rule="evenodd" d="M12.516 2.17a.75.75 0 00-1.032 0 11.209 11.209 0 01-7.877 3.08.75.75 0 00-.722.515A12.74 12.74 0 002.25 9.75c0 5.942 4.064 10.933 9.563 12.348a.749.749 0 00.374 0c5.499-1.415 9.563-6.406 9.563-12.348 0-1.39-.223-2.73-.635-3.985a.75.75 0 00-.722-.516l-.143.001c-2.996 0-5.717-1.17-7.741-3.08zm3.094 8.016a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd" /></svg>`,
+  rocket: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path fill-rule="evenodd" d="M9.315 7.584C12.195 3.883 16.695 1.5 21.75 1.5a.75.75 0 01.75.75c0 5.056-2.383 9.555-6.084 12.436A6.75 6.75 0 019.75 22.5a.75.75 0 01-.75-.75v-4.131A15.838 15.838 0 016.382 15H2.25a.75.75 0 01-.75-.75 6.75 6.75 0 017.815-6.666zM15 6.75a2.25 2.25 0 100 4.5 2.25 2.25 0 000-4.5z" clip-rule="evenodd" /><path d="M5.26 17.242a.75.75 0 10-.897-1.203 5.243 5.243 0 00-2.05 5.022.75.75 0 00.625.627 5.243 5.243 0 005.022-2.051.75.75 0 10-1.202-.897 3.744 3.744 0 01-3.008 1.51c0-1.23.592-2.323 1.51-3.008z" /></svg>`,
+  check: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 shrink-0"><path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd" /></svg>`,
+  xmark: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 shrink-0"><path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm-1.72 6.97a.75.75 0 10-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 101.06 1.06L12 13.06l1.72 1.72a.75.75 0 101.06-1.06L13.06 12l1.72-1.72a.75.75 0 10-1.06-1.06L12 10.94l-1.72-1.72z" clip-rule="evenodd" /></svg>`,
+  arrowRight: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4"><path fill-rule="evenodd" d="M12.97 3.97a.75.75 0 011.06 0l7.5 7.5a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 11-1.06-1.06l6.22-6.22H3a.75.75 0 010-1.5h16.19l-6.22-6.22a.75.75 0 010-1.06z" clip-rule="evenodd" /></svg>`,
+  whatsapp: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>`,
+  envelope: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4"><path d="M1.5 8.67v8.58a3 3 0 003 3h15a3 3 0 003-3V8.67l-8.928 5.493a3 3 0 01-3.144 0L1.5 8.67z" /><path d="M22.5 6.908V6.75a3 3 0 00-3-3h-15a3 3 0 00-3 3v.158l9.714 5.978a1.5 1.5 0 001.572 0L22.5 6.908z" /></svg>`,
+  externalLink: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"><path fill-rule="evenodd" d="M15.75 2.25H21a.75.75 0 01.75.75v5.25a.75.75 0 01-1.5 0V4.81L8.03 17.03a.75.75 0 01-1.06-1.06L19.19 3.75h-3.44a.75.75 0 010-1.5zm-10.5 4.5a1.5 1.5 0 00-1.5 1.5v10.5a1.5 1.5 0 001.5 1.5h10.5a1.5 1.5 0 001.5-1.5V10.5a.75.75 0 011.5 0v8.25a3 3 0 01-3 3H5.25a3 3 0 01-3-3V8.25a3 3 0 013-3h8.25a.75.75 0 010 1.5H5.25z" clip-rule="evenodd" /></svg>`,
+}
+---
+
+<BaseLayout
+  title="Servicios Web | Lautaro Desouches"
+  description="Desarrollo soluciones digitales a medida: sitios corporativos, e-commerce, automatizaciones y apps móviles. Velocidad 100/100, SEO técnico y trato directo."
+>
+  <main class="min-h-screen bg-surface text-foreground antialiased overflow-x-hidden">
+
+    <!-- HERO -->
+    <section class="relative min-h-screen flex flex-col justify-center px-6 pt-28 pb-20 overflow-hidden bg-surface border-b border-surface-border">
+      <div aria-hidden class="pointer-events-none absolute inset-0 [background:radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(99,102,241,0.08)_0%,transparent_70%)] dark:[background:radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(45,212,191,0.1)_0%,transparent_70%)]"></div>
+      <div aria-hidden class="pointer-events-none absolute inset-0 opacity-[0.03] dark:opacity-[0.04]" style="background-image: linear-gradient(rgba(0,0,0,1) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,1) 1px, transparent 1px); background-size: 48px 48px;"></div>
+
+      <div class="relative z-10 max-w-5xl mx-auto w-full">
+        <div class="hero-item mb-8" style="--delay: 0s">
+          <Eyebrow>
+            <span class="relative flex h-1.5 w-1.5">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 bg-indigo-500 dark:bg-teal-400"></span>
+              <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-indigo-600 dark:bg-teal-400"></span>
+            </span>
+            Disponible para nuevos proyectos
+          </Eyebrow>
+        </div>
+
+        <h1 class="hero-item text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-[0.95] mb-8 text-slate-900 dark:text-white" style="--delay: 0.1s">
+          Transformá la{' '}
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand to-tech dark:from-teal-400 dark:to-cyan-400">tecnología</span>
+          <br />
+          de tu empresa en{' '}
+          <span class="italic text-slate-600 dark:text-zinc-300">resultados reales.</span>
+        </h1>
+
+        <p class="hero-item max-w-2xl text-lg md:text-xl leading-relaxed mb-12 text-slate-600 dark:text-zinc-400" style="--delay: 0.22s">
+          Desarrollo soluciones digitales a medida para constructoras, inmobiliarias, estudios, comercios
+          y distribuidoras. Sin tecnicismos. Sin intermediarios. Con resultados medibles desde el primer día.
+        </p>
+
+        <div class="hero-item flex flex-wrap gap-4" style="--delay: 0.35s">
+          <ButtonPrimary href={WHATSAPP_URL}>
+            <Fragment set:html={serviceIcons.whatsapp} />
+            Hablemos de tu proyecto
+          </ButtonPrimary>
+          <ButtonGhost href="#servicios">
+            Ver mis servicios
+            <Fragment set:html={serviceIcons.arrowRight} />
+          </ButtonGhost>
+        </div>
+
+        <div class="hero-item mt-20 flex flex-wrap items-center gap-x-8 gap-y-3 text-sm text-slate-400 dark:text-zinc-500" style="--delay: 0.55s">
+          {['+5 años de experiencia', 'Trato directo sin intermediarios', 'Proyectos llave en mano', 'Velocidad 100/100 garantizada'].map((item) => (
+            <span class="flex items-center gap-2">
+              <span class="text-tech dark:text-teal-500"><Fragment set:html={serviceIcons.check} /></span>
+              {item}
+            </span>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- DIAGNÓSTICO -->
+    <section id="diagnostico" class="py-24 px-6 bg-white dark:bg-black">
+      <div class="max-w-5xl mx-auto">
+        <FadeUp>
+          <div class="text-center mb-16 space-y-4">
+            <Eyebrow>Diagnóstico</Eyebrow>
+            <h2 class="text-4xl md:text-5xl font-black tracking-tighter text-slate-900 dark:text-white">
+              ¿Te suena familiar alguno de estos?
+            </h2>
+            <p class="max-w-xl mx-auto leading-relaxed text-slate-500 dark:text-zinc-400">
+              Trabajé con decenas de negocios con los mismos problemas. Todos tienen solución concreta.
+            </p>
+          </div>
+        </FadeUp>
+
+        <div class="grid md:grid-cols-2 gap-6">
+          <FadeUp class="flex flex-col">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-8 h-8 rounded-full flex items-center justify-center bg-red-100 border border-red-200 dark:bg-red-500/10 dark:border-red-500/20 text-red-500 dark:text-red-400">
+                <Fragment set:html={serviceIcons.xmark} />
+              </div>
+              <span class="text-sm font-semibold uppercase tracking-wider text-slate-500 dark:text-zinc-400">El problema actual</span>
+            </div>
+            <ul class="flex flex-col gap-3 flex-1">
+              {painPoints.map((item) => (
+                <li class="flex items-center gap-4 px-5 py-4 rounded-xl text-sm bg-red-50 border border-red-100 text-slate-700 dark:bg-red-950/20 dark:border-red-500/10 dark:text-zinc-300">
+                  <span class="text-red-400 shrink-0"><Fragment set:html={serviceIcons.xmark} /></span>
+                  {item.problem}
+                </li>
+              ))}
+            </ul>
+          </FadeUp>
+
+          <FadeUp class="flex flex-col">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-8 h-8 rounded-full flex items-center justify-center bg-emerald-100 border border-emerald-200 dark:bg-teal-500/10 dark:border-teal-500/20 text-emerald-600 dark:text-teal-400">
+                <Fragment set:html={serviceIcons.check} />
+              </div>
+              <span class="text-sm font-semibold uppercase tracking-wider text-slate-500 dark:text-zinc-400">Lo que entrego</span>
+            </div>
+            <ul class="flex flex-col gap-3 flex-1">
+              {painPoints.map((item) => (
+                <li class="flex items-center gap-4 px-5 py-4 rounded-xl text-sm font-medium bg-emerald-50 border border-emerald-100 text-slate-800 dark:bg-teal-950/20 dark:border-teal-500/10 dark:text-zinc-200">
+                  <span class="text-emerald-500 dark:text-teal-400 shrink-0"><Fragment set:html={serviceIcons.check} /></span>
+                  {item.solution}
+                </li>
+              ))}
+            </ul>
+          </FadeUp>
+        </div>
+
+        <div class="mt-12 text-center">
+          <FadeUp>
+            <ButtonPrimary href={WHATSAPP_URL}>
+              <Fragment set:html={serviceIcons.whatsapp} />
+              Quiero resolver estos problemas
+            </ButtonPrimary>
+          </FadeUp>
+        </div>
+      </div>
+    </section>
+
+    <!-- SERVICIOS GRID -->
+    <section id="servicios" class="py-24 px-6 relative bg-slate-50 dark:bg-zinc-950">
+      <div aria-hidden class="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-px h-24 bg-gradient-to-b from-transparent via-brand/30 to-transparent dark:via-teal-500/30"></div>
+
+      <div class="max-w-6xl mx-auto">
+        <FadeUp class="text-center mb-16 space-y-4">
+          <Eyebrow>Servicios</Eyebrow>
+          <h2 class="text-4xl md:text-5xl font-black tracking-tighter text-slate-900 dark:text-white">
+            Lo que hago, en resultados concretos
+          </h2>
+          <p class="max-w-xl mx-auto leading-relaxed text-slate-500 dark:text-zinc-400">
+            Sin tecnicismos. Cada servicio está diseñado para resolver un problema real y generar retorno tangible.
+          </p>
+        </FadeUp>
+
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-5">
+          {services.slice(0, 2).map((service) => (
+            <FadeUp class="md:col-span-6">
+              <div class="h-full flex flex-col p-7 rounded-2xl group cursor-default transition-all hover:-translate-y-1.5 bg-white border border-slate-200 hover:border-brand/30 dark:bg-zinc-900 dark:border-zinc-800 dark:hover:border-teal-500/25">
+                <div class="flex items-center gap-3 mb-5">
+                  <div class="w-10 h-10 rounded-xl flex items-center justify-center transition-colors bg-indigo-50 border border-indigo-100 text-brand group-hover:bg-indigo-100 dark:bg-teal-500/10 dark:border-teal-500/20 dark:text-teal-400 dark:group-hover:bg-teal-500/15">
+                    <Fragment set:html={serviceIcons[service.iconKey]} />
+                  </div>
+                  <span class="text-xs font-semibold uppercase tracking-widest text-brand/70 dark:text-teal-400/80">{service.eyebrow}</span>
+                </div>
+                <h3 class="text-xl font-bold mb-3 leading-snug transition-colors text-slate-900 group-hover:text-brand dark:text-white dark:group-hover:text-teal-100">{service.title}</h3>
+                <p class="text-sm leading-relaxed mb-6 flex-grow text-slate-500 dark:text-zinc-400">{service.description}</p>
+                <ul class="space-y-2">
+                  {service.highlights.map((h) => (
+                    <li class="flex items-center gap-2 text-xs text-slate-500 dark:text-zinc-400">
+                      <span class="text-tech dark:text-teal-500"><Fragment set:html={serviceIcons.check} /></span>
+                      {h}
+                    </li>
+                  ))}
+                </ul>
+                <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" class="group mt-5 inline-flex items-center gap-1.5 text-xs font-medium transition-colors text-slate-300 group-hover:text-brand dark:text-zinc-600 dark:group-hover:text-teal-400">
+                  Consultar <Fragment set:html={serviceIcons.externalLink} />
+                </a>
+              </div>
+            </FadeUp>
+          ))}
+
+          {services.slice(2, 5).map((service) => (
+            <FadeUp class="md:col-span-4">
+              <div class="h-full flex flex-col p-6 rounded-2xl group cursor-default transition-all hover:-translate-y-1.5 bg-white border border-slate-200 hover:border-brand/30 dark:bg-zinc-900 dark:border-zinc-800 dark:hover:border-teal-500/25">
+                <div class="w-9 h-9 rounded-xl flex items-center justify-center mb-4 transition-colors bg-indigo-50 border border-indigo-100 text-brand group-hover:bg-indigo-100 dark:bg-teal-500/10 dark:border-teal-500/20 dark:text-teal-400">
+                  <Fragment set:html={serviceIcons[service.iconKey]} />
+                </div>
+                <span class="text-xs font-semibold uppercase tracking-widest mb-2 text-brand/70 dark:text-teal-400/80">{service.eyebrow}</span>
+                <h3 class="text-base font-bold mb-3 leading-snug transition-colors flex-grow text-slate-900 group-hover:text-brand dark:text-white dark:group-hover:text-teal-100">{service.title}</h3>
+                <p class="text-xs leading-relaxed line-clamp-3 mb-4 text-slate-500 dark:text-zinc-500">{service.description}</p>
+                <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" class="group inline-flex items-center gap-1.5 text-xs font-medium mt-auto transition-colors text-slate-300 group-hover:text-brand dark:text-zinc-600 dark:group-hover:text-teal-400">
+                  Consultar <Fragment set:html={serviceIcons.externalLink} />
+                </a>
+              </div>
+            </FadeUp>
+          ))}
+
+          {[{ service: services[5], span: 'md:col-span-5' }, { service: services[6], span: 'md:col-span-7' }].map(({ service, span }) => (
+            <FadeUp class={span}>
+              <div class="h-full flex flex-col p-7 rounded-2xl group cursor-default transition-all hover:-translate-y-1.5 bg-white border border-slate-200 hover:border-brand/30 dark:bg-zinc-900 dark:border-zinc-800 dark:hover:border-teal-500/25">
+                <div class="flex items-center gap-3 mb-5">
+                  <div class="w-10 h-10 rounded-xl flex items-center justify-center transition-colors bg-indigo-50 border border-indigo-100 text-brand group-hover:bg-indigo-100 dark:bg-teal-500/10 dark:border-teal-500/20 dark:text-teal-400">
+                    <Fragment set:html={serviceIcons[service.iconKey]} />
+                  </div>
+                  <span class="text-xs font-semibold uppercase tracking-widest text-brand/70 dark:text-teal-400/80">{service.eyebrow}</span>
+                </div>
+                <h3 class="text-xl font-bold mb-3 leading-snug transition-colors text-slate-900 group-hover:text-brand dark:text-white dark:group-hover:text-teal-100">{service.title}</h3>
+                <p class="text-sm leading-relaxed mb-6 flex-grow text-slate-500 dark:text-zinc-400">{service.description}</p>
+                <ul class="space-y-2">
+                  {service.highlights.map((h) => (
+                    <li class="flex items-center gap-2 text-xs text-slate-500 dark:text-zinc-400">
+                      <span class="text-tech dark:text-teal-500"><Fragment set:html={serviceIcons.check} /></span>
+                      {h}
+                    </li>
+                  ))}
+                </ul>
+                <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" class="group mt-5 inline-flex items-center gap-1.5 text-xs font-medium transition-colors text-slate-300 group-hover:text-brand dark:text-zinc-600 dark:group-hover:text-teal-400">
+                  Consultar <Fragment set:html={serviceIcons.externalLink} />
+                </a>
+              </div>
+            </FadeUp>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- AUTORIDAD -->
+    <section id="autoridad" class="py-24 px-6 bg-white dark:bg-black">
+      <div class="max-w-6xl mx-auto">
+        <div class="grid lg:grid-cols-2 gap-16 items-center">
+          <FadeUp>
+            <div class="space-y-6">
+              <Eyebrow>Por qué trabajar conmigo</Eyebrow>
+              <h2 class="text-4xl md:text-5xl font-black tracking-tighter leading-tight text-slate-900 dark:text-white">
+                Clientes exigentes <br /> eligen el{' '}
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand to-tech dark:from-teal-400 dark:to-cyan-400">trato directo.</span>
+              </h2>
+              <p class="text-lg leading-relaxed text-slate-600 dark:text-zinc-400">
+                No soy una agencia. Soy un profesional independiente con más de cinco años resolviendo problemas reales para negocios reales.
+                Lo que acordamos, eso entrego. Sin sorpresas, sin costos extra, sin ruidos.
+              </p>
+              <ul class="space-y-3 pt-2">
+                {['Presupuestos cerrados y sin sorpresas', 'Comunicación clara en cada etapa', 'Primera consulta sin costo ni compromiso', 'Soporte post-lanzamiento incluido'].map((item) => (
+                  <li class="flex items-start gap-3 text-sm text-slate-600 dark:text-zinc-300">
+                    <span class="text-tech dark:text-teal-400 mt-0.5"><Fragment set:html={serviceIcons.check} /></span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <div class="pt-4">
+                <ButtonPrimary href={WHATSAPP_URL}>
+                  <Fragment set:html={serviceIcons.whatsapp} />
+                  Agendá tu charla de 10 min
+                </ButtonPrimary>
+              </div>
+            </div>
+          </FadeUp>
+
+          <FadeUp>
+            <div class="grid grid-cols-2 gap-4">
+              {trustItems.map((item) => (
+                <div class="p-6 rounded-2xl space-y-3 transition-all hover:-translate-y-1 bg-slate-50 border border-slate-200 hover:border-brand/30 dark:bg-zinc-900 dark:border-zinc-800 dark:hover:border-teal-500/30">
+                  <div class="w-9 h-9 rounded-lg flex items-center justify-center bg-indigo-100 text-brand dark:bg-teal-500/10 dark:text-teal-400">
+                    <Fragment set:html={serviceIcons[item.iconKey]} />
+                  </div>
+                  <div>
+                    <p class="text-3xl font-black tracking-tight text-slate-900 dark:text-white">{item.metric}</p>
+                    <p class="text-xs font-semibold uppercase tracking-wider mt-0.5 text-brand dark:text-teal-400">{item.label}</p>
+                  </div>
+                  <p class="text-xs leading-relaxed text-slate-500 dark:text-zinc-500">{item.description}</p>
+                </div>
+              ))}
+            </div>
+          </FadeUp>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA FINAL -->
+    <section id="contacto" class="py-32 px-6 relative overflow-hidden bg-slate-50 dark:bg-zinc-950">
+      <div aria-hidden class="pointer-events-none absolute inset-0 [background:radial-gradient(ellipse_80%_70%_at_50%_110%,rgba(99,102,241,0.08)_0%,transparent_70%)] dark:[background:radial-gradient(ellipse_80%_70%_at_50%_110%,rgba(45,212,191,0.1)_0%,transparent_70%)]"></div>
+
+      <div class="relative z-10 max-w-3xl mx-auto text-center space-y-8">
+        <FadeUp><Eyebrow>Empezamos</Eyebrow></FadeUp>
+
+        <FadeUp>
+          <h2 class="text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter leading-tight text-slate-900 dark:text-white">
+            10 minutos pueden <br />
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand to-tech dark:from-teal-400 dark:to-cyan-400">
+              cambiar tu negocio.
+            </span>
+          </h2>
+        </FadeUp>
+
+        <FadeUp>
+          <p class="text-lg leading-relaxed max-w-xl mx-auto text-slate-500 dark:text-zinc-400">
+            No necesitás tener todo claro todavía. Con una charla breve puedo decirte si lo que necesitás
+            es viable, cuánto tiempo llevaría y cuánto costaría. Sin compromiso.
+          </p>
+        </FadeUp>
+
+        <FadeUp>
+          <div class="flex flex-col sm:flex-row gap-4 justify-center pt-4">
+            <ButtonPrimary href={WHATSAPP_URL}>
+              <Fragment set:html={serviceIcons.whatsapp} />
+              Escribime por WhatsApp
+            </ButtonPrimary>
+            <ButtonGhost href={MAILTO} external>
+              <Fragment set:html={serviceIcons.envelope} />
+              Mandame un mail
+            </ButtonGhost>
+          </div>
+        </FadeUp>
+
+        <FadeUp>
+          <div class="pt-6 flex flex-col sm:flex-row items-center justify-center gap-6 text-sm font-mono">
+            <span>
+              <span class="text-slate-400 dark:text-zinc-500">WhatsApp: </span>
+              <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" class="transition-colors text-slate-600 hover:text-brand dark:text-zinc-400 dark:hover:text-teal-400">
+                +54 11 3011-1503
+              </a>
+            </span>
+            <span class="hidden sm:block text-slate-200 dark:text-zinc-800">·</span>
+            <span>
+              <span class="text-slate-400 dark:text-zinc-500">Mail: </span>
+              <a href={MAILTO} class="transition-colors text-slate-600 hover:text-brand dark:text-zinc-400 dark:hover:text-teal-400">
+                {EMAIL}
+              </a>
+            </span>
+          </div>
+          <p class="mt-4 text-xs font-mono text-slate-300 dark:text-zinc-700">
+            Respondo en el día · Sin spam · Primera consulta gratuita
+          </p>
+        </FadeUp>
+
+        <FadeUp>
+          <div class="pt-8 border-t border-slate-200 dark:border-zinc-800/50">
+            <a href="/" class="inline-flex items-center gap-2 text-sm font-mono transition-colors text-slate-400 hover:text-slate-600 dark:text-zinc-600 dark:hover:text-zinc-400">
+              ← Volver al portfolio técnico
+            </a>
+          </div>
+        </FadeUp>
+      </div>
+    </section>
+  </main>
+
+  <ThemeToggle />
+</BaseLayout>
+
+<script>
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible')
+          observer.unobserve(entry.target)
+        }
+      })
+    },
+    { threshold: 0.05 },
+  )
+  document.querySelectorAll('.fade-in-view').forEach((el) => observer.observe(el))
+</script>
+
+<style>
+  .hero-item {
+    opacity: 0;
+    transform: translateY(16px);
+    animation: fade-up 0.5s ease forwards;
+    animation-delay: var(--delay, 0s);
+  }
+
+  @keyframes fade-up {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
