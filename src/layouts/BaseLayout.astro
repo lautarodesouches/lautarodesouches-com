@@ -1,0 +1,107 @@
+---
+import { ClientRouter } from 'astro:transitions'
+
+interface Props {
+  title?: string
+  description?: string
+  ogImage?: string
+}
+
+const {
+  title = 'Lautaro Desouches | Full-Stack Developer',
+  description = 'Portfolio profesional de Lautaro Desouches. Desarrollador Full-Stack especializado en Next.js, NestJS y Java Spring. Creando arquitecturas robustas y escalables.',
+  ogImage = '/icon.png',
+} = Astro.props
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? 'https://lautarodesouches.com')
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="canonical" href={canonicalURL} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta
+      name="keywords"
+      content="Full-Stack Developer, Next.js, NestJS, Java Spring, TypeScript, Web Development, Argentina, Software Engineer"
+    />
+    <meta name="author" content="Lautaro Desouches" />
+    <meta name="creator" content="Lautaro Desouches" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:site_name" content="Lautaro Desouches Portfolio" />
+    <meta property="og:image" content={new URL(ogImage, Astro.site ?? 'https://lautarodesouches.com')} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Lautaro Desouches Portfolio Preview" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:creator" content="@lautarodesouches" />
+    <meta name="twitter:image" content={new URL(ogImage, Astro.site ?? 'https://lautarodesouches.com')} />
+
+    <meta
+      name="robots"
+      content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;900&family=Geist+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <ClientRouter />
+
+    <script is:inline>
+      function applyTheme() {
+        const stored = localStorage.getItem('theme')
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (stored === 'dark' || (!stored && prefersDark)) {
+          document.documentElement.classList.add('dark')
+        } else {
+          document.documentElement.classList.remove('dark')
+        }
+      }
+      applyTheme()
+      document.addEventListener('astro:after-swap', applyTheme)
+    </script>
+  </head>
+  <body>
+    <slot />
+
+    <script>
+      function setupFadeObserver() {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible')
+                observer.unobserve(entry.target)
+              }
+            })
+          },
+          { threshold: 0.1 }
+        )
+        document.querySelectorAll('.fade-in-view:not(.is-visible)').forEach((el) => observer.observe(el))
+      }
+
+      setupFadeObserver()
+      document.addEventListener('astro:page-load', setupFadeObserver)
+    </script>
+  </body>
+</html>
