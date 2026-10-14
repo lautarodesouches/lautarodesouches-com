@@ -9,7 +9,8 @@ test.describe('Home Page', () => {
         await expect(page).toHaveTitle(/Lautaro Desouches/);
 
         // Check if hero content is visible
-        await expect(page.getByText('Ingeniería Front-End Escalable')).toBeVisible();
+        await expect(page.getByRole('heading', { level: 1 })).toContainText('Ingeniería');
+        await expect(page.getByRole('heading', { level: 1 })).toContainText('Full-Stack');
     });
 
     test('should navigate to sections', async ({ page }) => {

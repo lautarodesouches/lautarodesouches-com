@@ -9,14 +9,14 @@ test.describe('Projects Section', () => {
         const projectsSection = page.locator('#projects');
         await expect(projectsSection).toBeVisible();
 
-        // Verify we have project cards (using the article tag which we know we used)
+        // Verify we have project cards
         const cards = projectsSection.locator('article');
-        await expect(cards).toHaveCount(3); // We know we have 3 mock projects
+        await expect(cards).toHaveCount(5);
     });
 
     test('should have correctly rendered mock content', async ({ page }) => {
-        // Check for the mock titles we added
-        await expect(page.getByText('Proyecto de Prueba Alpha')).toBeVisible();
-        await expect(page.getByText('Proyecto de Prueba Beta')).toBeVisible();
+        // Check for project titles
+        await expect(page.getByText('Gusto - Social Restaurant Discovery')).toBeVisible();
+        await expect(page.getByText('Desouches Propiedades - Sitio Web Inmobiliario')).toBeVisible();
     });
 });
