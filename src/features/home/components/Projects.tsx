@@ -2,7 +2,7 @@
 
 import { portfolioData } from "@/features/home/data/portfolio.data";
 import { FaArrowUpRightFromSquare, FaGithub, FaChevronLeft, FaChevronRight } from "react-icons/fa6";
-import Image from "next/image";
+
 import { useRef, useState, useEffect } from "react";
 
 export const Projects = () => {
@@ -99,12 +99,12 @@ export const Projects = () => {
                             >
                                 {project.image && (
                                     <div className="relative w-full aspect-[16/10] sm:aspect-video overflow-hidden bg-slate-100 dark:bg-zinc-800 border-b border-slate-100 dark:border-white/5">
-                                        <Image
+                                        <img
                                             src={project.image}
                                             alt={`Captura del proyecto: ${project.title}`}
-                                            fill
-                                            className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
-                                            sizes="(max-width: 640px) 85vw, (max-width: 1024px) 50vw, 33vw"
+                                            className="absolute inset-0 w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                                            loading="lazy"
+                                            decoding="async"
                                         />
                                         <div className="absolute top-3 left-3 bg-black/70 backdrop-blur-md text-white text-xs font-mono px-3 py-1 rounded-full border border-white/10 shadow-lg">
                                             {project.type.split(" ")[0]}
@@ -192,10 +192,9 @@ export const Projects = () => {
                 </div>
             </div>
 
-            <style jsx global>{`
-                .hide-scrollbar::-webkit-scrollbar { display: none; }
-                .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-            `}</style>
+
         </section>
     );
 };
+
+export default Projects;
