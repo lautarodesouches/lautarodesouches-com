@@ -13,52 +13,79 @@
   --color-tech: var(--color-tech);
   --color-tech-dim: var(--color-tech-dim);
 
+  --color-signal-emerald: #00f59b;
+  --color-signal-amber: #ffb020;
+  --color-signal-cyan: #00d2ff;
+  --color-signal-crimson: #ff3366;
+
   --color-foreground: var(--foreground);
 }
 
 :root {
-  --color-brand: #4f46e5;
-  --color-brand-light: #6366f1;
-  --color-brand-dark: #4338ca;
+  --color-brand: #0f172a;
+  --color-brand-light: #2563eb;
+  --color-brand-dark: #020617;
 
-  --color-surface: #f8fafc;
+  --color-surface: #f9fafb;
   --color-surface-card: #ffffff;
   --color-surface-border: #e2e8f0;
 
-  --color-tech: #0d9488;
-  --color-tech-dim: #f0fdfa;
+  --color-tech: #059669;
+  --color-tech-dim: #ecfdf5;
 
-  --foreground: #0f172a;
+  --foreground: #090a0c;
+  --grid-line-color: rgba(15, 23, 42, 0.05);
+  --grid-cross-color: rgba(15, 23, 42, 0.15);
 }
 
 .dark {
-  --color-brand: #6366f1;
-  --color-brand-dark: #4f46e5;
-  --color-brand-light: #818cf8;
+  --color-brand: #ffffff;
+  --color-brand-dark: #cbd5e1;
+  --color-brand-light: #f8fafc;
 
-  --color-surface: #020617;
-  --color-surface-card: #0f172a;
-  --color-surface-border: #1e293b;
+  --color-surface: #070809;
+  --color-surface-card: #0d0f12;
+  --color-surface-border: #1a1e24;
 
-  --color-tech: #2dd4bf;
-  --color-tech-dim: #115e59;
+  --color-tech: #00f59b;
+  --color-tech-dim: rgba(0, 245, 155, 0.1);
 
-  --foreground: #f1f5f9;
+  --foreground: #ededed;
+  --grid-line-color: rgba(255, 255, 255, 0.04);
+  --grid-cross-color: rgba(255, 255, 255, 0.12);
 }
 
 html {
   scroll-behavior: smooth;
+  font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 body {
   color: var(--foreground);
-  background: var(--color-surface);
-  font-family: 'Geist', Arial, Helvetica, sans-serif;
+  background-color: var(--color-surface);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  transition:
-    background-color 0.3s ease,
-    color 0.3s ease;
+  overflow-x: hidden;
+}
+
+.font-mono {
+  font-family: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+.blueprint-grid {
+  background-image: 
+    linear-gradient(to right, var(--grid-line-color) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line-color) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+.blueprint-dots {
+  background-image: radial-gradient(var(--grid-cross-color) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.noise-overlay {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.035'/%3E%3C/svg%3E");
 }
 
 .hide-scrollbar::-webkit-scrollbar {
@@ -71,13 +98,36 @@ body {
 
 .fade-in-view {
   opacity: 0;
-  transform: translateY(24px);
-  transition:
-    opacity 0.5s ease,
-    transform 0.5s ease;
+  transform: translateY(20px);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
 }
 
 .fade-in-view.is-visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+.tech-bracket-tl {
+  position: relative;
+}
+.tech-bracket-tl::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  width: 8px;
+  height: 8px;
+  border-top: 2px solid var(--color-signal-emerald);
+  border-left: 2px solid var(--color-signal-emerald);
+  pointer-events: none;
+}
+
+.scanline {
+  background: linear-gradient(
+    to bottom,
+    transparent 50%,
+    rgba(0, 0, 0, 0.08) 51%
+  );
+  background-size: 100% 4px;
 }
