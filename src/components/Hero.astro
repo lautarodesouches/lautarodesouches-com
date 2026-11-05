@@ -7,15 +7,45 @@ import HeroCanvas from './hero/HeroCanvas.astro'
     <HeroCanvas />
   </div>
 
-  <div class="hero-meta">
-    <div class="hero-arrow">
-      <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M1.5 13.5L13.5 1.5M13.5 1.5H3.5M13.5 1.5V11.5" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" />
-      </svg>
+  <div class="hero-framing">
+    <div class="hero-frame-block hero-frame-block--left">
+      <div class="reveal-wrapper">
+        <span class="frame-index reveal-line">01 // EMPRESAS & NEGOCIOS</span>
+      </div>
+      <div class="reveal-wrapper">
+        <h2 class="frame-title reveal-line">Sitios web y sistemas a medida de punta a punta.</h2>
+      </div>
+      <div class="reveal-wrapper">
+        <p class="frame-desc reveal-line">
+          Desarrollo desde cero para pequeñas y grandes empresas: desde presencias corporativas de alta conversión hasta plataformas empresariales complejas.
+        </p>
+      </div>
     </div>
-    <div class="hero-role">
-      <span class="hero-role__primary">Desarrollador Web Full Stack</span>
-      <span class="hero-role__secondary">Proyectos a medida & Código limpio</span>
+
+    <div class="hero-frame-block hero-frame-block--right">
+      <div class="reveal-wrapper">
+        <div class="frame-header reveal-line">
+          <div class="hero-arrow">
+            <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M3.5 3.5L11.5 11.5M11.5 11.5H5.5M11.5 11.5V5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </div>
+          <span class="frame-index">02 // INGENIERÍA DE SOFTWARE</span>
+        </div>
+      </div>
+      <div class="reveal-wrapper">
+        <h1 class="frame-title reveal-line">Desarrollador Web Full Stack</h1>
+      </div>
+      <div class="reveal-wrapper">
+        <p class="frame-desc reveal-line">
+          Arquitectura frontend y backend en producción. Interfaces fluidas, APIs resilientes, tipado estricto y rendimiento optimizado.
+        </p>
+      </div>
+      <div class="reveal-wrapper">
+        <div class="frame-stack reveal-line">
+          TypeScript · React / Next.js · Node / NestJS · Astro · SQL
+        </div>
+      </div>
     </div>
   </div>
 
@@ -56,18 +86,48 @@ import HeroCanvas from './hero/HeroCanvas.astro'
       gsap.set(track, { xPercent })
     })
   }
+
+  if (!isReducedMotion) {
+    gsap.fromTo(
+      '.reveal-line',
+      { yPercent: 100, opacity: 0 },
+      {
+        yPercent: 0,
+        opacity: 1,
+        duration: 0.9,
+        ease: 'power3.out',
+        stagger: 0.08,
+      }
+    )
+
+    const arrowSvg = document.querySelector('.hero-arrow svg')
+    if (arrowSvg) {
+      gsap.to(arrowSvg, {
+        rotate: 45,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '#hero',
+          start: 'top top',
+          end: 'bottom top',
+          scrub: 1,
+        },
+      })
+    }
+  } else {
+    gsap.set('.reveal-line', { yPercent: 0, opacity: 1 })
+  }
 </script>
 
 <style>
   .hero-container {
     position: relative;
     height: 100vh;
-    min-height: 600px;
+    min-height: 640px;
     width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: calc(var(--header-height, 80px) + 2.5rem) 3rem 0;
+    padding: calc(var(--header-height, 80px) + 1.5rem) 0 0;
     overflow: hidden;
     background-color: var(--bg-primary);
   }
@@ -84,43 +144,107 @@ import HeroCanvas from './hero/HeroCanvas.astro'
     z-index: 1;
   }
 
-  .hero-meta {
-    display: flex;
-    align-items: flex-start;
-    gap: 1.25rem;
-    margin-top: clamp(2.5rem, 6vh, 5.5rem);
-    margin-left: auto;
-    max-width: 340px;
-    user-select: none;
+  .hero-framing {
+    position: relative;
     z-index: 2;
+    width: 100%;
+    max-width: 1600px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-inline: clamp(1.5rem, 4vw, 4rem);
+    pointer-events: none;
+    flex: 1;
+    margin-bottom: clamp(4.5rem, 10vh, 8rem);
+  }
+
+  .hero-frame-block {
+    pointer-events: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    max-width: 360px;
+  }
+
+  .hero-frame-block--left {
+    margin-top: 8vh;
+    align-self: center;
+  }
+
+  .hero-frame-block--right {
+    margin-top: -6vh;
+    align-self: center;
+    max-width: 380px;
+  }
+
+  .reveal-wrapper {
+    overflow: hidden;
+    display: block;
+    padding-bottom: 0.12em;
+    margin-bottom: -0.12em;
+  }
+
+  .reveal-line {
+    display: block;
+    will-change: transform, opacity;
+  }
+
+  .frame-header {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
   }
 
   .hero-arrow {
-    margin-top: 0.25rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     color: var(--accent-cyan);
-    opacity: 0.9;
-    flex-shrink: 0;
+    line-height: 1;
   }
 
-  .hero-role {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-    font-family: var(--font-sans);
-    line-height: 1.4;
+  .hero-arrow svg {
+    display: block;
+    will-change: transform;
+    transform-origin: center center;
   }
 
-  .hero-role__primary {
-    color: var(--text-primary);
-    font-size: 1rem;
+  .frame-index {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--accent-cyan);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
     font-weight: 500;
-    letter-spacing: -0.01em;
   }
 
-  .hero-role__secondary {
+  .frame-title {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(1.25rem, 1.8vw, 1.65rem);
+    color: var(--text-primary);
+    line-height: 1.25;
+    letter-spacing: -0.015em;
+  }
+
+  .frame-desc {
+    font-family: var(--font-sans);
+    font-size: 14px;
     color: var(--text-secondary);
-    font-size: 0.9375rem;
+    max-width: 32ch;
+    line-height: 1.55;
     font-weight: 400;
+  }
+
+  .frame-stack {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border-subtle);
+    padding-top: 0.75rem;
+    letter-spacing: -0.01em;
+    max-width: 34ch;
   }
 
   .marquee-wrapper {
@@ -154,32 +278,72 @@ import HeroCanvas from './hero/HeroCanvas.astro'
     padding-right: 0.05em;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     .hero-container {
-      padding: 6.5rem 1.5rem 0;
+      height: auto;
+      min-height: 100vh;
+      padding-top: calc(var(--header-height, 80px) + 1.5rem);
+      padding-bottom: clamp(4.5rem, 11vw, 8rem);
     }
 
     .hero-centerpiece {
-      top: 50%;
+      opacity: 0.55;
+      transition: opacity 0.3s ease;
     }
 
-    .hero-meta {
-      margin-left: 0;
+    .hero-framing {
+      flex-direction: column;
+      justify-content: flex-start;
+      gap: 2.25rem;
+      margin-bottom: 2rem;
+      padding-inline: 1.5rem;
+    }
+
+    .hero-frame-block {
+      max-width: 100%;
+      margin-top: 0 !important;
       align-self: flex-start;
-      margin-top: 2rem;
+    }
+
+    .hero-frame-block--right {
+      order: 1;
+    }
+
+    .hero-frame-block--left {
+      order: 2;
+    }
+
+    .frame-title {
+      font-size: clamp(1.2rem, 4vw, 1.45rem);
+    }
+
+    .frame-desc {
       max-width: 100%;
     }
 
-    .hero-role__primary {
-      font-size: 0.9375rem;
+    .frame-stack {
+      max-width: 100%;
+    }
+  }
+
+  @media (max-height: 700px) and (max-width: 1024px) {
+    .hero-framing {
+      gap: 1.25rem;
     }
 
-    .hero-role__secondary {
-      font-size: 0.875rem;
+    .frame-desc {
+      display: none;
     }
 
-    .marquee-text {
-      font-size: clamp(3.25rem, 13vw, 5.5rem);
+    .frame-stack {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal-line {
+      opacity: 1 !important;
+      transform: none !important;
     }
   }
 </style>
