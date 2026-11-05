@@ -1,0 +1,563 @@
+---
+---
+
+<div class="hero-canvas-stage" aria-hidden="true">
+  <div class="ambient-glow ambient-glow--primary"></div>
+  <div class="ambient-glow ambient-glow--core"></div>
+  <canvas id="hero-parametric-canvas"></canvas>
+</div>
+
+<style>
+  .hero-canvas-stage {
+    position: relative;
+    width: clamp(270px, 84vw, 720px);
+    height: clamp(270px, 84vw, 720px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  @media (min-width: 768px) {
+    .hero-canvas-stage {
+      width: clamp(420px, 54vw, 720px);
+      height: clamp(420px, 54vw, 720px);
+    }
+  }
+
+  .ambient-glow {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    will-change: transform, opacity;
+  }
+
+  .ambient-glow--primary {
+    width: 75%;
+    height: 75%;
+    background: radial-gradient(
+      circle,
+      rgba(56, 189, 248, 0.11) 0%,
+      rgba(30, 64, 175, 0.06) 45%,
+      transparent 72%
+    );
+    filter: blur(45px);
+  }
+
+  .ambient-glow--core {
+    width: 35%;
+    height: 35%;
+    background: radial-gradient(
+      circle,
+      rgba(125, 211, 252, 0.14) 0%,
+      transparent 70%
+    );
+    filter: blur(24px);
+  }
+
+  #hero-parametric-canvas {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+</style>
+
+<script>
+  interface Node3D {
+    bx: number;
+    by: number;
+    bz: number;
+    x: number;
+    y: number;
+    z: number;
+    px: number;
+    py: number;
+    scale: number;
+    depthAlpha: number;
+    energy: number;
+  }
+
+  interface DataPulse {
+    fromIdx: number;
+    toIdx: number;
+    progress: number;
+    speed: number;
+  }
+
+  const canvas = document.getElementById('hero-parametric-canvas') as HTMLCanvasElement | null;
+
+  if (canvas) {
+    const ctx = canvas.getContext('2d', { alpha: true });
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const isMobile = window.innerWidth < 768;
+    const NODE_COUNT = isMobile ? 150 : 240;
+    const GOLDEN_RATIO = (1 + Math.sqrt(5)) / 2;
+    const MAX_PULSE_COUNT = isMobile ? 10 : 16;
+
+    let width = 0;
+    let height = 0;
+    let dpr = 1;
+    let baseRadius = 180;
+    let focalLength = 520;
+
+    let time = 0;
+    let rotX = 0.25;
+    let rotY = 0;
+    let targetPointerX = 0;
+    let targetPointerY = 0;
+    let smoothPointerX = 0;
+    let smoothPointerY = 0;
+    let cursorScreenX = -9999;
+    let cursorScreenY = -9999;
+    let isPointerActive = false;
+
+    let lastScrollY = window.scrollY;
+    let scrollVelocity = 0;
+
+    const nodes: Node3D[] = [];
+    for (let i = 0; i < NODE_COUNT; i++) {
+      const theta = (2 * Math.PI * i) / GOLDEN_RATIO;
+      const phi = Math.acos(1 - (2 * (i + 0.5)) / NODE_COUNT);
+
+      nodes.push({
+        bx: Math.cos(theta) * Math.sin(phi),
+        by: Math.sin(theta) * Math.sin(phi),
+        bz: Math.cos(phi),
+        x: 0,
+        y: 0,
+        z: 0,
+        px: 0,
+        py: 0,
+        scale: 1,
+        depthAlpha: 1,
+        energy: 0,
+      });
+    }
+
+    const adjacency: number[][] = Array.from({ length: NODE_COUNT }, () => []);
+    const edges: [number, number, number][] = [];
+    const maxNeighbourDistSq = isMobile ? 0.21 : 0.14;
+
+    for (let i = 0; i < NODE_COUNT; i++) {
+      for (let j = i + 1; j < NODE_COUNT; j++) {
+        const dx = nodes[i].bx - nodes[j].bx;
+        const dy = nodes[i].by - nodes[j].by;
+        const dz = nodes[i].bz - nodes[j].bz;
+        const dSq = dx * dx + dy * dy + dz * dz;
+
+        if (dSq < maxNeighbourDistSq) {
+          edges.push([i, j, Math.sqrt(dSq)]);
+          adjacency[i].push(j);
+          adjacency[j].push(i);
+        }
+      }
+    }
+
+    const pulses: DataPulse[] = [];
+    const spawnPulse = (): DataPulse => {
+      const startNode = Math.floor(Math.random() * NODE_COUNT);
+      const neighbours = adjacency[startNode];
+      const endNode =
+        neighbours && neighbours.length > 0
+          ? neighbours[Math.floor(Math.random() * neighbours.length)]
+          : (startNode + 1) % NODE_COUNT;
+
+      return {
+        fromIdx: startNode,
+        toIdx: endNode,
+        progress: Math.random(),
+        speed: 0.012 + Math.random() * 0.018,
+      };
+    };
+
+    for (let i = 0; i < MAX_PULSE_COUNT; i++) {
+      pulses.push(spawnPulse());
+    }
+
+    const resize = () => {
+      if (!canvas || !ctx) return;
+      const rect = canvas.getBoundingClientRect();
+      width = rect.width;
+      height = rect.height;
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      baseRadius = Math.min(width, height) * 0.31;
+      focalLength = Math.min(width, height) * 0.95;
+    };
+
+    const resizeObserver = new ResizeObserver(resize);
+    resizeObserver.observe(canvas);
+    resize();
+
+    window.addEventListener(
+      'mousemove',
+      (e: MouseEvent) => {
+        if (!canvas) return;
+        const rect = canvas.getBoundingClientRect();
+        cursorScreenX = e.clientX - rect.left;
+        cursorScreenY = e.clientY - rect.top;
+        isPointerActive = true;
+
+        targetPointerX = (e.clientX / window.innerWidth - 0.5) * 2;
+        targetPointerY = (e.clientY / window.innerHeight - 0.5) * 2;
+      },
+      { passive: true }
+    );
+
+    window.addEventListener(
+      'mouseleave',
+      () => {
+        isPointerActive = false;
+        targetPointerX = 0;
+        targetPointerY = 0;
+        cursorScreenX = -9999;
+        cursorScreenY = -9999;
+      },
+      { passive: true }
+    );
+
+    const updatePointerFromTouch = (e: TouchEvent) => {
+      if (!canvas || e.touches.length === 0) return;
+      const touch = e.touches[0];
+      const rect = canvas.getBoundingClientRect();
+      cursorScreenX = touch.clientX - rect.left;
+      cursorScreenY = touch.clientY - rect.top;
+      isPointerActive = true;
+
+      targetPointerX = (touch.clientX / window.innerWidth - 0.5) * 2;
+      targetPointerY = (touch.clientY / window.innerHeight - 0.5) * 2;
+    };
+
+    const resetPointerTouch = () => {
+      isPointerActive = false;
+      targetPointerX = 0;
+      targetPointerY = 0;
+      cursorScreenX = -9999;
+      cursorScreenY = -9999;
+    };
+
+    window.addEventListener('touchstart', updatePointerFromTouch, { passive: true });
+    window.addEventListener('touchmove', updatePointerFromTouch, { passive: true });
+    window.addEventListener('touchend', resetPointerTouch, { passive: true });
+    window.addEventListener('touchcancel', resetPointerTouch, { passive: true });
+
+    window.addEventListener(
+      'scroll',
+      () => {
+        const currentY = window.scrollY;
+        const delta = currentY - lastScrollY;
+        lastScrollY = currentY;
+        scrollVelocity = Math.max(-45, Math.min(45, delta));
+      },
+      { passive: true }
+    );
+
+    const project3DPoint = (
+      x: number,
+      y: number,
+      z: number,
+      rx: number,
+      ry: number,
+      rz: number,
+      cx: number,
+      cy: number
+    ) => {
+      const x1 = x * Math.cos(rz) - y * Math.sin(rz);
+      const y1 = x * Math.sin(rz) + y * Math.cos(rz);
+      const y2 = y1 * Math.cos(rx) - z * Math.sin(rx);
+      const z2 = y1 * Math.sin(rx) + z * Math.cos(rx);
+      const x3 = x1 * Math.cos(ry) + z2 * Math.sin(ry);
+      const z3 = -x1 * Math.sin(ry) + z2 * Math.cos(ry);
+
+      const scale = focalLength / (focalLength + z3);
+      return {
+        px: cx + x3 * scale,
+        py: cy + y2 * scale,
+        z: z3,
+        scale,
+      };
+    };
+
+    const drawGyroRings = (cx: number, cy: number) => {
+      if (!ctx) return;
+
+      const rings = [
+        {
+          radius: baseRadius * 1.28,
+          rx: 1.15 + smoothPointerY * 0.25,
+          ry: time * 0.35 + smoothPointerX * 0.25,
+          rz: 0.4,
+          segments: 96,
+          opacity: 0.16,
+          dashPattern: 3,
+        },
+        {
+          radius: baseRadius * 1.44,
+          rx: -0.85 - smoothPointerY * 0.2,
+          ry: -time * 0.22 + smoothPointerX * 0.3,
+          rz: -0.55,
+          segments: 120,
+          opacity: 0.11,
+          dashPattern: 5,
+        },
+      ];
+
+      rings.forEach((ring, ringIdx) => {
+        for (let i = 0; i < ring.segments; i++) {
+          if (i % ring.dashPattern === 0) continue;
+
+          const a1 = (i / ring.segments) * Math.PI * 2;
+          const a2 = ((i + 1) / ring.segments) * Math.PI * 2;
+
+          const p1 = project3DPoint(
+            Math.cos(a1) * ring.radius,
+            Math.sin(a1) * ring.radius,
+            0,
+            ring.rx,
+            ring.ry,
+            ring.rz,
+            cx,
+            cy
+          );
+          const p2 = project3DPoint(
+            Math.cos(a2) * ring.radius,
+            Math.sin(a2) * ring.radius,
+            0,
+            ring.rx,
+            ring.ry,
+            ring.rz,
+            cx,
+            cy
+          );
+
+          const depthFactor = Math.max(0.15, Math.min(1, (ring.radius - p1.z) / (ring.radius * 2)));
+          ctx.beginPath();
+          ctx.moveTo(p1.px, p1.py);
+          ctx.lineTo(p2.px, p2.py);
+          ctx.strokeStyle = `rgba(125, 211, 252, ${ring.opacity * depthFactor})`;
+          ctx.lineWidth = 1;
+          ctx.stroke();
+        }
+
+        const satAngle = time * (ringIdx === 0 ? 1.4 : -0.9);
+        const sat = project3DPoint(
+          Math.cos(satAngle) * ring.radius,
+          Math.sin(satAngle) * ring.radius,
+          0,
+          ring.rx,
+          ring.ry,
+          ring.rz,
+          cx,
+          cy
+        );
+
+        ctx.beginPath();
+        ctx.arc(sat.px, sat.py, 2.2 * sat.scale, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(56, 189, 248, 0.85)';
+        ctx.fill();
+      });
+    };
+
+    let isVisible = true;
+    let rafId = 0;
+
+    const render = () => {
+      if (!ctx || !isVisible) return;
+
+      ctx.clearRect(0, 0, width, height);
+
+      const cx = width * 0.5;
+      const cy = height * 0.5;
+
+      smoothPointerX += (targetPointerX - smoothPointerX) * 0.05;
+      smoothPointerY += (targetPointerY - smoothPointerY) * 0.05;
+      scrollVelocity *= 0.92;
+
+      const speedBoost = 1 + Math.abs(scrollVelocity) * 0.08;
+      if (!prefersReducedMotion) {
+        time += 0.0085 * speedBoost;
+        rotY += 0.0032 * speedBoost;
+        rotX += 0.0014;
+      }
+
+      const effRotX = rotX + smoothPointerY * 0.42;
+      const effRotY = rotY + smoothPointerX * 0.55;
+
+      const cosX = Math.cos(effRotX);
+      const sinX = Math.sin(effRotX);
+      const cosY = Math.cos(effRotY);
+      const sinY = Math.sin(effRotY);
+
+      drawGyroRings(cx, cy);
+
+      const waveAmp = 0.11 + Math.min(0.12, Math.abs(scrollVelocity) * 0.004);
+      const interactionRadius = baseRadius * 0.72;
+
+      for (let i = 0; i < NODE_COUNT; i++) {
+        const n = nodes[i];
+
+        const harmonic =
+          Math.sin(n.bx * 3.2 + time * 1.8) *
+          Math.cos(n.by * 3.2 - time * 1.4) *
+          Math.sin(n.bz * 3.2 + time * 1.1);
+
+        const dynamicR = baseRadius * (1 + harmonic * waveAmp);
+
+        const lx = n.bx * dynamicR;
+        const ly = n.by * dynamicR;
+        const lz = n.bz * dynamicR;
+
+        const rx = lx * cosY + lz * sinY;
+        const rz1 = -lx * sinY + lz * cosY;
+        const ry = ly * cosX - rz1 * sinX;
+        const rz2 = ly * sinX + rz1 * cosX;
+
+        n.x = rx;
+        n.y = ry;
+        n.z = rz2;
+
+        const scale = focalLength / (focalLength + rz2);
+        let px = cx + rx * scale;
+        let py = cy + ry * scale;
+
+        if (isPointerActive && rz2 < baseRadius * 0.4) {
+          const dx = px - cursorScreenX;
+          const dy = py - cursorScreenY;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < interactionRadius && dist > 0.001) {
+            const force = Math.pow(1 - dist / interactionRadius, 2);
+            px += (dx / dist) * force * 22;
+            py += (dy / dist) * force * 22;
+            n.energy = Math.min(1, n.energy + force * 0.35);
+          } else {
+            n.energy *= 0.92;
+          }
+        } else {
+          n.energy *= 0.92;
+        }
+
+        n.px = px;
+        n.py = py;
+        n.scale = scale;
+        n.depthAlpha = Math.max(0.08, Math.min(1, (baseRadius * 1.25 - rz2) / (baseRadius * 2.2)));
+      }
+
+      ctx.lineWidth = 0.85;
+      for (let i = 0; i < edges.length; i++) {
+        const [aIdx, bIdx] = edges[i];
+        const a = nodes[aIdx];
+        const b = nodes[bIdx];
+
+        const avgAlpha = (a.depthAlpha + b.depthAlpha) * 0.5;
+        if (avgAlpha < 0.12) continue;
+
+        const energyBoost = (a.energy + b.energy) * 0.5;
+        const lineAlpha = avgAlpha * 0.24 + energyBoost * 0.48;
+
+        ctx.beginPath();
+        ctx.moveTo(a.px, a.py);
+        ctx.lineTo(b.px, b.py);
+        ctx.strokeStyle =
+          energyBoost > 0.1
+            ? `rgba(125, 211, 252, ${lineAlpha})`
+            : `rgba(56, 189, 248, ${lineAlpha})`;
+        ctx.stroke();
+      }
+
+      ctx.save();
+      ctx.globalCompositeOperation = 'lighter';
+
+      for (let i = 0; i < pulses.length; i++) {
+        const p = pulses[i];
+        if (!prefersReducedMotion) {
+          p.progress += p.speed * speedBoost;
+        }
+
+        if (p.progress >= 1) {
+          const nextNeighbours = adjacency[p.toIdx];
+          p.fromIdx = p.toIdx;
+          p.toIdx =
+            nextNeighbours && nextNeighbours.length > 0
+              ? nextNeighbours[Math.floor(Math.random() * nextNeighbours.length)]
+              : (p.fromIdx + 1) % NODE_COUNT;
+          p.progress = 0;
+        }
+
+        const fromNode = nodes[p.fromIdx];
+        const toNode = nodes[p.toIdx];
+        const pulseVisibility = (fromNode.depthAlpha + toNode.depthAlpha) * 0.5;
+
+        if (pulseVisibility > 0.28) {
+          const curX = fromNode.px + (toNode.px - fromNode.px) * p.progress;
+          const curY = fromNode.py + (toNode.py - fromNode.py) * p.progress;
+
+          const tailProg = Math.max(0, p.progress - 0.32);
+          const tailX = fromNode.px + (toNode.px - fromNode.px) * tailProg;
+          const tailY = fromNode.py + (toNode.py - fromNode.py) * tailProg;
+
+          const grad = ctx.createLinearGradient(tailX, tailY, curX, curY);
+          grad.addColorStop(0, 'rgba(56, 189, 248, 0)');
+          grad.addColorStop(1, `rgba(186, 230, 253, ${pulseVisibility * 0.95})`);
+
+          ctx.beginPath();
+          ctx.moveTo(tailX, tailY);
+          ctx.lineTo(curX, curY);
+          ctx.strokeStyle = grad;
+          ctx.lineWidth = 1.8;
+          ctx.stroke();
+
+          ctx.beginPath();
+          ctx.arc(curX, curY, 1.9 * toNode.scale, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(224, 242, 254, ${pulseVisibility})`;
+          ctx.fill();
+        }
+      }
+
+      for (let i = 0; i < NODE_COUNT; i++) {
+        const n = nodes[i];
+        const r = (1.25 + n.energy * 1.8) * n.scale;
+        const alpha = n.depthAlpha * 0.65 + n.energy * 0.35;
+
+        ctx.beginPath();
+        ctx.arc(n.px, n.py, r, 0, Math.PI * 2);
+        ctx.fillStyle =
+          n.energy > 0.15
+            ? `rgba(224, 242, 254, ${Math.min(1, alpha + 0.2)})`
+            : `rgba(56, 189, 248, ${alpha})`;
+        ctx.fill();
+      }
+
+      ctx.restore();
+
+      if (!prefersReducedMotion) {
+        rafId = requestAnimationFrame(render);
+      }
+    };
+
+    const intersectionObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          isVisible = entry.isIntersecting;
+          if (isVisible) {
+            cancelAnimationFrame(rafId);
+            rafId = requestAnimationFrame(render);
+          } else {
+            cancelAnimationFrame(rafId);
+          }
+        });
+      },
+      { threshold: 0.05 }
+    );
+
+    intersectionObserver.observe(canvas);
+  }
+</script>
