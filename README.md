@@ -1,66 +1,75 @@
-# Portfolio - Lautaro Desouches
+# Portfolio — Lautaro Desouches
 
-Este repositorio contiene el código fuente de mi portafolio personal, desarrollado con tecnologías web modernas para garantizar alto rendimiento, accesibilidad y una experiencia de usuario fluida.
+Código fuente del portafolio personal de Lautaro Desouches. Arquitectura web moderna orientada a máximo rendimiento (Lighthouse 100/100), accesibilidad WCAG y cero JavaScript innecesario en cliente.
 
-## 🚀 Tecnologías
+## 🚀 Stack Tecnológico
 
-El proyecto está construido sobre un stack robusto y moderno:
-
-- **Framework**: [Next.js 16](https://nextjs.org/) (App Router)
-- **Lenguaje**: [TypeScript](https://www.typescriptlang.org/)
-- **Estilos**: [Tailwind CSS 4](https://tailwindcss.com/)
-- **Animaciones**: [Framer Motion](https://www.framer.com/motion/)
-- **Testing E2E**: [Playwright](https://playwright.dev/)
-- **Iconos**: [React Icons](https://react-icons.github.io/react-icons/)
-- **Temas**: [Next Themes](https://github.com/pacocoursey/next-themes) (Soporte Dark/Light mode)
+- **Framework**: [Astro 5](https://astro.build/) (Static Site Generation / Architecture of Islands)
+- **Lenguaje**: [TypeScript](https://www.typescriptlang.org/) (Strict Mode)
+- **Estilos**: CSS3 Puro & CSS Modules con convención BEM
+- **Animaciones**: [GSAP 3](https://greensock.com/gsap/) (ScrollTrigger)
+- **Iconografía**: [Lucide Astro](https://lucide.dev/)
+- **Tipografías**: Self-hosted locales (Clash Display, General Sans, JetBrains Mono)
+- **Package Manager**: [pnpm](https://pnpm.io/)
 
 ## 🛠️ Instalación y Uso
 
 ### Prerrequisitos
 
-Asegúrate de tener instalado Node.js y [pnpm](https://pnpm.io/).
+- Node.js 20+
+- [pnpm](https://pnpm.io/)
 
 ### Pasos
 
-1. **Clonar el repositorio:**
-
+1. Clonar el repositorio:
 ```bash
-git clone <url-del-repositorio>
+git clone https://github.com/lautarodesouches/lautarodesouches-com.git
 cd lautarodesouches-com
 ```
 
-2. **Instalar dependencias:**
-
+2. Instalar dependencias:
 ```bash
 pnpm install
 ```
 
-3. **Correr el servidor de desarrollo:**
-
+3. Iniciar el servidor de desarrollo:
 ```bash
 pnpm dev
 ```
 
-Abre [http://localhost:3000](http://localhost:3000) en tu navegador para ver el resultado.
+4. Construir para producción:
+```bash
+pnpm build
+```
+
+5. Previsualizar la build de producción:
+```bash
+pnpm preview
+```
 
 ## 📜 Scripts Disponibles
 
-- `pnpm dev`: Inicia el servidor de desarrollo.
-- `pnpm build`: Construye la aplicación para producción.
-- `pnpm start`: Inicia el servidor de producción.
-- `pnpm lint`: Ejecuta el linter (ESLint).
-- `pnpm test:e2e`: Ejecuta los tests end-to-end con Playwright.
-- `pnpm test:e2e:ui`: Abre la interfaz interactiva de Playwright para los tests.
+- `pnpm dev`: Inicia el servidor local de desarrollo.
+- `pnpm build`: Genera la compilación estática de producción en `dist/`.
+- `pnpm preview`: Sirve localmente el directorio `dist/`.
+- `pnpm check`: Ejecuta la verificación estricta de tipos con TypeScript (`tsc --noEmit`).
 
 ## 📂 Estructura del Proyecto
 
-El proyecto utiliza la estructura recomendada por Next.js con el App Router:
-
-- `src/app`: Rutas, páginas y layouts.
-- `src/components`: Componentes reutilizables.
-- `public`: Archivos estáticos.
-- `tests`: Tests E2E con Playwright.
+```
+├── public/              # Tipografías WOFF2, capturas de proyectos y assets estáticos
+│   ├── fonts/
+│   └── projects/
+├── src/
+│   ├── components/      # Componentes UI reutilizables
+│   ├── data/            # Fuente de verdad de datos estructurados (portfolio.data.ts)
+│   ├── layouts/         # Layouts base (BaseLayout.astro)
+│   ├── pages/           # Rutas estáticas (index.astro)
+│   └── styles/          # Variables, reset y estilos globales (global.css)
+├── master-profile.json  # Datos maestros de trayectoria y perfil profesional
+└── astro.config.mjs     # Configuración de Astro e integraciones
+```
 
 ---
 
-Desarrollado por [Lautaro Desouches](https://lautarodesouches.com)
+Desarrollado por [Lautaro Desouches](https://lautarodesouches.com).
