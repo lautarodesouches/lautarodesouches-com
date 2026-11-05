@@ -1,0 +1,102 @@
+---
+interface Props {
+  activeId?: string
+}
+
+const { activeId = 'default' } = Astro.props
+
+const links = [
+  { href: '/', label: '/', id: 'default' },
+  { href: '/v/1', label: 'v1', id: '1' },
+  { href: '/v/2', label: 'v2', id: '2' },
+  { href: '/v/3', label: 'v3', id: '3' },
+  { href: '/v/4', label: 'v4', id: '4' },
+]
+---
+
+<nav class="theme-switcher-badge" aria-label="Selector de paleta de color">
+  <span class="theme-switcher-label">PALETA</span>
+  <div class="theme-switcher-links">
+    {
+      links.map((link) => {
+        const isActive = activeId === link.id || (activeId === 'default' && link.id === 'default')
+        return (
+          <a
+            href={link.href}
+            class:list={['theme-switcher-link', { 'theme-switcher-link--active': isActive }]}
+          >
+            {link.label}
+          </a>
+        )
+      })
+    }
+  </div>
+</nav>
+
+<style>
+  .theme-switcher-badge {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    z-index: 999;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.35rem 0.6rem;
+    background: rgba(8, 11, 16, 0.72);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--border-subtle);
+    border-radius: 9999px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    user-select: none;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
+  }
+
+  .theme-switcher-label {
+    color: var(--text-muted);
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    padding-left: 0.25rem;
+  }
+
+  .theme-switcher-links {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.2rem;
+  }
+
+  .theme-switcher-link {
+    color: var(--text-secondary);
+    text-decoration: none;
+    padding: 0.2rem 0.45rem;
+    border-radius: 9999px;
+    transition: color 0.15s ease, background-color 0.15s ease;
+  }
+
+  .theme-switcher-link:hover {
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  .theme-switcher-link--active {
+    color: var(--accent-cyan);
+    background: var(--accent-glow);
+    font-weight: 500;
+  }
+
+  @media (max-width: 640px) {
+    .theme-switcher-badge {
+      bottom: 1rem;
+      right: 1rem;
+      padding: 0.3rem 0.45rem;
+    }
+
+    .theme-switcher-label {
+      display: none;
+    }
+  }
+</style>
+
