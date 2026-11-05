@@ -9,15 +9,37 @@
 
 .hero__glow {
   position: absolute;
-  top: -10%;
+  top: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 900px;
-  height: 500px;
-  background: radial-gradient(ellipse at center, rgba(212, 255, 0, 0.04) 0%, rgba(0, 240, 255, 0.02) 45%, transparent 70%);
-  filter: blur(80px);
+  width: 100%;
+  max-width: 1200px;
+  height: 600px;
+  background: radial-gradient(
+    ellipse 70% 60% at 50% 0%,
+    rgba(212, 255, 0, 0.12) 0%,
+    rgba(212, 255, 0, 0.07) 25%,
+    rgba(212, 255, 0, 0.03) 50%,
+    rgba(0, 240, 255, 0.015) 70%,
+    transparent 100%
+  );
   pointer-events: none;
   z-index: 1;
+}
+
+.hero__glow::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 20%;
+  right: 20%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(212, 255, 0, 0.4) 50%,
+    transparent
+  );
 }
 
 .hero__container {
