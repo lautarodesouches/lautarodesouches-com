@@ -1,0 +1,242 @@
+---
+---
+
+<header class="header">
+  <div class="header__inner">
+    <div class="header__brand" id="header-brand">
+      <a href="#hero" class="header__brand-link" id="header-brand-link">
+        <span class="header__brand-roller">
+          <span class="header__brand-line header__brand-line--primary">Lautaro Desouches</span>
+          <span class="header__brand-line header__brand-line--secondary">Lautaro Desouches</span>
+        </span>
+      </a>
+    </div>
+
+    <div class="header__clock" id="header-clock">
+      <span class="header__clock-location">Buenos Aires, AR</span>
+      <span class="header__clock-separator">—</span>
+      <span class="header__clock-time" id="clock-display">00:00:00</span>
+      <span class="header__clock-tz">GMT-3</span>
+    </div>
+
+    <nav class="header__nav" aria-label="Navegación principal">
+      <ul class="header__nav-list">
+        <li><a href="#soluciones" class="header__nav-link">Soluciones</a></li>
+        <li><a href="#proyectos" class="header__nav-link">Proyectos</a></li>
+        <li><a href="#trayectoria" class="header__nav-link">Trayectoria</a></li>
+        <li><a href="#contacto" class="header__nav-link">Contacto</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<script>
+  import { gsap } from 'gsap'
+
+  const clockElement = document.getElementById('clock-display')
+  function updateClock() {
+    if (!clockElement) return
+    const now = new Date()
+    const formatter = new Intl.DateTimeFormat('es-AR', {
+      timeZone: 'America/Argentina/Buenos_Aires',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false,
+    })
+    clockElement.textContent = formatter.format(now)
+  }
+  updateClock()
+  setInterval(updateClock, 1000)
+
+  const brandLink = document.getElementById('header-brand-link')
+  const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+  if (!isReducedMotion && brandLink) {
+    const xTo = gsap.quickTo(brandLink, 'x', { duration: 0.4, ease: 'power3.out' })
+    const yTo = gsap.quickTo(brandLink, 'y', { duration: 0.4, ease: 'power3.out' })
+
+    brandLink.addEventListener('mousemove', (e: MouseEvent) => {
+      const rect = brandLink.getBoundingClientRect()
+      const centerX = rect.left + rect.width / 2
+      const centerY = rect.top + rect.height / 2
+      const deltaX = (e.clientX - centerX) * 0.35
+      const deltaY = (e.clientY - centerY) * 0.35
+      xTo(deltaX)
+      yTo(deltaY)
+    })
+
+    brandLink.addEventListener('mouseleave', () => {
+      xTo(0)
+      yTo(0)
+    })
+  }
+</script>
+
+<style>
+  .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    padding: 2rem 3rem;
+    pointer-events: none;
+  }
+
+  .header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    width: 100%;
+    max-width: 1720px;
+    margin: 0 auto;
+    pointer-events: auto;
+  }
+
+  .header__brand-link {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    cursor: pointer;
+    will-change: transform;
+  }
+
+  .header__brand-roller {
+    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    height: 1.25em;
+    line-height: 1.25em;
+    overflow: hidden;
+  }
+
+  .header__brand-line {
+    display: block;
+    height: 1.25em;
+    line-height: 1.25em;
+    transition: transform 450ms cubic-bezier(0.76, 0, 0.24, 1);
+  }
+
+  .header__brand-line--primary {
+    transform: translateY(0%);
+    color: var(--text-primary);
+  }
+
+  .header__brand-line--secondary {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translateY(100%);
+    color: var(--accent-cyan);
+  }
+
+  .header__brand-link:hover .header__brand-line--primary {
+    transform: translateY(-100%);
+  }
+
+  .header__brand-link:hover .header__brand-line--secondary {
+    transform: translateY(0%);
+  }
+
+  .header__clock {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    letter-spacing: 0.03em;
+    user-select: none;
+  }
+
+  .header__clock-separator {
+    color: var(--text-muted);
+  }
+
+  .header__clock-time {
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .header__clock-tz {
+    color: var(--text-muted);
+    font-size: 0.6875rem;
+  }
+
+  .header__nav-list {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .header__nav-link {
+    position: relative;
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color 200ms ease;
+    padding: 0.25rem 0;
+  }
+
+  .header__nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background-color: var(--accent-cyan);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .header__nav-link:hover {
+    color: var(--text-primary);
+  }
+
+  .header__nav-link:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  @media (max-width: 1024px) {
+    .header {
+      padding: 1.5rem 1.5rem;
+    }
+
+    .header__clock {
+      display: none;
+    }
+
+    .header__nav-list {
+      gap: 1.25rem;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .header {
+      padding: 1.25rem 1rem;
+    }
+
+    .header__nav-list {
+      gap: 0.875rem;
+    }
+
+    .header__nav-link {
+      font-size: 0.8125rem;
+    }
+  }
+</style>
