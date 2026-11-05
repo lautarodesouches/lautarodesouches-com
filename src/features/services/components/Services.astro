@@ -1,5 +1,5 @@
 ---
-import { Globe, Layers, Zap, CheckCircle2, ArrowRight } from 'lucide-astro'
+import { Globe, Layers, Zap, ArrowRight } from 'lucide-astro'
 import SectionTitle from '../../../shared/components/SectionTitle.astro'
 import Badge from '../../../shared/components/Badge.astro'
 import styles from '../styles/Services.module.css'
@@ -21,9 +21,9 @@ import { servicesData } from '../data/services.data'
             <div class={styles['services__card-header']}>
               <div class={styles['services__top-row']}>
                 <div class={styles['services__icon-wrap']}>
-                  {service.iconName === 'Globe' && <Globe size={22} />}
-                  {service.iconName === 'Layers' && <Layers size={22} />}
-                  {service.iconName === 'Zap' && <Zap size={22} />}
+                  {service.iconName === 'Globe' && <Globe size={20} />}
+                  {service.iconName === 'Layers' && <Layers size={20} />}
+                  {service.iconName === 'Zap' && <Zap size={20} />}
                 </div>
                 <Badge variant="primary" size="sm">
                   {service.badge}
@@ -37,7 +37,7 @@ import { servicesData } from '../data/services.data'
             <div class={styles.services__deliverables}>
               {service.deliverables.map((item) => (
                 <div class={styles['services__deliverable-item']}>
-                  <CheckCircle2 size={16} class={styles['services__deliverable-icon']} />
+                  <span class={styles['services__deliverable-bullet']} />
                   <span>{item}</span>
                 </div>
               ))}
@@ -45,7 +45,8 @@ import { servicesData } from '../data/services.data'
           </div>
 
           <div class={styles['services__impact-box']}>
-            <strong>Impacto esperado:</strong> {service.clientImpact}
+            <span class={styles['services__impact-label']}>Impacto comercial esperado:</span>
+            <span class={styles['services__impact-text']}>{service.clientImpact}</span>
           </div>
         </article>
       ))}
@@ -58,8 +59,13 @@ import { servicesData } from '../data/services.data'
           Analicemos la arquitectura adecuada y los plazos de entrega sin compromiso. Comunicación directa de desarrollador a cliente.
         </p>
       </div>
-      <a href="https://wa.me/541130111503" target="_blank" rel="noopener noreferrer" class={styles['services__cta-button']}>
-        <span>Consultar Viabilidad por WhatsApp</span>
+      <a
+        href="https://wa.me/541130111503?text=Hola%20Lautaro,%20estoy%20interesado%20en%20cotizar%20un%20proyecto%20web%20para%20mi%20empresa"
+        target="_blank"
+        rel="noopener noreferrer"
+        class={styles['services__cta-button']}
+      >
+        <span>Cotizar proyecto</span>
         <ArrowRight size={16} />
       </a>
     </div>
@@ -72,34 +78,33 @@ import { servicesData } from '../data/services.data'
 
   gsap.registerPlugin(ScrollTrigger)
 
-  const cards = document.querySelectorAll('[data-service-card]')
-  const banner = document.querySelector('[data-service-banner]')
+  const serviceCards = document.querySelectorAll('[data-service-card]')
+  const serviceBanner = document.querySelector('[data-service-banner]')
 
-  if (cards.length > 0) {
-    gsap.from(cards, {
+  if (serviceCards.length > 0) {
+    gsap.from(serviceCards, {
       scrollTrigger: {
         trigger: '#soluciones',
         start: 'top 80%',
       },
       opacity: 0,
-      y: 30,
-      duration: 0.7,
-      stagger: 0.15,
-      ease: 'power3.out',
+      y: 25,
+      duration: 0.8,
+      stagger: 0.12,
+      ease: 'power4.out',
     })
   }
 
-  if (banner) {
-    gsap.from(banner, {
+  if (serviceBanner) {
+    gsap.from(serviceBanner, {
       scrollTrigger: {
-        trigger: banner,
+        trigger: serviceBanner,
         start: 'top 85%',
       },
       opacity: 0,
       y: 20,
-      duration: 0.7,
-      ease: 'power3.out',
+      duration: 0.8,
+      ease: 'power4.out',
     })
   }
 </script>
-
