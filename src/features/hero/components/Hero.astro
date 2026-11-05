@@ -5,7 +5,7 @@ import styles from '../styles/Hero.module.css'
 import type { HeroData } from '../types'
 
 const heroData: HeroData = {
-  roleBadge: 'Lead Frontend & Full-Stack Systems Engineer',
+  roleBadge: 'Full Stack Engineer • Frontend Specialist',
   titleLine1: 'Ingeniería Web de Alto Rendimiento,',
   titleLine2: 'Interfaces de Precisión y Arquitectura Escalable.',
   subtitle:
@@ -14,28 +14,30 @@ const heroData: HeroData = {
     {
       value: '100/100',
       label: 'Core Web Vitals',
-      sublabel: 'Rendimiento y SEO auditado en producción',
+      sublabel: 'Rendimiento auditado en producción',
     },
     {
       value: '+5 Años',
       label: 'Experiencia Web',
-      sublabel: 'Construyendo productos SaaS y plataformas B2B',
+      sublabel: 'Desarrollando productos y SaaS B2B',
     },
     {
-      value: 'Strict TS',
-      label: 'Tipado Seguro',
-      sublabel: 'Cero tolerancia a any y contratos validados con Zod',
+      value: '100% TS',
+      label: 'Tipado Estricto',
+      sublabel: 'Cero any y contratos validados con Zod',
     },
     {
-      value: 'Remoto (GMT-3)',
-      label: 'Buenos Aires',
-      sublabel: 'Disponibilidad global y comunicación fluida en inglés C1',
+      value: 'GMT-3',
+      label: 'Remoto / Buenos Aires',
+      sublabel: 'Inglés C1 y disponibilidad global',
     },
   ],
 }
 ---
 
 <section class={styles.hero} id="hero">
+  <div class={styles.hero__glow} aria-hidden="true"></div>
+
   <div class={`container ${styles.hero__container}`}>
     <div class={styles.hero__content}>
       <div class={styles['hero__badge-wrap']} data-hero-element>
@@ -73,8 +75,10 @@ const heroData: HeroData = {
     <div class={styles.hero__metrics}>
       {heroData.metrics.map((metric) => (
         <div class={styles['hero__metric-card']} data-hero-metric>
-          <span class={styles['hero__metric-value']}>{metric.value}</span>
-          <span class={styles['hero__metric-label']}>{metric.label}</span>
+          <div class={styles['hero__metric-top']}>
+            <span class={styles['hero__metric-value']}>{metric.value}</span>
+            <span class={styles['hero__metric-label']}>{metric.label}</span>
+          </div>
           <span class={styles['hero__metric-sublabel']}>{metric.sublabel}</span>
         </div>
       ))}
