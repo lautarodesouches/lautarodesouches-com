@@ -1,20 +1,15 @@
 ---
-import Header from '../shared/components/Header.astro'
 import '../styles/global.css'
 
 interface Props {
   title?: string
   description?: string
-  ogImage?: string
 }
 
 const {
-  title = 'Lautaro Desouches — Lead Frontend & Full-Stack Systems Engineer',
-  description = 'Especialista en Arquitectura Web Full-Stack y Plataformas B2B con React, Next.js, Astro y Node.js. Código limpio, tipado estricto y resolución de cuellos de botella de negocio en producción.',
-  ogImage = '/icon.png',
+  title = 'Lautaro Desouches — Lead Frontend Architect & Full Stack Engineer',
+  description = 'Portfolio profesional de Lautaro Desouches. Especialista en Arquitectura Web, Astro, Next.js y Sistemas Full Stack.',
 } = Astro.props
-
-const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? 'https://lautarodesouches.com')
 ---
 
 <!doctype html>
@@ -22,40 +17,64 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? 'https://lautarod
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="canonical" href={canonicalURL} />
-
     <title>{title}</title>
     <meta name="description" content={description} />
-    <meta
-      name="keywords"
-      content="Full-Stack Developer, Systems Architect, Next.js, Node.js, NestJS, Java Spring Boot, TypeScript, Astro, High-Performance Web"
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link
+      rel="preload"
+      href="/fonts/clash-display-700.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin="anonymous"
     />
-    <meta name="author" content="Lautaro Desouches" />
-
-    <meta property="og:type" content="website" />
-    <meta property="og:locale" content="es_ES" />
-    <meta property="og:url" content={canonicalURL} />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:image" content={new URL(ogImage, Astro.site ?? 'https://lautarodesouches.com')} />
-
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={title} />
-    <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={new URL(ogImage, Astro.site ?? 'https://lautarodesouches.com')} />
-
-    <link rel="preload" href="/fonts/clash-display-700.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/fonts/general-sans-400.woff2" as="font" type="font/woff2" crossorigin />
-
-    <link rel="icon" href="/favicon.ico" />
-    <link rel="apple-touch-icon" href="/icon.png" />
-    <link rel="manifest" href="/site.webmanifest" />
+    <link
+      rel="preload"
+      href="/fonts/general-sans-400.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="preload"
+      href="/fonts/general-sans-600.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="preload"
+      href="/fonts/jetbrains-mono-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin="anonymous"
+    />
   </head>
   <body>
-    <div class="bg-grid"></div>
-    <Header />
-    <main>
-      <slot />
-    </main>
+    <slot />
+
+    <script>
+      import Lenis from 'lenis'
+      import { gsap } from 'gsap'
+      import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+      gsap.registerPlugin(ScrollTrigger)
+
+      const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+      if (!isReducedMotion) {
+        const lenis = new Lenis({
+          duration: 1.2,
+          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        })
+
+        lenis.on('scroll', ScrollTrigger.update)
+
+        gsap.ticker.add((time) => {
+          lenis.raf(time * 1000)
+        })
+
+        gsap.ticker.lagSmoothing(0)
+      }
+    </script>
   </body>
 </html>
