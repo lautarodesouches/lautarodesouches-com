@@ -1,0 +1,65 @@
+@import './fonts.css';
+@import './variables.css';
+@import './reset.css';
+
+::selection {
+  background-color: var(--color-accent);
+  color: var(--color-text-inverse);
+}
+
+::-webkit-scrollbar {
+  width: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg-base);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-bg-surface-elevated);
+  border-radius: var(--radius-full);
+  border: 2px solid var(--color-bg-base);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-border-strong);
+}
+
+.container {
+  width: 100%;
+  max-width: var(--container-max-width);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--container-padding);
+  padding-right: var(--container-padding);
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.bg-grid {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.018) 1px, transparent 1px);
+  background-size: 64px 64px;
+  background-position: -1px -1px;
+  mask-image: radial-gradient(ellipse at 50% 25%, black 40%, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse at 50% 25%, black 40%, transparent 80%);
+}

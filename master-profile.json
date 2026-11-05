@@ -1,0 +1,702 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "metadata": {
+        "candidate_name": "Lautaro Desouches",
+        "last_updated": "2026-08-26",
+        "language": "es",
+        "purpose": "Fuente única de verdad para la generación automatizada y personalizada de CVs"
+    },
+    "basics": {
+        "name": "Lautaro Desouches",
+        "location": {
+            "city": "Ramos Mejía",
+            "state": "Buenos Aires",
+            "country": "Argentina",
+            "availability": "Remoto / Híbrido CABA y GBA"
+        },
+        "contact": {
+            "email": "lautarodesouches@outlook.com",
+            "phone": "+54 11 3011-1503",
+            "website": "https://lautarodesouches.com",
+            "linkedin": "https://linkedin.com/in/lautarodesouches",
+            "github": "https://github.com/lautarodesouches"
+        },
+        "titles": [
+            "Full Stack Developer",
+            "Frontend Developer",
+            "Backend Developer",
+            "Desarrollador Web"
+        ],
+        "languages": [
+            {
+                "language": "Español",
+                "level": "Nativo"
+            },
+            {
+                "language": "Inglés",
+                "level": "Avanzado / Fluido (C1)",
+                "details": "Lectura técnica fluida, redacción avanzada y comunicación oral profesional en equipos multiculturales."
+            }
+        ]
+    },
+    "education": {
+        "core_degree": {
+            "institution": "Universidad Nacional de La Matanza (UNLaM)",
+            "location": "San Justo, Buenos Aires",
+            "degree": "Tecnicatura Universitaria en Desarrollo Web",
+            "period": "2021 -- 2025",
+            "status": "Graduado",
+            "relevant_subjects": [
+                "Programación Orientada a Objetos (Java / Spring)",
+                "Bases de Datos y Arquitectura SQL",
+                "Arquitectura de Aplicaciones Web y Seguridad",
+                "Estructuras de Datos y Algoritmos"
+            ]
+        },
+        "certifications_and_bootcamps": [
+            {
+                "institution": "Digital House",
+                "program": "Front End Specialist",
+                "period": "2024 -- 2025",
+                "topics": [
+                    "React Avanzado",
+                    "Next.js",
+                    "Gestión de Estado",
+                    "Optimización de Performance",
+                    "Microfrontends"
+                ]
+            },
+            {
+                "institution": "Digital House",
+                "program": "Certified Tech Developer",
+                "period": "2022 -- 2023",
+                "topics": [
+                    "Fundamentos de Ingeniería de Software",
+                    "Java",
+                    "Spring Boot",
+                    "SQL",
+                    "Testing",
+                    "Scrum"
+                ]
+            }
+        ],
+        "domain_specific_and_auxiliary": [
+            {
+                "institution": "Universidad Nacional de La Matanza (UNLaM)",
+                "degree": "Licenciatura en Relaciones Laborales",
+                "period": "2017 -- 2021",
+                "status": "Ciclo básico formativo completado",
+                "target_industries": [
+                    "HR-Tech",
+                    "Plataformas de Nómina / Liquidación",
+                    "Herramientas de Gestión Interna",
+                    "SaaS Corporativo"
+                ]
+            },
+            {
+                "institution": "Instituto Don Bosco",
+                "degree": "Bachiller en Ciencias Sociales y Humanidades",
+                "period": "2016",
+                "status": "Graduado"
+            }
+        ],
+        "short_courses_and_specializations": [
+            {
+                "institution": "CoderHouse",
+                "course": "Desarrollo de Aplicaciones Móviles (React Native)",
+                "year": "2022"
+            },
+            {
+                "institution": "CoderHouse",
+                "course": "ReactJS Avanzado",
+                "year": "2022"
+            },
+            {
+                "institution": "CoderHouse",
+                "course": "Angular",
+                "year": "2022"
+            },
+            {
+                "institution": "FIUBA (Universidad de Buenos Aires)",
+                "course": "Python Básico",
+                "year": "2020"
+            },
+            {
+                "institution": "Universidad Nacional de La Matanza (UNLaM)",
+                "course": "Administración de Personal: Sueldos y Jornales",
+                "year": "2017"
+            }
+        ]
+    },
+    "work_experience": [
+        {
+            "id": "independent_consultant",
+            "role": "Desarrollador Full Stack / Backend / Frontend (Freelance - Consultor Independiente)",
+            "company": "Proyectos Comerciales y Productos SaaS",
+            "location": "Buenos Aires, Argentina (Remoto)",
+            "period": "Enero 2019 -- Actualidad",
+            "summary": "Desarrollo integral de soluciones de software: relevamiento de requerimientos, diseño de arquitectura, desarrollo backend y frontend, testing automatizado y despliegues en producción.",
+            "bullet_pool": [
+                {
+                    "id": "exp_arch_ts_next",
+                    "tag": "fullstack_architecture",
+                    "text": "Desarrollo de aplicaciones web escalables y plataformas B2B utilizando React, Next.js (App Router), TypeScript y Node.js/NestJS bajo arquitecturas limpias y modulares.",
+                    "keywords": [
+                        "React",
+                        "Next.js",
+                        "TypeScript",
+                        "Node.js",
+                        "NestJS",
+                        "Arquitectura"
+                    ]
+                },
+                {
+                    "id": "exp_backend_apis_sql",
+                    "tag": "backend_persistence",
+                    "text": "Diseño e implementación de servicios backend y APIs RESTful seguras con Node.js, NestJS y persistencia en bases de datos relacionales (SQL) mediante ORMs (Prisma), validación estricta con Zod y manejo eficiente de caché.",
+                    "keywords": [
+                        "Node.js",
+                        "NestJS",
+                        "APIs REST",
+                        "SQL",
+                        "PostgreSQL",
+                        "Prisma",
+                        "Zod",
+                        "Backend"
+                    ]
+                },
+                {
+                    "id": "exp_java_spring",
+                    "tag": "java_backend",
+                    "text": "Arquitectura y desarrollo de microservicios backend y endpoints empresariales en Java y Spring Boot con persistencia relacional SQL y mapeo con Hibernate.",
+                    "keywords": [
+                        "Java",
+                        "Spring Boot",
+                        "Hibernate",
+                        "Microservicios",
+                        "SQL",
+                        "Backend"
+                    ]
+                },
+                {
+                    "id": "exp_testing_qa",
+                    "tag": "qa_testing",
+                    "text": "Implementación de suites de pruebas automatizadas (unitarias, integración y end-to-end) con Vitest y Playwright, garantizando estabilidad y cero regresiones en despliegues a producción.",
+                    "keywords": [
+                        "Vitest",
+                        "Playwright",
+                        "Testing",
+                        "Pruebas Unitarias",
+                        "E2E",
+                        "Calidad de Software"
+                    ]
+                },
+                {
+                    "id": "exp_cicd_devops",
+                    "tag": "devops_cloud",
+                    "text": "Automatización de flujos de integración y despliegue continuo (CI/CD) mediante GitHub Actions y Git Hooks hacia servidores Linux VPS y entornos Cloud.",
+                    "keywords": [
+                        "CI/CD",
+                        "GitHub Actions",
+                        "Docker",
+                        "Linux VPS",
+                        "PM2",
+                        "DevOps"
+                    ]
+                },
+                {
+                    "id": "exp_performance_cwv",
+                    "tag": "frontend_performance",
+                    "text": "Auditoría y optimización de Core Web Vitals en plataformas cliente, alcanzando puntuaciones de 100/100 en Google Lighthouse y reduciendo el tiempo de carga a LCP < 2.5s.",
+                    "keywords": [
+                        "Core Web Vitals",
+                        "Lighthouse",
+                        "Performance",
+                        "LCP",
+                        "SEO Técnico",
+                        "Optimización"
+                    ]
+                },
+                {
+                    "id": "exp_react_performance_optimization",
+                    "tag": "react_performance",
+                    "text": "Optimización del rendimiento de SPAs en React mediante refactorización de componentes existentes, aplicando React.memo, useMemo y useCallback para eliminar re-renders innecesarios, e implementando code splitting con React.lazy y Suspense para reducir el bundle inicial y mejorar los tiempos de carga interactivos.",
+                    "keywords": [
+                        "React.memo",
+                        "useMemo",
+                        "useCallback",
+                        "React.lazy",
+                        "Suspense",
+                        "Code Splitting",
+                        "Performance",
+                        "Escalabilidad",
+                        "Renderizado"
+                    ]
+                },
+                {
+                    "id": "exp_styled_components_ui",
+                    "tag": "styled_components_ui",
+                    "text": "Implementación de sistemas de UI componetizados con Styled Components, asegurando coherencia visual, theming dinámico, responsive design y aislamiento de estilos en aplicaciones React a escala.",
+                    "keywords": [
+                        "Styled Components",
+                        "CSS-in-JS",
+                        "Theming",
+                        "Responsive Design",
+                        "UI Components",
+                        "React"
+                    ]
+                },
+                {
+                    "id": "exp_tracking_marketing",
+                    "tag": "analytics_tracking",
+                    "text": "Integración de eventos de analítica y trazabilidad de conversiones mediante Google Tag Manager, GA4 y webhooks para la toma de decisiones basada en datos.",
+                    "keywords": [
+                        "Google Tag Manager",
+                        "GA4",
+                        "Analítica",
+                        "Tracking",
+                        "Google Ads"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "coderhouse_mentorship",
+            "role": "Tutor / Asistente Técnico (React Native)",
+            "company": "CoderHouse",
+            "location": "Buenos Aires, Argentina (Remoto)",
+            "period": "2022",
+            "summary": "Tutoría técnica a estudiantes en desarrollo de aplicaciones móviles con React Native, realizando corrección de proyectos, code reviews y soporte en vivo.",
+            "bullet_pool": [
+                {
+                    "id": "mentor_code_review",
+                    "tag": "mentorship_leadership",
+                    "text": "Mentoría técnica y revisiones de código (code reviews) para estudiantes en desarrollo de aplicaciones móviles con React Native y JavaScript.",
+                    "keywords": [
+                        "React Native",
+                        "Mentoría",
+                        "Code Review",
+                        "Mobile"
+                    ]
+                }
+            ],
+            "use_when": "Incluir ÚNICAMENTE si la búsqueda requiere roles de liderazgo técnico, mentoría, docencia o desarrollo mobile (React Native)."
+        }
+    ],
+    "projects": [
+        {
+            "id": "appointment-scheduler-api-java",
+            "title": "API de Gestión de Turnos y Disponibilidad Horaria",
+            "year": "2026",
+            "domain": "Servicios / Gestión Interna",
+            "target_roles": [
+                "Java Developer Ssr",
+                "Backend Developer",
+                "Java Software Engineer"
+            ],
+            "stack_highlight": [
+                "Java 21",
+                "Spring Boot 3",
+                "Spring Data JPA",
+                "PostgreSQL",
+                "Maven",
+                "JUnit 5",
+                "Mockito"
+            ],
+            "summary": "API REST desarrollada en Spring Boot para la reserva y administración de turnos. Centraliza la agenda de múltiples profesionales, calcula franjas horarias libres según reglas de disponibilidad y previene reservas duplicadas.",
+            "bullet_points": [
+                "Desarrolló una API REST modular en Java 21 y Spring Boot 3 para la consulta de disponibilidad y reserva de turnos, implementando validaciones de solapamiento horario con la API java.time.",
+                "Modeló la capa de datos en PostgreSQL con Spring Data JPA, utilizando relaciones relacionales y consultas personalizadas con JPQL para filtrar turnos por estado, rango de fechas y profesional.",
+                "Centralizó el manejo de errores mediante @RestControllerAdvice y construyó pruebas unitarias con JUnit 5 y Mockito para validar casos límite de cancelación y reservas simultáneas."
+            ],
+            "interview_story": {
+                "scenario": "El cliente tenía problemas recurrentes donde dos clientes reservaban en el mismo horario con el mismo profesional debido a validaciones débiles en su sistema previo.",
+                "key_decision": "Implementé una validación en la capa de servicio combinada con un índice único condicional en la base de datos (profesional + fecha_hora). De esta forma aseguré que, incluso si dos peticiones llegaban casi al mismo milisegundo, la base de datos rechazara la segunda con un error controlado sin corromper la agenda."
+            }
+        },
+        {
+            "id": "ecommerce-event-driven-microservices",
+            "title": "Plataforma E-Commerce Orientada a Eventos y Dashboard Reactivo",
+            "year": "2026",
+            "domain": "E-commerce / Retail",
+            "target_roles": [
+                "Fullstack Engineer",
+                "Backend Node.js Sr",
+                "Microservices Architect"
+            ],
+            "stack_highlight": [
+                "NestJS",
+                "PostgreSQL",
+                "Redis",
+                "BullMQ",
+                "React",
+                "Vite",
+                "WebSockets"
+            ],
+            "summary": "Evolución de un backend monolítico hacia una arquitectura asíncrona basada en eventos con colas persistentes. Garantiza sincronización de inventario en tiempo real sin bloquear procesos principales.",
+            "bullet_points": [
+                "Implementé un patrón de colas persistentes con BullMQ y Redis para manejar picos de tráfico y operaciones pesadas de forma asíncrona.",
+                "Ganticé la consistencia de datos diseñando consumidores (Workers) con idempotencia, previniendo mutaciones duplicadas ante fallos de red.",
+                "Diseñé un Gateway de WebSockets para invalidación híbrida, permitiendo a la UI reaccionar a cambios de stock en tiempo real sin polling constante."
+            ],
+            "interview_story": {
+                "scenario": "El sistema monolítico original bloqueaba el hilo principal al procesar órdenes complejas y notificaba pobremente al frontend sobre la falta de stock.",
+                "key_decision": "Separé lógicamente el catálogo de la bodega introduciendo BullMQ para comunicación asíncrona, y WebSockets para que el frontend (React Query) invalide su caché proactivamente al finalizar procesos pesados, logrando una UX reactiva y un backend resiliente."
+            }
+        },
+        {
+            "id": "b2b-wholesale-platform-nextjs",
+            "title": "Plataforma Mayorista B2B y Catálogo Digital",
+            "year": "2026",
+            "domain": "E-commerce / B2B",
+            "target_roles": [
+                "Frontend Developer Sr",
+                "Full Stack Developer",
+                "Next.js Engineer"
+            ],
+            "stack_highlight": [
+                "Next.js 16",
+                "TypeScript",
+                "Zustand",
+                "Tailwind CSS",
+                "Prisma",
+                "Playwright",
+                "Vitest"
+            ],
+            "summary": "Plataforma mayorista con panel de administración para reordenamiento de productos y sincronización global. Optimizada con las últimas características de React y Next.js App Router.",
+            "bullet_points": [
+                "Desarrollé un motor administrativo de ordenamiento drag & drop que impacta de forma atómica en el catálogo público, interno y en la generación de PDFs.",
+                "Automaticé pipelines de calidad mediante Git Hooks (Husky) para obligar a pasar linters, chequeos de tipos y tests antes de cada push.",
+                "Implementé cobertura E2E con Playwright y pruebas unitarias con Vitest, resguardando flujos críticos como login y checkout."
+            ],
+            "interview_story": {
+                "scenario": "Los administradores necesitaban priorizar visualmente productos en múltiples plataformas (web y PDF) de manera sencilla, centralizada y atómica.",
+                "key_decision": "Implementé un motor Drag & Drop global con @dnd-kit conectado a Server Actions y Prisma, asegurando que un solo reordenamiento impacte simultáneamente en todos los puntos de contacto del ecosistema sin re-despliegues."
+            }
+        },
+        {
+            "id": "cod-tracker-api-nestjs",
+            "title": "API de Gestión Cash-On-Delivery e Integración Multi-Red",
+            "year": "2025",
+            "domain": "Marketing / Finanzas",
+            "target_roles": [
+                "Backend Node.js Engineer",
+                "API Integrations Engineer"
+            ],
+            "stack_highlight": [
+                "NestJS",
+                "TypeScript",
+                "MariaDB",
+                "TypeORM",
+                "Docker",
+                "Swagger"
+            ],
+            "summary": "Backend robusto para orquestar operaciones COD (Cash on Delivery) y trazabilidad de leads. Centraliza la integración de múltiples redes de afiliados publicitarios en un único panel de control.",
+            "bullet_points": [
+                "Diseñé conectores API dedicados para sincronizar órdenes y prospectos con múltiples redes de afiliados de forma unificada.",
+                "Protegí endpoints críticos implementando guardias JWT, control de acceso basado en roles (RBAC) y limitación de peticiones (Rate Limiting).",
+                "Centralicé el formateo de respuestas y el manejo de errores mediante interceptores globales y filtros de excepciones HTTP en NestJS."
+            ],
+            "interview_story": {
+                "scenario": "Se requería centralizar la información de múltiples redes de afiliados publicitarios, cada una con su propia API y esquemas de datos dispares.",
+                "key_decision": "Diseñé una arquitectura modular en NestJS con conectores independientes (adapters) por cada red, estandarizando la data de entrada y salida hacia nuestra base de datos, lo que facilitó escalar a nuevas redes sin alterar el core del negocio."
+            }
+        },
+        {
+            "id": "cod-dashboard-nextjs",
+            "title": "Dashboard Administrativo de Métricas y Leads",
+            "year": "2024",
+            "domain": "Marketing / Finanzas / Analytics",
+            "target_roles": [
+                "Frontend React Developer",
+                "UI/UX Engineer"
+            ],
+            "stack_highlight": [
+                "Next.js 14",
+                "React 18",
+                "TypeScript",
+                "ApexCharts",
+                "Floating UI"
+            ],
+            "summary": "Interfaz unificada para la administración visual de métricas, finanzas y operaciones COD. Provee dashboards interactivos para la toma de decisiones basada en datos.",
+            "bullet_points": [
+                "Construí un panel interactivo centralizado integrando ApexCharts para visualizar KPIs y métricas clave de rendimiento en tiempo real.",
+                "Implementé flujos de acceso seguro y control de sesiones a través de middlewares de Next.js.",
+                "Organicé la aplicación utilizando una arquitectura basada en características (Feature-based) para facilitar la escalabilidad de nuevos módulos administrativos."
+            ],
+            "interview_story": {
+                "scenario": "El equipo de operaciones necesitaba visualizar y cruzar datos financieros y de prospectos que provenían de múltiples módulos (redes, ofertas, finanzas) en una sola vista.",
+                "key_decision": "Adopté una arquitectura Feature-based en Next.js que me permitió encapsular la complejidad de cada módulo de forma aislada, exponiendo únicamente componentes y hooks limpios para el Dashboard central."
+            }
+        },
+        {
+            "id": "social-dining-app-nextjs",
+            "title": "Red Social Gastronómica y de Reservas",
+            "year": "2025",
+            "domain": "Social / FoodTech",
+            "target_roles": [
+                "Frontend Next.js Developer",
+                "Full Stack Engineer"
+            ],
+            "stack_highlight": [
+                "Next.js 15",
+                "TypeScript",
+                "Firebase Auth",
+                "Google Maps API",
+                ".NET API"
+            ],
+            "summary": "Plataforma para descubrir y calificar restaurantes, conectando usuarios mediante perfiles sociales y mapas interactivos. Combina Firebase Auth con APIs externas y geolocalización.",
+            "bullet_points": [
+                "Implementé mapas interactivos integrando Google Maps API para facilitar el descubrimiento geolocalizado de establecimientos gastronómicos.",
+                "Integré múltiples métodos de autenticación (Google, Apple, Email) utilizando Firebase Auth, asegurando un inicio de sesión seguro y sin fricciones.",
+                "Diseñé un sistema de perfiles sociales donde los usuarios pueden seguir amigos y descubrir sus recomendaciones culinarias."
+            ],
+            "interview_story": {
+                "scenario": "La aplicación requería combinar funcionalidades sociales de tiempo real con geolocalización compleja y autenticación de usuarios transparente.",
+                "key_decision": "Desacoplé la gestión de identidades delegándola a Firebase Auth, mientras el consumo de datos de negocio y geolocalización se enrutó a un backend externo en .NET, unificando ambas fuentes mediante contextos nativos en React."
+            }
+        },
+        {
+            "id": "leadforge-mobile-app",
+            "title": "Aplicación Móvil CRM para Seguimiento de Conversiones",
+            "year": "2026",
+            "domain": "Mobile / CRM",
+            "target_roles": [
+                "Mobile Developer",
+                "React Native Engineer"
+            ],
+            "stack_highlight": [
+                "Expo",
+                "React Native",
+                "TypeScript",
+                "TanStack Query",
+                "Socket.IO",
+                "React Native Skia"
+            ],
+            "summary": "Aplicación móvil para gestionar clientes potenciales (leads) y monitorear conversiones. Utiliza WebSockets para actualizaciones en vivo y arquitecturas modernas en React Native.",
+            "bullet_points": [
+                "Construí una aplicación móvil de alto rendimiento habilitando la Nueva Arquitectura de React Native y renderizado gráfico avanzado con Skia.",
+                "Implementé sincronización de datos y métricas en tiempo real conectando el cliente móvil mediante Socket.IO.",
+                "Gestioné notificaciones push locales y remotas utilizando Expo Notifications para mantener a los usuarios informados sobre nuevas conversiones al instante."
+            ],
+            "interview_story": {
+                "scenario": "Los usuarios de negocio necesitaban actualizaciones instantáneas de sus ventas y notificaciones inmediatas en sus teléfonos, consumiendo APIs tradicionales y WebSockets en paralelo.",
+                "key_decision": "Utilicé TanStack Query para el manejo de estado asíncrono y caché HTTP, integrándolo armónicamente con Socket.IO para actualizar proactivamente la caché local cada vez que llegaba un evento en vivo, evitando requests innecesarios."
+            }
+        },
+        {
+            "id": "leadforge-api-nestjs",
+            "title": "Backend CRM de Tracking y Envíos Offline a Ads",
+            "year": "2026",
+            "domain": "CRM / AdTech",
+            "target_roles": [
+                "Backend Engineer",
+                "Node.js Architect"
+            ],
+            "stack_highlight": [
+                "NestJS",
+                "TypeScript",
+                "TypeORM",
+                "MariaDB",
+                "Socket.IO"
+            ],
+            "summary": "Backend para rastreo de leads, tracking UTM y envíos de conversiones offline hacia redes publicitarias. Utiliza colas de tareas persistentes para manejar reintentos y evitar pérdidas de datos.",
+            "bullet_points": [
+                "Desarrollé un sistema persistente de colas basado en base de datos para procesar conversiones offline con reintentos exponenciales (Exponential Backoff).",
+                "Implementé mecanismos de deduplicación agresivos validando IDs externos (ej. gclid) para prevenir fraudes publicitarios o 'click spamming'.",
+                "Integré WebSockets con Socket.IO para emitir eventos de micro-conversiones en tiempo real hacia los dashboards y aplicaciones clientes."
+            ],
+            "interview_story": {
+                "scenario": "El envío de conversiones Server-to-Server hacia redes publicitarias fallaba esporádicamente por latencias de red o cuotas de API, resultando en pérdida de ingresos.",
+                "key_decision": "Diseñé un sistema de colas (Queue) en MariaDB con 'Exponential Backoff' que reintenta silenciosamente los envíos fallidos aumentando el retraso entre cada intento, garantizando el 100% de la entrega sin bloquear el hilo de ejecución principal."
+            }
+        },
+        {
+            "id": "ai-medical-transcription-backend",
+            "title": "API de Transcripción y Análisis Clínico Asistido por IA",
+            "year": "2026",
+            "domain": "HealthTech / AI",
+            "target_roles": [
+                "AI Integration Engineer",
+                "Backend Developer Sr"
+            ],
+            "stack_highlight": [
+                "NestJS",
+                "TypeScript",
+                "Prisma",
+                "MySQL",
+                "Whisper",
+                "DeepSeek LLM"
+            ],
+            "summary": "Sistema backend que procesa audios médicos, transcribe diagnósticos mediante modelos Whisper y genera reportes clínicos estructurados interactuando dinámicamente con LLMs.",
+            "bullet_points": [
+                "Desarrollé un pipeline seguro de subida de archivos (multipart/form-data) que valida firmas binarias y transcribe utilizando Groq Whisper.",
+                "Implementé algoritmos de 'Rolling Summaries' para comprimir el contexto histórico, optimizando drásticamente el consumo de tokens del LLM de DeepSeek.",
+                "Automaticé la generación de reportes médicos estructurados interactuando dinámicamente con la IA para detectar vacíos de información durante la consulta."
+            ],
+            "interview_story": {
+                "scenario": "Los médicos grababan evoluciones largas que excedían rápidamente la ventana de contexto de los modelos LLM, provocando pérdida de información histórica del paciente y altos costos.",
+                "key_decision": "Implementé un patrón de 'Rolling Summaries', donde el backend consolida y resume iterativamente los fragmentos previos antes de enviarlos al modelo principal, manteniendo intacto el contexto clínico y reduciendo la carga computacional."
+            }
+        },
+        {
+            "id": "ssr-content-platform-seo",
+            "title": "Plataforma de Contenido SSR Optimizada para SEO",
+            "year": "2026",
+            "domain": "Publishing / SEO",
+            "target_roles": [
+                "Frontend Engineer",
+                "SEO Technical Specialist"
+            ],
+            "stack_highlight": [
+                "Next.js 16",
+                "TypeScript",
+                "Tailwind CSS",
+                "Zod",
+                "Content Collections",
+                "Playwright"
+            ],
+            "summary": "Plataforma SSR/SSG de alto rendimiento enfocada en publicación masiva. Integra validación estricta de contenido MDX, auditorías automatizadas y lógica de geolocalización en nodos Edge.",
+            "bullet_points": [
+                "Diseñé un motor de contenido MDX con validación estricta usando Content Collections y Zod para garantizar la integridad estructural de los artículos antes de compilar.",
+                "Optimicé el enrutamiento y las peticiones de consentimiento de privacidad ejecutando lógica de geolocalización directamente en los nodos Edge de Cloudflare.",
+                "Automaticé auditorías de SEO estructural y comprobación de enlaces rotos mediante scripts personalizados integrados en el pipeline de CI/CD."
+            ],
+            "interview_story": {
+                "scenario": "El procesamiento de cientos de archivos Markdown escritos por editores frecuentemente contenía errores de formato silentes que terminaban rompiendo los builds de Next.js en producción.",
+                "key_decision": "Adopté @content-collections/core con esquemas estrictos tipados en Zod. Si un artículo omite metadatos obligatorios o viola reglas de estructura interna, el proceso de compilación falla de forma temprana y controlada, protegiendo así el entorno productivo."
+            }
+        },
+        {
+            "id": "recipe-catalog-nextjs",
+            "title": "Catálogo Web Digital de Recetas y Artículos del Hogar",
+            "year": 2025,
+            "domain": "Content / E-commerce",
+            "target_roles": [
+                "Frontend React Developer",
+                "UI Developer"
+            ],
+            "stack_highlight": [
+                "Next.js 15",
+                "React 19",
+                "TypeScript",
+                "CSS Modules",
+                "Google Tag Manager"
+            ],
+            "summary": "Aplicación web moderna orientada a la exploración visual de productos y recetas. Construida sobre Next.js App Router empleando un sistema de diseño custom sin dependencias que bloqueen el renderizado.",
+            "bullet_points": [
+                "Construí un sistema de diseño 100% personalizado mediante CSS Variables y CSS Modules, logrando altísima performance sin frameworks de estilos pesados.",
+                "Integré herramientas de marketing y tracking (Google Tag Manager, Google Analytics) utilizando el paquete nativo y optimizado @next/third-parties.",
+                "Estructuré el código bajo un enfoque modular orientado a 'features', aislando limpiamente la lógica del catálogo de las herramientas de rastreo."
+            ],
+            "interview_story": {
+                "scenario": "El negocio requería un diseño visual sumamente específico y al mismo tiempo tiempos de carga casi instantáneos, por lo que frameworks de utilidades como Tailwind o librerías de componentes UI añadían un sobrepeso innecesario.",
+                "key_decision": "Decidí construir un mini sistema de diseño apoyado puramente en CSS Modules y Custom Properties (variables), lo que resultó en un bundle final ultra-liviano y métricas de Core Web Vitals excelentes."
+            }
+        },
+        {
+            "id": "inventory-pricing-backend",
+            "title": "API de Gestión de Precios e Inventario Local",
+            "year": "2025",
+            "domain": "E-commerce / Retail",
+            "target_roles": [
+                "Backend Engineer",
+                "Node.js Developer"
+            ],
+            "stack_highlight": [
+                "Node.js",
+                "Express.js",
+                "TypeScript",
+                "TypeORM",
+                "MySQL",
+                "Bottleneck"
+            ],
+            "summary": "API REST construida bajo principios de Domain-Driven Design (DDD) para sincronizar precios y stock, con una integración agresiva pero controlada hacia plataformas de terceros.",
+            "bullet_points": [
+                "Estructuré el servicio de backend aplicando Domain-Driven Design con capas altamente cohesionadas: Controladores, Servicios y Repositorios.",
+                "Implementé mecanismos rigurosos de 'Rate Limiting' con la librería Bottleneck para asegurar el cumplimiento de las cuotas estrictas impuestas por APIs externas.",
+                "Diseñé un middleware global de Express para el manejo centralizado de errores, diferenciando excepciones operacionales de problemas de red mediante clases custom (AppError)."
+            ],
+            "interview_story": {
+                "scenario": "Las rutinas de actualización masiva de precios hacia las APIs externas superaban frecuentemente los límites de rate-limit, desencadenando bloqueos y baneos temporales (errores 429 Too Many Requests).",
+                "key_decision": "Introduje Bottleneck para envolver todas las llamadas de red salientes, orquestando una cola controlada con un delay forzado de 150ms y limitando la concurrencia a un solo hilo, garantizando sincronizaciones estables y eliminando penalizaciones por cuota."
+            }
+        }
+    ],
+    "technical_skills_inventory": {
+        "languages": [
+            "TypeScript",
+            "JavaScript (ES6+)",
+            "SQL",
+            "Java",
+            "C#",
+            "HTML5",
+            "CSS3",
+            "Python"
+        ],
+        "backend_and_cloud": [
+            "Node.js",
+            "NestJS",
+            "Express.js",
+            "Spring Boot",
+            "Hibernate",
+            "Prisma ORM",
+            "Diseño de APIs REST",
+            "PostgreSQL",
+            "MySQL",
+            "SQL Server",
+            "MongoDB",
+            "Firebase",
+            "AWS",
+            "Linux / Ubuntu VPS",
+            "Cloudflare"
+        ],
+        "frontend": [
+            "React.js",
+            "Next.js (App Router y Pages Router)",
+            "Tailwind CSS",
+            "Astro",
+            "Zustand",
+            "Redux Toolkit",
+            "Styled Components",
+            "Framer Motion",
+            "Vue.js",
+            "Angular",
+            "React Native",
+            "CSS Modules / BEM"
+        ],
+        "testing_devops_and_tools": [
+            "Vitest",
+            "Playwright (E2E)",
+            "Jest",
+            "Git / GitHub Flow",
+            "GitHub Actions (CI/CD)",
+            "Docker",
+            "PM2",
+            "Postman",
+            "Zod",
+            "Vercel / Netlify",
+            "Google Tag Manager / GA4",
+            "Figma"
+        ],
+        "methodologies_and_patterns": [
+            "Scrum / Kanban / Metodologías Ágiles",
+            "Clean Architecture y Principios SOLID",
+            "Arquitectura Basada en Componentes",
+            "Compound Pattern / Render Props / Custom Hooks",
+            "Optimización de Renderizado React (memo, useMemo, useCallback, lazy/Suspense)",
+            "Code Splitting y Carga Diferida (React.lazy)",
+            "Optimización de Core Web Vitals",
+            "SEO Técnico y Datos Estructurados"
+        ]
+    },
+    "agent_instructions": {
+        "anti_hallucination_rule": "La IA tiene terminantemente prohibido inventar carreras, títulos, empresas, métricas o tecnologías que no figuren explícitamente en este JSON.",
+        "stack_focus_routing": {
+            "backend_roles": "Priorizar el título Backend Developer, destacando Node.js, NestJS, Java, Spring Boot, APIs REST, SQL (Postgres/MySQL), Prisma, Docker y CI/CD.",
+            "frontend_roles": "Priorizar el título Frontend Developer, destacando React, Next.js (App Router), TypeScript, Tailwind CSS, Playwright, Vitest y Core Web Vitals.",
+            "fullstack_roles": "Priorizar el título Full Stack Developer, equilibrando Next.js, Node.js/NestJS, TypeScript, SQL, Testing y CI/CD.",
+            "hrtech_roles": "Incluir la formación en Relaciones Laborales y el curso de Sueldos y Jornales de UNLaM en la sección de educación."
+        }
+    }
+}

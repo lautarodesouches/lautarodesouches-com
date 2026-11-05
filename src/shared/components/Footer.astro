@@ -1,0 +1,74 @@
+---
+import { Github, Linkedin, Mail, MessageSquare, ArrowUpRight } from 'lucide-astro'
+import styles from '../styles/Footer.module.css'
+
+const currentYear = new Date().getFullYear()
+---
+
+<footer class={styles.footer}>
+  <div class={`container ${styles.footer__container}`}>
+    <div class={styles.footer__grid}>
+      <div class={styles.footer__brand}>
+        <div class={styles.footer__logo}>
+          <div class={styles.footer__monogram}>LD</div>
+          <span>Lautaro Desouches</span>
+        </div>
+        <p class={styles.footer__bio}>
+          Desarrollador Full Stack & Especialista Frontend. Creando interfaces web de alta precisión, sistemas escalables y soluciones con foco en performance de negocio.
+        </p>
+      </div>
+
+      <div class={styles.footer__group}>
+        <span class={styles['footer__group-title']}>Navegación</span>
+        <ul class={styles['footer__link-list']}>
+          <li><a href="#soluciones" class={styles.footer__link}>Soluciones para Empresas</a></li>
+          <li><a href="#proyectos" class={styles.footer__link}>Proyectos Destacados</a></li>
+          <li><a href="#stack" class={styles.footer__link}>Stack & Principios</a></li>
+          <li><a href="#trayectoria" class={styles.footer__link}>Trayectoria & Estudios</a></li>
+          <li><a href="#contacto" class={styles.footer__link}>Contacto</a></li>
+        </ul>
+      </div>
+
+      <div class={styles.footer__group}>
+        <span class={styles['footer__group-title']}>Conexiones</span>
+        <ul class={styles['footer__link-list']}>
+          <li>
+            <a href="https://linkedin.com/in/lautarodesouches" target="_blank" rel="noopener noreferrer" class={styles.footer__link}>
+              <Linkedin size={16} />
+              <span>LinkedIn</span>
+              <ArrowUpRight size={13} />
+            </a>
+          </li>
+          <li>
+            <a href="https://github.com/lautarodesouches" target="_blank" rel="noopener noreferrer" class={styles.footer__link}>
+              <Github size={16} />
+              <span>GitHub</span>
+              <ArrowUpRight size={13} />
+            </a>
+          </li>
+          <li>
+            <a href="https://wa.me/541130111503" target="_blank" rel="noopener noreferrer" class={styles.footer__link}>
+              <MessageSquare size={16} />
+              <span>WhatsApp</span>
+              <ArrowUpRight size={13} />
+            </a>
+          </li>
+          <li>
+            <a href="mailto:lautarodesouches@outlook.com" class={styles.footer__link}>
+              <Mail size={16} />
+              <span>Email directo</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class={styles.footer__bottom}>
+      <span>&copy; {currentYear} Lautaro Desouches. Todos los derechos reservados.</span>
+      <span class={styles['footer__tech-tag']}>
+        Diseñado con Astro + CSS Modules + GSAP
+      </span>
+    </div>
+  </div>
+</footer>
+

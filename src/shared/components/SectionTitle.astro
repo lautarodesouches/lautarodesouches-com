@@ -1,0 +1,34 @@
+---
+import styles from '../styles/SectionTitle.module.css'
+
+interface Props {
+  eyebrow?: string
+  title: string
+  description?: string
+  centered?: boolean
+  class?: string
+}
+
+const {
+  eyebrow,
+  title,
+  description,
+  centered = false,
+  class: className = '',
+} = Astro.props
+
+const containerClasses = [
+  styles['section-title'],
+  centered ? styles['section-title--centered'] : '',
+  className,
+].filter(Boolean).join(' ')
+---
+
+<div class={containerClasses}>
+  {eyebrow && <span class={styles['section-title__eyebrow']}>{eyebrow}</span>}
+  <h2 class={`${styles['section-title__heading']} ${styles['section-title__heading--gradient']}`}>
+    {title}
+  </h2>
+  {description && <p class={styles['section-title__description']}>{description}</p>}
+</div>
+

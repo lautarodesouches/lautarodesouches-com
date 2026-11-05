@@ -1,0 +1,40 @@
+.brand-glyph {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  flex-shrink: 0;
+  transition: transform var(--transition-fast);
+}
+
+.brand-glyph:hover {
+  transform: rotate(90deg);
+}
+
+.brand-glyph__svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.brand-glyph__path {
+  stroke: var(--color-text-primary);
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: stroke var(--transition-fast);
+}
+
+.brand-glyph:hover .brand-glyph__path {
+  stroke: var(--color-accent);
+}
+
+.brand-glyph__node {
+  fill: var(--color-accent);
+  transition: transform var(--transition-fast), filter var(--transition-fast);
+}
+
+.brand-glyph:hover .brand-glyph__node {
+  filter: drop-shadow(0 0 6px var(--color-accent));
+}

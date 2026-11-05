@@ -1,0 +1,78 @@
+---
+import { Github, ArrowUpRight } from 'lucide-astro'
+import SectionTitle from '../../../shared/components/SectionTitle.astro'
+import ProjectCard from './ProjectCard.astro'
+import styles from '../styles/Projects.module.css'
+import { portfolioData } from '../../../data/portfolio.data'
+
+const projects = portfolioData.projects
+---
+
+<section class={styles.projects} id="proyectos">
+  <div class="container">
+    <SectionTitle
+      eyebrow="Casos de Estudio & Producción"
+      title="Proyectos Destacados e Ingeniería de Software"
+      description="Selección de plataformas web, catálogos B2B y aplicaciones en producción. Soluciones completas diseñadas con código limpio, arquitectura testeable y métricas verificadas."
+    />
+
+    <div class={styles.projects__list}>
+      {projects.map((project, index) => (
+        <ProjectCard project={project} reversed={index % 2 === 1} />
+      ))}
+    </div>
+
+    <div class={styles['projects__footer-note']} data-projects-footer>
+      <p class={styles['projects__footer-text']}>
+        ¿Te interesa revisar código de microservicios backend, arquitecturas con colas en Redis o APIs en Spring Boot?
+      </p>
+      <a
+        href="https://github.com/lautarodesouches"
+        target="_blank"
+        rel="noopener noreferrer"
+        class={styles['projects__footer-link']}
+      >
+        <Github size={16} />
+        <span>Explorar GitHub</span>
+        <ArrowUpRight size={14} />
+      </a>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { gsap } from 'gsap'
+  import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+  gsap.registerPlugin(ScrollTrigger)
+
+  const cards = document.querySelectorAll('[data-project-card]')
+  const footerNote = document.querySelector('[data-projects-footer]')
+
+  cards.forEach((card) => {
+    gsap.from(card, {
+      scrollTrigger: {
+        trigger: card,
+        start: 'top 85%',
+      },
+      opacity: 0,
+      y: 40,
+      duration: 0.8,
+      ease: 'power3.out',
+    })
+  })
+
+  if (footerNote) {
+    gsap.from(footerNote, {
+      scrollTrigger: {
+        trigger: footerNote,
+        start: 'top 90%',
+      },
+      opacity: 0,
+      y: 20,
+      duration: 0.6,
+      ease: 'power3.out',
+    })
+  }
+</script>
+

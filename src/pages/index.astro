@@ -1,24 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
-import HeaderTactical from '../features/home/components/HeaderTactical.astro'
-import HeroDisruptive from '../features/home/components/HeroDisruptive.astro'
-import ProjectShowcase from '../features/home/components/ProjectShowcase.astro'
-import ArchitectureMatrix from '../features/home/components/ArchitectureMatrix.astro'
-import DirectActionFooter from '../features/home/components/DirectActionFooter.astro'
-import ThemeToggle from '../shared/components/ThemeToggle.astro'
-import '../styles/globals.css'
+import Hero from '../features/hero/components/Hero.astro'
 ---
 
-<BaseLayout
-  title="Lautaro Desouches | Arquitecto Frontend & Full-Stack Engineer"
-  description="Portfolio profesional de Lautaro Desouches. Especialista en arquitecturas frontend de alto rendimiento con Astro, Next.js, NestJS y Java Spring."
->
-  <HeaderTactical />
-  <main class="min-h-screen bg-surface text-foreground">
-    <HeroDisruptive />
-    <ProjectShowcase />
-    <ArchitectureMatrix />
-  </main>
-  <DirectActionFooter />
-  <ThemeToggle />
+<BaseLayout>
+  <Hero />
 </BaseLayout>

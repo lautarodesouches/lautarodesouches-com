@@ -1,0 +1,111 @@
+---
+import { ArrowRight, MessageSquare, Sparkles } from 'lucide-astro'
+import Badge from '../../../shared/components/Badge.astro'
+import styles from '../styles/Hero.module.css'
+import type { HeroData } from '../types'
+
+const heroData: HeroData = {
+  roleBadge: 'Lead Frontend & Full-Stack Systems Engineer',
+  titleLine1: 'Ingeniería Web de Alto Rendimiento,',
+  titleLine2: 'Interfaces de Precisión y Arquitectura Escalable.',
+  subtitle:
+    'Especialista en React, Next.js, Astro y Node.js/NestJS. Transformo requerimientos complejos en interfaces fluidas de conversión para empresas y sistemas robustos con tipado estricto para equipos técnicos.',
+  metrics: [
+    {
+      value: '100/100',
+      label: 'Core Web Vitals',
+      sublabel: 'Rendimiento y SEO auditado en producción',
+    },
+    {
+      value: '+5 Años',
+      label: 'Experiencia Web',
+      sublabel: 'Construyendo productos SaaS y plataformas B2B',
+    },
+    {
+      value: 'Strict TS',
+      label: 'Tipado Seguro',
+      sublabel: 'Cero tolerancia a any y contratos validados con Zod',
+    },
+    {
+      value: 'Remoto (GMT-3)',
+      label: 'Buenos Aires',
+      sublabel: 'Disponibilidad global y comunicación fluida en inglés C1',
+    },
+  ],
+}
+---
+
+<section class={styles.hero} id="hero">
+  <div class={`container ${styles.hero__container}`}>
+    <div class={styles.hero__content}>
+      <div class={styles['hero__badge-wrap']} data-hero-element>
+        <Badge variant="primary">
+          <Sparkles size={13} />
+          {heroData.roleBadge}
+        </Badge>
+      </div>
+
+      <h1 class={styles.hero__title} data-hero-element>
+        {heroData.titleLine1} <span class={styles['hero__title-accent']}>{heroData.titleLine2}</span>
+      </h1>
+
+      <p class={styles.hero__subtitle} data-hero-element>
+        {heroData.subtitle}
+      </p>
+
+      <div class={styles.hero__actions} data-hero-element>
+        <a href="#proyectos" class={`${styles.hero__btn} ${styles['hero__btn--primary']}`}>
+          <span>Ver Proyectos</span>
+          <ArrowRight size={17} />
+        </a>
+        <a
+          href="https://wa.me/541130111503?text=Hola%20Lautaro,%20estoy%20interesado%20en%20conversar%20sobre%20un%20proyecto%20web"
+          target="_blank"
+          rel="noopener noreferrer"
+          class={`${styles.hero__btn} ${styles['hero__btn--secondary']}`}
+        >
+          <MessageSquare size={17} />
+          <span>Cotizar por WhatsApp</span>
+        </a>
+      </div>
+    </div>
+
+    <div class={styles.hero__metrics}>
+      {heroData.metrics.map((metric) => (
+        <div class={styles['hero__metric-card']} data-hero-metric>
+          <span class={styles['hero__metric-value']}>{metric.value}</span>
+          <span class={styles['hero__metric-label']}>{metric.label}</span>
+          <span class={styles['hero__metric-sublabel']}>{metric.sublabel}</span>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  import { gsap } from 'gsap'
+
+  const heroElements = document.querySelectorAll('[data-hero-element]')
+  const heroMetrics = document.querySelectorAll('[data-hero-metric]')
+
+  if (heroElements.length > 0) {
+    gsap.from(heroElements, {
+      opacity: 0,
+      y: 20,
+      duration: 0.9,
+      stagger: 0.1,
+      ease: 'power4.out',
+    })
+  }
+
+  if (heroMetrics.length > 0) {
+    gsap.from(heroMetrics, {
+      opacity: 0,
+      y: 20,
+      duration: 0.9,
+      delay: 0.35,
+      stagger: 0.08,
+      ease: 'power4.out',
+    })
+  }
+</script>
