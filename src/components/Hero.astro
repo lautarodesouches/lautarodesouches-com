@@ -24,14 +24,7 @@ import HeroCanvas from './hero/HeroCanvas.astro'
 
     <div class="hero-frame-block hero-frame-block--right">
       <div class="reveal-wrapper">
-        <div class="frame-header reveal-line">
-          <div class="hero-arrow">
-            <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <path d="M3.5 3.5L11.5 11.5M11.5 11.5H5.5M11.5 11.5V5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
-          </div>
-          <span class="frame-index">02 // INGENIERÍA DE SOFTWARE</span>
-        </div>
+        <span class="frame-index reveal-line">02 // INGENIERÍA DE SOFTWARE</span>
       </div>
       <div class="reveal-wrapper">
         <h1 class="frame-title reveal-line">Desarrollador Web Full Stack</h1>
@@ -51,10 +44,10 @@ import HeroCanvas from './hero/HeroCanvas.astro'
 
   <div class="marquee-wrapper" aria-hidden="true">
     <div class="marquee-track">
-      <span class="marquee-text">Full Stack Developer — Software a Medida — Arquitectura Escalable — Código Limpio —&nbsp;</span>
-      <span class="marquee-text">Full Stack Developer — Software a Medida — Arquitectura Escalable — Código Limpio —&nbsp;</span>
-      <span class="marquee-text">Full Stack Developer — Software a Medida — Arquitectura Escalable — Código Limpio —&nbsp;</span>
-      <span class="marquee-text">Full Stack Developer — Software a Medida — Arquitectura Escalable — Código Limpio —&nbsp;</span>
+      <span class="marquee-text">Full Stack Engineering — Software de Alta Precisión — Arquitectura Escalable — Rendimiento Extremo — Interfaces Fluidas — Persistencia Resiliente —&nbsp;</span>
+      <span class="marquee-text">Full Stack Engineering — Software de Alta Precisión — Arquitectura Escalable — Rendimiento Extremo — Interfaces Fluidas — Persistencia Resiliente —&nbsp;</span>
+      <span class="marquee-text">Full Stack Engineering — Software de Alta Precisión — Arquitectura Escalable — Rendimiento Extremo — Interfaces Fluidas — Persistencia Resiliente —&nbsp;</span>
+      <span class="marquee-text">Full Stack Engineering — Software de Alta Precisión — Arquitectura Escalable — Rendimiento Extremo — Interfaces Fluidas — Persistencia Resiliente —&nbsp;</span>
     </div>
   </div>
 </section>
@@ -71,7 +64,7 @@ import HeroCanvas from './hero/HeroCanvas.astro'
   if (!isReducedMotion && track) {
     let xPercent = 0
     let direction = -1
-    const speed = 0.014
+    const baseSpeed = 0.0045
 
     ScrollTrigger.create({
       onUpdate: (self) => {
@@ -79,8 +72,9 @@ import HeroCanvas from './hero/HeroCanvas.astro'
       },
     })
 
-    gsap.ticker.add(() => {
-      xPercent += speed * direction
+    gsap.ticker.add((_time, deltaTime) => {
+      const deltaFactor = Math.min(deltaTime / 16.667, 2)
+      xPercent += baseSpeed * direction * deltaFactor
       if (xPercent <= -50) xPercent = 0
       if (xPercent > 0) xPercent = -50
       gsap.set(track, { xPercent })
@@ -99,20 +93,6 @@ import HeroCanvas from './hero/HeroCanvas.astro'
         stagger: 0.08,
       }
     )
-
-    const arrowSvg = document.querySelector('.hero-arrow svg')
-    if (arrowSvg) {
-      gsap.to(arrowSvg, {
-        rotate: 45,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: '#hero',
-          start: 'top top',
-          end: 'bottom top',
-          scrub: 1,
-        },
-      })
-    }
   } else {
     gsap.set('.reveal-line', { yPercent: 0, opacity: 1 })
   }
@@ -188,26 +168,6 @@ import HeroCanvas from './hero/HeroCanvas.astro'
   .reveal-line {
     display: block;
     will-change: transform, opacity;
-  }
-
-  .frame-header {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.65rem;
-  }
-
-  .hero-arrow {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--accent-cyan);
-    line-height: 1;
-  }
-
-  .hero-arrow svg {
-    display: block;
-    will-change: transform;
-    transform-origin: center center;
   }
 
   .frame-index {
