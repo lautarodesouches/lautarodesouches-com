@@ -1,0 +1,185 @@
+---
+import HeroCanvas from './hero/HeroCanvas.astro'
+---
+
+<section class="hero-container" id="hero">
+  <div class="hero-centerpiece" aria-hidden="true">
+    <HeroCanvas />
+  </div>
+
+  <div class="hero-meta">
+    <div class="hero-arrow">
+      <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M1.5 13.5L13.5 1.5M13.5 1.5H3.5M13.5 1.5V11.5" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </div>
+    <div class="hero-role">
+      <span class="hero-role__primary">Desarrollador Web Full Stack</span>
+      <span class="hero-role__secondary">Proyectos a medida & Código limpio</span>
+    </div>
+  </div>
+
+  <div class="marquee-wrapper" aria-hidden="true">
+    <div class="marquee-track">
+      <span class="marquee-text">Full Stack Developer — Software a Medida — Arquitectura Escalable — Código Limpio —&nbsp;</span>
+      <span class="marquee-text">Full Stack Developer — Software a Medida — Arquitectura Escalable — Código Limpio —&nbsp;</span>
+      <span class="marquee-text">Full Stack Developer — Software a Medida — Arquitectura Escalable — Código Limpio —&nbsp;</span>
+      <span class="marquee-text">Full Stack Developer — Software a Medida — Arquitectura Escalable — Código Limpio —&nbsp;</span>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { gsap } from 'gsap'
+  import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+  gsap.registerPlugin(ScrollTrigger)
+
+  const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  const track = document.querySelector('.marquee-track') as HTMLElement | null
+
+  if (!isReducedMotion && track) {
+    let xPercent = 0
+    let direction = -1
+    const speed = 0.014
+
+    ScrollTrigger.create({
+      onUpdate: (self) => {
+        direction = self.direction === 1 ? -1 : 1
+      },
+    })
+
+    gsap.ticker.add(() => {
+      xPercent += speed * direction
+      if (xPercent <= -50) xPercent = 0
+      if (xPercent > 0) xPercent = -50
+      gsap.set(track, { xPercent })
+    })
+  }
+</script>
+
+<style>
+  .hero-container {
+    position: relative;
+    height: 100vh;
+    min-height: 600px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: calc(var(--header-height, 80px) + 2.5rem) 3rem 0;
+    overflow: hidden;
+    background-color: var(--bg-primary);
+  }
+
+  .hero-centerpiece {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .hero-meta {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.25rem;
+    margin-top: clamp(2.5rem, 6vh, 5.5rem);
+    margin-left: auto;
+    max-width: 340px;
+    user-select: none;
+    z-index: 2;
+  }
+
+  .hero-arrow {
+    margin-top: 0.25rem;
+    color: var(--accent-cyan);
+    opacity: 0.9;
+    flex-shrink: 0;
+  }
+
+  .hero-role {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    font-family: var(--font-sans);
+    line-height: 1.4;
+  }
+
+  .hero-role__primary {
+    color: var(--text-primary);
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+
+  .hero-role__secondary {
+    color: var(--text-secondary);
+    font-size: 0.9375rem;
+    font-weight: 400;
+  }
+
+  .marquee-wrapper {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    overflow: hidden;
+    white-space: nowrap;
+    user-select: none;
+    pointer-events: none;
+    padding-bottom: 1.5vh;
+    z-index: 2;
+  }
+
+  .marquee-track {
+    display: flex;
+    width: max-content;
+    will-change: transform;
+  }
+
+  .marquee-text {
+    display: inline-block;
+    flex-shrink: 0;
+    font-family: var(--font-display);
+    font-size: clamp(4.5rem, 11vw, 12rem);
+    font-weight: 600;
+    line-height: 0.9;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+    padding-right: 0.05em;
+  }
+
+  @media (max-width: 768px) {
+    .hero-container {
+      padding: 6.5rem 1.5rem 0;
+    }
+
+    .hero-centerpiece {
+      top: 50%;
+    }
+
+    .hero-meta {
+      margin-left: 0;
+      align-self: flex-start;
+      margin-top: 2rem;
+      max-width: 100%;
+    }
+
+    .hero-role__primary {
+      font-size: 0.9375rem;
+    }
+
+    .hero-role__secondary {
+      font-size: 0.875rem;
+    }
+
+    .marquee-text {
+      font-size: clamp(3.25rem, 13vw, 5.5rem);
+    }
+  }
+</style>
