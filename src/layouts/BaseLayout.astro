@@ -204,6 +204,7 @@ const schemaOrgData = {
     </style>
   </head>
   <body>
+    <div class="ambient-torch" id="ambient-torch" aria-hidden="true"></div>
     <a href="#main" class="skip-to-content">Saltar al contenido principal</a>
     <slot />
 
@@ -215,6 +216,25 @@ const schemaOrgData = {
       gsap.registerPlugin(ScrollTrigger)
 
       const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      const hasFinePointer = window.matchMedia('(pointer: fine)').matches
+      const torch = document.getElementById('ambient-torch')
+
+      if (torch && hasFinePointer && !isReducedMotion) {
+        const setTorchX = gsap.quickTo(torch, 'x', { duration: 0.35, ease: 'power3.out' })
+        const setTorchY = gsap.quickTo(torch, 'y', { duration: 0.35, ease: 'power3.out' })
+
+        window.addEventListener('mousemove', (e: MouseEvent) => {
+          setTorchX(e.clientX)
+          setTorchY(e.clientY)
+          if (torch.style.opacity !== '1') {
+            torch.style.opacity = '1'
+          }
+        })
+
+        document.addEventListener('mouseleave', () => {
+          torch.style.opacity = '0'
+        })
+      }
 
       interface WindowWithLenis extends Window {
         __lenis?: Lenis
