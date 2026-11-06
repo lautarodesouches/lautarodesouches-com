@@ -1,0 +1,140 @@
+---
+---
+
+<div class="intro-iris" id="intro-iris" aria-hidden="true"></div>
+
+<script>
+  import { gsap } from 'gsap'
+
+  interface LenisInstance {
+    stop: () => void
+    start: () => void
+  }
+
+  interface WindowWithLenis extends Window {
+    __lenis?: LenisInstance
+  }
+
+  const STORAGE_KEY = 'intro_shown'
+  const curtain = document.getElementById('intro-iris')
+
+  const getLenis = (): LenisInstance | undefined => {
+    return (window as unknown as WindowWithLenis).__lenis
+  }
+
+  const updateIrisMask = (radius: number) => {
+    if (!curtain) return
+    const val = `${radius}%`
+    const mask = `radial-gradient(circle at 50% 50%, transparent ${val}, #000 calc(${val} + 1px))`
+    curtain.style.webkitMaskImage = mask
+    curtain.style.maskImage = mask
+  }
+
+  const skipIntro = () => {
+    if (curtain) {
+      curtain.style.display = 'none'
+      curtain.remove()
+    }
+    document.body.classList.remove('intro-running')
+    getLenis()?.start()
+    window.dispatchEvent(
+      new CustomEvent('intro:complete', {
+        detail: { immediate: true },
+      })
+    )
+  }
+
+  const playIntro = () => {
+    if (!curtain) return
+
+    const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const isAlreadyShown = sessionStorage.getItem(STORAGE_KEY) === 'true'
+
+    if (isReducedMotion || isAlreadyShown) {
+      sessionStorage.setItem(STORAGE_KEY, 'true')
+      skipIntro()
+      return
+    }
+
+    sessionStorage.setItem(STORAGE_KEY, 'true')
+
+    getLenis()?.stop()
+    document.body.classList.add('intro-running')
+
+    updateIrisMask(0)
+    gsap.set(curtain, { display: 'block', visibility: 'visible' })
+
+    const irisState = { radius: 0 }
+
+    const tl = gsap.timeline({
+      onComplete: () => {
+        document.body.classList.remove('intro-running')
+        getLenis()?.start()
+        curtain.style.display = 'none'
+        curtain.remove()
+      },
+    })
+
+    tl.to(
+      irisState,
+      {
+        radius: 150,
+        duration: 0.5,
+        ease: 'expo.out',
+        onUpdate: () => {
+          updateIrisMask(irisState.radius)
+        },
+      },
+      0
+    )
+
+    tl.fromTo(
+      '#hero-canvas-scale-wrapper',
+      {
+        scale: 0.25,
+        opacity: 0.65,
+      },
+      {
+        scale: 1,
+        opacity: 1,
+        duration: 0.55,
+        ease: 'back.out(1.4)',
+        clearProps: 'opacity',
+      },
+      0
+    )
+
+    tl.add(() => {
+      window.dispatchEvent(
+        new CustomEvent('intro:complete', {
+          detail: { marqueeBoost: false },
+        })
+      )
+    }, 0.15)
+  }
+
+  if (document.readyState === 'loading') {
+    window.addEventListener('DOMContentLoaded', playIntro)
+  } else {
+    playIntro()
+  }
+</script>
+
+<style>
+  .intro-iris {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100dvh;
+    z-index: 9999;
+    background-color: #0A0A0A;
+    pointer-events: none;
+    overflow: hidden;
+    will-change: mask-image, -webkit-mask-image;
+  }
+
+  :global(body.intro-running) {
+    overflow: hidden !important;
+    touch-action: none !important;
+  }
+</style>

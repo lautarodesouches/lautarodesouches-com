@@ -71,6 +71,7 @@ import HeroCanvas from './hero/HeroCanvas.astro'
 
   const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
   const track = document.querySelector('.marquee-track') as HTMLElement | null
+  const marqueeMultiplier = { value: 1 }
 
   if (!isReducedMotion && track) {
     let xPercent = 0
@@ -85,27 +86,79 @@ import HeroCanvas from './hero/HeroCanvas.astro'
 
     gsap.ticker.add((_time, deltaTime) => {
       const deltaFactor = Math.min(deltaTime / 16.667, 2)
-      xPercent += baseSpeed * direction * deltaFactor
+      xPercent += baseSpeed * marqueeMultiplier.value * direction * deltaFactor
       if (xPercent <= -50) xPercent = 0
       if (xPercent > 0) xPercent = -50
       gsap.set(track, { xPercent })
     })
   }
 
-  if (!isReducedMotion) {
-    gsap.fromTo(
-      '.reveal-line',
-      { yPercent: 100, opacity: 0 },
-      {
-        yPercent: 0,
-        opacity: 1,
-        duration: 0.85,
-        ease: 'power3.out',
-        stagger: 0.08,
-      }
-    )
+  interface WindowWithIntro extends Window {
+    __introCompleted?: boolean
+  }
+
+  interface HeroRevealOptions {
+    immediate?: boolean
+    marqueeBoost?: boolean
+    boostFactor?: number
+    boostDuration?: number
+  }
+
+  const playHeroReveal = (opts?: HeroRevealOptions) => {
+    ;(window as unknown as WindowWithIntro).__introCompleted = true
+
+    if (opts?.marqueeBoost && !isReducedMotion) {
+      const targetBoost = opts.boostFactor ?? 4
+      const targetDuration = opts.boostDuration ?? 0.8
+      marqueeMultiplier.value = targetBoost
+      gsap.to(marqueeMultiplier, {
+        value: 1,
+        duration: targetDuration,
+        ease: 'power2.out',
+      })
+    }
+
+    if (!isReducedMotion && !opts?.immediate) {
+      gsap.killTweensOf('.reveal-line')
+      gsap.fromTo(
+        '.reveal-line',
+        { yPercent: 100, opacity: 0 },
+        {
+          yPercent: 0,
+          opacity: 1,
+          duration: 0.85,
+          ease: 'power3.out',
+          stagger: 0.08,
+        }
+      )
+    } else {
+      gsap.killTweensOf('.reveal-line')
+      gsap.set('.reveal-line', { yPercent: 0, opacity: 1 })
+    }
+  }
+
+  const resetHeroReveal = () => {
+    ;(window as unknown as WindowWithIntro).__introCompleted = false
+    gsap.killTweensOf('.reveal-line')
+    gsap.set('.reveal-line', { yPercent: 100, opacity: 0 })
+    gsap.set('.frame-title', { clearProps: 'letterSpacing' })
+  }
+
+  window.addEventListener('intro:complete', (event: Event) => {
+    const custom = event as CustomEvent<HeroRevealOptions>
+    playHeroReveal(custom.detail)
+  })
+
+  window.addEventListener('intro:reset', () => {
+    resetHeroReveal()
+  })
+
+  const isIntroAlreadyShown = typeof sessionStorage !== 'undefined' && sessionStorage.getItem('intro_shown') === 'true'
+
+  if (isReducedMotion || isIntroAlreadyShown || (window as unknown as WindowWithIntro).__introCompleted) {
+    playHeroReveal({ immediate: true })
   } else {
-    gsap.set('.reveal-line', { yPercent: 0, opacity: 1 })
+    resetHeroReveal()
   }
 </script>
 
