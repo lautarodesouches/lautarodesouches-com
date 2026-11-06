@@ -1,37 +1,19 @@
 ---
 import '../styles/global.css'
-import type { ThemePalette } from '../data/palettes'
 
 interface Props {
   title?: string
   description?: string
-  palette?: ThemePalette
 }
 
 const {
   title = 'Lautaro Desouches — Lead Frontend Architect & Full Stack Engineer',
   description = 'Portfolio profesional de Lautaro Desouches. Especialista en Arquitectura Web, Astro, Next.js y Sistemas Full Stack.',
-  palette,
 } = Astro.props
-
-const paletteStyle = palette
-  ? `
-  --bg-primary: ${palette.tokens.bgPrimary};
-  --bg-surface: ${palette.tokens.bgSurface};
-  --bg-surface-elevated: ${palette.tokens.bgSurfaceElevated};
-  --border-subtle: ${palette.tokens.borderSubtle};
-  --border-focus: ${palette.tokens.borderFocus};
-  --text-primary: ${palette.tokens.textPrimary};
-  --text-secondary: ${palette.tokens.textSecondary};
-  --text-muted: ${palette.tokens.textMuted};
-  --accent-cyan: ${palette.tokens.accentPrimary};
-  --accent-glow: ${palette.tokens.accentGlow};
-`
-  : undefined
 ---
 
 <!doctype html>
-<html lang="es" style={paletteStyle}>
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />

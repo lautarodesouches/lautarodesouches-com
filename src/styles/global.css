@@ -63,19 +63,19 @@
 }
 
 :root {
-  --bg-primary: #080B10;
-  --bg-surface: #0E131F;
-  --bg-surface-elevated: #161E31;
+  --bg-primary: #0A0A0A;
+  --bg-surface: #121212;
+  --bg-surface-elevated: #1C1C1C;
 
-  --border-subtle: rgba(255, 255, 255, 0.08);
-  --border-focus: rgba(56, 189, 248, 0.4);
+  --border-subtle: rgba(255, 255, 255, 0.1);
+  --border-focus: rgba(255, 255, 255, 0.4);
 
-  --text-primary: #F1F5F9;
-  --text-secondary: #94A3B8;
-  --text-muted: #475569;
+  --text-primary: #FFFFFF;
+  --text-secondary: #A3A3A3;
+  --text-muted: #737373;
 
-  --accent-cyan: #38BDF8;
-  --accent-glow: rgba(56, 189, 248, 0.12);
+  --accent-cyan: #E5E5E5;
+  --accent-glow: rgba(255, 255, 255, 0.1);
 
   --font-display: 'Clash Display', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-sans: 'General Sans', -apple-system, BlinkMacSystemFont, sans-serif;
