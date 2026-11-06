@@ -1,0 +1,191 @@
+---
+---
+
+<footer class="footer" role="contentinfo">
+  <div class="footer__container">
+    <div class="footer__top">
+      <div class="footer__brand">
+        <a href="#hero" class="footer__brand-title">Lautaro Desouches</a>
+        <p class="footer__brand-role">Desarrollador Web Full Stack</p>
+      </div>
+
+      <nav class="footer__nav" aria-label="Navegación secundaria">
+        <ul class="footer__nav-list">
+          <li><a href="#hero" class="footer__nav-link">Inicio</a></li>
+          <li><a href="#soluciones" class="footer__nav-link">Soluciones</a></li>
+          <li><a href="#proyectos" class="footer__nav-link">Proyectos</a></li>
+          <li><a href="#trayectoria" class="footer__nav-link">Trayectoria</a></li>
+          <li><a href="#contacto" class="footer__nav-link">Contacto</a></li>
+        </ul>
+      </nav>
+
+      <button type="button" class="footer__back-to-top" id="footer-back-to-top" aria-label="Volver al inicio de la página">
+        <span>↑ VOLVER ARRIBA</span>
+      </button>
+    </div>
+
+    <div class="footer__bottom">
+      <p class="footer__copy">
+        © 2026 Lautaro Desouches. Todos los derechos reservados.
+      </p>
+
+      <p class="footer__stack">
+        Arquitectura construida con Astro 5, TypeScript, GSAP & Lenis.
+      </p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  interface WindowWithLenis extends Window {
+    __lenis?: {
+      scrollTo: (target: number | string | HTMLElement, options?: { duration?: number }) => void
+    }
+  }
+
+  const backToTopBtn = document.getElementById('footer-back-to-top')
+
+  if (backToTopBtn) {
+    backToTopBtn.addEventListener('click', () => {
+      const win = window as unknown as WindowWithLenis
+      if (win.__lenis) {
+        win.__lenis.scrollTo(0, { duration: 1.2 })
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+      }
+    })
+  }
+</script>
+
+<style>
+  .footer {
+    background-color: var(--bg-primary);
+    color: var(--text-secondary);
+    padding: 5rem 1.5rem 3.5rem;
+    position: relative;
+    z-index: 10;
+  }
+
+  .footer__container {
+    max-width: 1360px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 3.5rem;
+  }
+
+  .footer__top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 2rem;
+    flex-wrap: wrap;
+    padding-bottom: 3.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .footer__brand {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .footer__brand-title {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    text-decoration: none;
+    letter-spacing: -0.01em;
+  }
+
+  .footer__brand-role {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  .footer__nav-list {
+    display: flex;
+    align-items: center;
+    gap: 1.75rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    flex-wrap: wrap;
+  }
+
+  .footer__nav-link {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .footer__nav-link:hover {
+    color: var(--text-primary);
+  }
+
+  .footer__back-to-top {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 6px;
+    padding: 0.6rem 1rem;
+    color: var(--text-secondary);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .footer__back-to-top:hover {
+    color: var(--text-primary);
+    border-color: rgba(255, 255, 255, 0.22);
+    background: rgba(255, 255, 255, 0.03);
+    transform: translateY(-1px);
+  }
+
+  .footer__bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  .footer__copy {
+    color: var(--text-muted);
+  }
+
+  .footer__stack {
+    color: var(--text-secondary);
+  }
+
+  @media (max-width: 768px) {
+    .footer {
+      padding: 4rem 1rem 3rem;
+    }
+
+    .footer__top {
+      flex-direction: column;
+      gap: 2rem;
+      padding-bottom: 2.5rem;
+    }
+
+    .footer__nav-list {
+      gap: 1.25rem;
+    }
+
+    .footer__bottom {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+  }
+</style>
+

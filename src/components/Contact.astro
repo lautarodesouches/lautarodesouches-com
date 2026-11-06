@@ -1,0 +1,629 @@
+---
+import { contactData } from '../data/contact.data'
+
+const { tag, title, description, channels, socials, telemetry } = contactData
+const whatsappChannel = channels.find((c) => c.id === 'whatsapp')
+const emailChannel = channels.find((c) => c.id === 'email')
+---
+
+<section id="contacto" class="contact-section" aria-labelledby="contact-title">
+  <div class="contact-container">
+    <header class="contact-header">
+      <span class="section-tag">{tag}</span>
+      <h2 class="section-title" id="contact-title">{title}</h2>
+      <p class="section-desc">{description}</p>
+    </header>
+
+    <div class="contact-grid">
+      <div class="contact-channels">
+        {whatsappChannel && (
+          <article class="channel-card channel-card--primary">
+            <div class="channel-card__badge-row">
+              <span class="channel-badge">{whatsappChannel.label}</span>
+              <span class="channel-priority">[ CANAL PRIORITARIO ]</span>
+            </div>
+
+            <div class="channel-card__body">
+              <h3 class="channel-title">{whatsappChannel.title}</h3>
+              <p class="channel-value">{whatsappChannel.value}</p>
+              <p class="channel-desc">{whatsappChannel.description}</p>
+            </div>
+
+            <div class="channel-card__action">
+              <a
+                href={whatsappChannel.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="contact-btn contact-btn--primary"
+                aria-label="Abrir conversación en WhatsApp"
+              >
+                <span>{whatsappChannel.actionText}</span>
+                <span class="btn-arrow" aria-hidden="true">↗</span>
+              </a>
+            </div>
+          </article>
+        )}
+
+        {emailChannel && (
+          <article class="channel-card">
+            <div class="channel-card__badge-row">
+              <span class="channel-badge">{emailChannel.label}</span>
+              <span class="channel-latency">[ RESPUESTA &lt; 24H ]</span>
+            </div>
+
+            <div class="channel-card__body">
+              <h3 class="channel-title">{emailChannel.title}</h3>
+              <p class="channel-value" id="email-value-display">{emailChannel.value}</p>
+              <p class="channel-desc">{emailChannel.description}</p>
+            </div>
+
+            <div class="channel-card__actions">
+              <button
+                type="button"
+                class="contact-btn contact-btn--copy"
+                id="copy-email-btn"
+                data-email={emailChannel.value}
+                aria-label="Copiar dirección de correo al portapapeles"
+              >
+                <span id="copy-btn-text">[ COPIAR AL PORTAPAPELES ]</span>
+              </button>
+
+              <a
+                href={emailChannel.href}
+                class="contact-btn contact-btn--outline"
+                aria-label="Abrir cliente de correo predeterminado"
+              >
+                <span>Abrir Correo</span>
+                <span class="btn-arrow" aria-hidden="true">↗</span>
+              </a>
+            </div>
+          </article>
+        )}
+      </div>
+
+      <div class="contact-meta-bento">
+        <div class="meta-card meta-card--telemetry">
+          <div class="meta-card__header">
+            <span class="status-indicator" aria-hidden="true"></span>
+            <span class="meta-card__heading">TELEMETRÍA & SLA OPERATIVO</span>
+          </div>
+
+          <div class="meta-telemetry-grid">
+            <div class="telemetry-box">
+              <span class="telemetry-box__label">ESTADO DE DISPONIBILIDAD</span>
+              <span class="telemetry-box__value">{telemetry.status}</span>
+              <span class="telemetry-box__sub">{telemetry.statusDetail}</span>
+            </div>
+
+            <div class="telemetry-box">
+              <span class="telemetry-box__label">TIEMPO MEDIO DE RESPUESTA</span>
+              <span class="telemetry-box__value">{telemetry.responseLatency}</span>
+              <span class="telemetry-box__sub">Lunes a Viernes (GMT-3)</span>
+            </div>
+
+            <div class="telemetry-box">
+              <span class="telemetry-box__label">UBICACIÓN Y HUSO HORARIO</span>
+              <span class="telemetry-box__value">{telemetry.location}</span>
+              <span class="telemetry-box__sub">{telemetry.timezone}</span>
+            </div>
+
+            <div class="telemetry-box">
+              <span class="telemetry-box__label">MODALIDAD DE TRABAJO</span>
+              <span class="telemetry-box__value">{telemetry.availability}</span>
+              <span class="telemetry-box__sub">{telemetry.languages}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="meta-card meta-card--socials">
+          <span class="meta-card__heading">// REDES & PERFILES TÉCNICOS</span>
+          <div class="socials-list">
+            {socials.map((social) => (
+              <a
+                href={social.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="social-item"
+                aria-label={`Ver perfil de ${social.platform}`}
+              >
+                <div class="social-item__info">
+                  <span class="social-platform">{social.platform}</span>
+                  <span class="social-handle">{social.handle}</span>
+                </div>
+                <span class="social-badge">{social.badge}</span>
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { gsap } from 'gsap'
+  import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+  gsap.registerPlugin(ScrollTrigger)
+
+  const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  const section = document.getElementById('contacto')
+  const copyBtn = document.getElementById('copy-email-btn')
+  const copyText = document.getElementById('copy-btn-text')
+
+  if (copyBtn && copyText) {
+    const emailToCopy = copyBtn.getAttribute('data-email') || 'lautarodesouches@outlook.com'
+    let resetTimer: number | undefined
+
+    copyBtn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(emailToCopy)
+        copyText.textContent = '[ COPIADO AL PORTAPAPELES // LISTO ]'
+        copyBtn.classList.add('is-copied')
+
+        if (resetTimer) window.clearTimeout(resetTimer)
+        resetTimer = window.setTimeout(() => {
+          copyText.textContent = '[ COPIAR AL PORTAPAPELES ]'
+          copyBtn.classList.remove('is-copied')
+        }, 2600)
+      } catch {
+        copyText.textContent = emailToCopy
+      }
+    })
+  }
+
+  if (!isReducedMotion && section) {
+    gsap.fromTo(
+      '.contact-header > *',
+      { opacity: 0, y: 25 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        stagger: 0.12,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: '.contact-header',
+          start: 'top 85%',
+          toggleActions: 'play none none none',
+        },
+      }
+    )
+
+    gsap.fromTo(
+      '.channel-card',
+      { opacity: 0, y: 35 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        stagger: 0.15,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: '.contact-channels',
+          start: 'top 82%',
+          toggleActions: 'play none none none',
+        },
+      }
+    )
+
+    gsap.fromTo(
+      '.meta-card',
+      { opacity: 0, y: 30 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        stagger: 0.12,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: '.contact-meta-bento',
+          start: 'top 82%',
+          toggleActions: 'play none none none',
+        },
+      }
+    )
+  }
+</script>
+
+<style>
+  .contact-section {
+    position: relative;
+    padding: 9rem 1.5rem 6rem;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    overflow: hidden;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .contact-container {
+    max-width: 1360px;
+    margin: 0 auto;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+  }
+
+  .contact-header {
+    max-width: 820px;
+    margin-bottom: 4.5rem;
+  }
+
+  .section-tag {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    font-weight: 500;
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+    color: var(--text-primary);
+    margin-bottom: 1.25rem;
+  }
+
+  .section-desc {
+    font-family: var(--font-sans);
+    font-size: clamp(15px, 1.4vw, 17px);
+    line-height: 1.6;
+    color: var(--text-secondary);
+    max-width: 680px;
+  }
+
+  .contact-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
+  .contact-channels {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+
+  .channel-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    padding: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 2rem;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    backdrop-filter: blur(8px);
+  }
+
+  .channel-card--primary {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
+    border-color: rgba(255, 255, 255, 0.12);
+  }
+
+  .channel-card:hover {
+    border-color: rgba(255, 255, 255, 0.22);
+    background: rgba(255, 255, 255, 0.035);
+    transform: translateY(-2px);
+  }
+
+  .channel-card__badge-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .channel-badge {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+  }
+
+  .channel-priority {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    color: var(--text-primary);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .channel-latency {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    color: var(--text-secondary);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .channel-card__body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .channel-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 2.2vw, 1.9rem);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+  }
+
+  .channel-value {
+    font-family: var(--font-mono);
+    font-size: clamp(1rem, 1.4vw, 1.2rem);
+    color: var(--accent-cyan);
+    letter-spacing: 0.02em;
+  }
+
+  .channel-desc {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    margin-top: 0.25rem;
+  }
+
+  .channel-card__action,
+  .channel-card__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    flex-wrap: wrap;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .contact-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.85rem 1.4rem;
+    border-radius: 8px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    text-decoration: none;
+    line-height: 1;
+  }
+
+  .contact-btn--primary {
+    background: #ffffff;
+    color: #000000;
+    font-weight: 600;
+    border: 1px solid #ffffff;
+  }
+
+  .contact-btn--primary:hover {
+    background: #e5e5e5;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(255, 255, 255, 0.15);
+  }
+
+  .contact-btn--copy {
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text-primary);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .contact-btn--copy:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.25);
+  }
+
+  .contact-btn--copy.is-copied {
+    background: rgba(34, 197, 94, 0.15);
+    border-color: rgba(34, 197, 94, 0.4);
+    color: #4ade80;
+  }
+
+  .contact-btn--outline {
+    background: transparent;
+    color: var(--text-secondary);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .contact-btn--outline:hover {
+    color: var(--text-primary);
+    border-color: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.03);
+  }
+
+  .btn-arrow {
+    font-size: 13px;
+    transition: transform 0.2s ease;
+  }
+
+  .contact-btn:hover .btn-arrow {
+    transform: translate(2px, -2px);
+  }
+
+  .contact-meta-bento {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 2rem;
+  }
+
+  .meta-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    backdrop-filter: blur(8px);
+  }
+
+  .meta-card__header {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+  }
+
+  .status-indicator {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background-color: #22c55e;
+    box-shadow: 0 0 10px rgba(34, 197, 94, 0.6);
+  }
+
+  .meta-card__heading {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+  }
+
+  .meta-telemetry-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  .telemetry-box {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .telemetry-box__label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+  }
+
+  .telemetry-box__value {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary);
+    line-height: 1.35;
+  }
+
+  .telemetry-box__sub {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-secondary);
+  }
+
+  .socials-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .social-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.25rem;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    text-decoration: none;
+    transition: all 0.25s ease;
+  }
+
+  .social-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.16);
+    transform: translateX(3px);
+  }
+
+  .social-item__info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .social-platform {
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .social-handle {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  .social-badge {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-secondary);
+  }
+
+  .social-item:hover .social-badge {
+    color: var(--text-primary);
+  }
+
+  @media (max-width: 1024px) {
+    .contact-channels {
+      grid-template-columns: 1fr;
+    }
+
+    .contact-meta-bento {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .contact-section {
+      padding: 5rem 1rem 4rem;
+    }
+
+    .contact-header {
+      margin-bottom: 3rem;
+    }
+
+    .channel-card {
+      padding: 1.75rem;
+    }
+
+    .meta-card {
+      padding: 1.5rem;
+    }
+
+    .meta-telemetry-grid {
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+    }
+
+    .contact-btn {
+      width: 100%;
+    }
+
+    .channel-card__actions {
+      flex-direction: column;
+      width: 100%;
+    }
+  }
+</style>
+
