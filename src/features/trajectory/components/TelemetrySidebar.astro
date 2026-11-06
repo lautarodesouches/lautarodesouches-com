@@ -1,0 +1,261 @@
+---
+import type { CareerTelemetry, TrajectoryCategory } from '../types'
+
+interface Props {
+  telemetry: CareerTelemetry
+  categories: TrajectoryCategory[]
+}
+
+const { telemetry, categories } = Astro.props
+---
+
+<aside class="trajectory-sidebar">
+  <div class="telemetry-panel">
+    <div class="telemetry-panel__header">
+      <span class="telemetry-panel__status-dot" aria-hidden="true"></span>
+      <span class="telemetry-panel__status-label">ESTADO PROFESIONAL</span>
+    </div>
+
+    <div class="telemetry-panel__body">
+      <div class="telemetry-metric">
+        <span class="telemetry-metric__label">EXPERIENCIA COMERCIAL</span>
+        <span class="telemetry-metric__value">{telemetry.experienceYears}</span>
+        <span class="telemetry-metric__sub">{telemetry.experiencePeriod}</span>
+      </div>
+
+      <div class="telemetry-metric">
+        <span class="telemetry-metric__label">GRADO UNIVERSITARIO</span>
+        <span class="telemetry-metric__value">{telemetry.degreeInstitution}</span>
+        <span class="telemetry-metric__sub">{telemetry.degreeTitle} // {telemetry.degreeStatus}</span>
+      </div>
+
+      <div class="telemetry-metric">
+        <span class="telemetry-metric__label">COMPETENCIA BILINGÜE</span>
+        <div class="telemetry-languages">
+          {telemetry.languages.map((lang) => (
+            <div class="language-row">
+              <span class="language-name">{lang.language}:</span>
+              <span class="language-level">{lang.level}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div class="telemetry-metric">
+        <span class="telemetry-metric__label">MODALIDAD & ZONA</span>
+        <span class="telemetry-metric__text">{telemetry.availability}</span>
+      </div>
+    </div>
+  </div>
+
+  <nav class="trajectory-filter" aria-label="Filtrar trayectoria">
+    <span class="filter-heading">// FILTRAR HISTORIAL</span>
+    <div class="filter-pills" role="tablist">
+      {categories.map((cat, index) => (
+        <button
+          type="button"
+          role="tab"
+          class:list={['filter-pill', { 'is-active': index === 0 }]}
+          data-filter={cat.id}
+          aria-selected={index === 0 ? 'true' : 'false'}
+        >
+          <span class="filter-pill__label">{cat.label}</span>
+          <span class="filter-pill__count">({cat.count})</span>
+        </button>
+      ))}
+    </div>
+  </nav>
+</aside>
+
+<style>
+  .trajectory-sidebar {
+    position: sticky;
+    top: calc(var(--header-height, 72px) + 2rem);
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .telemetry-panel {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 1.75rem;
+    backdrop-filter: blur(8px);
+  }
+
+  .telemetry-panel__header {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding-bottom: 1.25rem;
+    margin-bottom: 1.25rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .telemetry-panel__status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background-color: #22c55e;
+    box-shadow: 0 0 10px rgba(34, 197, 94, 0.5);
+  }
+
+  .telemetry-panel__status-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+  }
+
+  .telemetry-panel__body {
+    display: flex;
+    flex-direction: column;
+    gap: 1.35rem;
+  }
+
+  .telemetry-metric {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .telemetry-metric__label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+  }
+
+  .telemetry-metric__value {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+
+  .telemetry-metric__sub {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.4;
+  }
+
+  .telemetry-metric__text {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-secondary);
+  }
+
+  .telemetry-languages {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    margin-top: 0.25rem;
+  }
+
+  .language-row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 11px;
+  }
+
+  .language-name {
+    color: var(--text-muted);
+  }
+
+  .language-level {
+    color: var(--text-primary);
+  }
+
+  .trajectory-filter {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  .filter-heading {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+  }
+
+  .filter-pills {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .filter-pill {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.6rem 0.85rem;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    color: var(--text-secondary);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+    width: 100%;
+  }
+
+  .filter-pill:hover {
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--text-primary);
+    border-color: rgba(255, 255, 255, 0.06);
+  }
+
+  .filter-pill.is-active {
+    background: rgba(255, 255, 255, 0.07);
+    color: var(--text-primary);
+    border-color: rgba(255, 255, 255, 0.16);
+  }
+
+  .filter-pill__count {
+    color: var(--text-muted);
+    font-size: 10px;
+  }
+
+  .filter-pill.is-active .filter-pill__count {
+    color: var(--text-primary);
+  }
+
+  @media (max-width: 1024px) {
+    .trajectory-sidebar {
+      position: static;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .filter-pills {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .trajectory-sidebar {
+      grid-template-columns: 1fr;
+    }
+
+    .filter-pills {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

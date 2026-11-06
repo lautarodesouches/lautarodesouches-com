@@ -1,42 +1,4 @@
-export type CareerCategory = 'experience' | 'education' | 'certification'
-
-export interface CareerMilestone {
-  id: string
-  period: string
-  role: string
-  organization: string
-  location: string
-  category: CareerCategory
-  categoryLabel: string
-  status: string
-  summary: string
-  highlights: string[]
-  tags: string[]
-}
-
-export interface CareerTelemetry {
-  experienceYears: string
-  experiencePeriod: string
-  degreeTitle: string
-  degreeInstitution: string
-  degreeStatus: string
-  languages: {
-    language: string
-    level: string
-    detail: string
-  }[]
-  availability: string
-}
-
-export interface CareerData {
-  telemetry: CareerTelemetry
-  categories: {
-    id: 'all' | CareerCategory
-    label: string
-    count: number
-  }[]
-  milestones: CareerMilestone[]
-}
+import type { CareerData } from '../types'
 
 export const careerData: CareerData = {
   telemetry: {
@@ -193,3 +155,4 @@ export const careerData: CareerData = {
   ],
 }
 
+export const trajectoryData = careerData
