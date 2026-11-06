@@ -55,16 +55,41 @@ const { solution, isLast = false } = Astro.props
 </article>
 
 <style>
+  :root,
+  .solution-row {
+    --ease-enter: cubic-bezier(0.16, 1, 0.3, 1);
+    --duration-enter: 280ms;
+    --ease-leave: cubic-bezier(0.25, 1, 0.5, 1);
+    --duration-leave: 200ms;
+  }
+
   .solution-row {
     position: relative;
     border-top: 1px solid var(--border-subtle);
     padding: clamp(2.2rem, 4.5vw, 3.8rem) 1.5rem;
-    transition: border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    transition:
+      border-color var(--duration-leave) var(--ease-leave),
+      transform var(--duration-leave) var(--ease-leave);
     cursor: default;
+    transform-origin: center center;
+    will-change: transform, border-color;
   }
 
   .solution-row--last {
     border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .solution-row:hover,
+  .solution-row:focus-within {
+    border-color: rgba(255, 255, 255, 0.25);
+    transition:
+      border-color var(--duration-enter) var(--ease-enter),
+      transform var(--duration-enter) var(--ease-enter);
+  }
+
+  .solution-row:active {
+    transform: scale(0.996);
+    transition: transform 120ms cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .solution-row__backdrop {
@@ -73,12 +98,13 @@ const { solution, isLast = false } = Astro.props
     background-color: rgba(255, 255, 255, 0.02);
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: opacity var(--duration-leave) var(--ease-leave);
   }
 
   .solution-row:hover .solution-row__backdrop,
   .solution-row:focus-within .solution-row__backdrop {
     opacity: 1;
+    transition: opacity var(--duration-enter) var(--ease-enter);
   }
 
   .solution-row__header {
@@ -98,11 +124,12 @@ const { solution, isLast = false } = Astro.props
     letter-spacing: 0.04em;
     width: 2.75rem;
     flex-shrink: 0;
-    transition: color 0.3s ease;
+    transition: color var(--duration-leave) var(--ease-leave);
   }
 
   .solution-row:hover .solution-row__index {
     color: var(--accent-cyan);
+    transition: color var(--duration-enter) var(--ease-enter);
   }
 
   .solution-row__title-wrap {
@@ -119,13 +146,19 @@ const { solution, isLast = false } = Astro.props
     color: var(--text-primary);
     transform: translateZ(0);
     transition:
-      transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-      color 0.35s ease;
+      transform var(--duration-leave) var(--ease-leave),
+      color var(--duration-leave) var(--ease-leave),
+      text-shadow var(--duration-leave) var(--ease-leave);
   }
 
   .solution-row:hover .solution-row__title {
     color: #FFFFFF;
-    transform: translateX(16px);
+    text-shadow: 0 0 24px rgba(255, 255, 255, 0.2);
+    transform: translateX(8px);
+    transition:
+      transform var(--duration-enter) var(--ease-enter),
+      color var(--duration-enter) var(--ease-enter),
+      text-shadow var(--duration-enter) var(--ease-enter);
   }
 
   .solution-row__action {
@@ -142,18 +175,22 @@ const { solution, isLast = false } = Astro.props
     font-weight: 300;
     line-height: 1;
     color: var(--text-muted);
-    opacity: 0.5;
-    transform-origin: center center;
+    opacity: 0.4;
+    transform: translate(0, 0);
     transition:
-      transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-      opacity 0.35s ease,
-      color 0.35s ease;
+      transform var(--duration-leave) var(--ease-leave),
+      opacity var(--duration-leave) var(--ease-leave),
+      color var(--duration-leave) var(--ease-leave);
   }
 
   .solution-row:hover .solution-row__arrow {
     opacity: 1;
     color: #FFFFFF;
-    transform: rotate(45deg);
+    transform: translate(3px, -3px);
+    transition:
+      transform var(--duration-enter) var(--ease-enter),
+      opacity var(--duration-enter) var(--ease-enter),
+      color var(--duration-enter) var(--ease-enter);
   }
 
   .solution-row__drawer {
@@ -163,14 +200,17 @@ const { solution, isLast = false } = Astro.props
     grid-template-rows: 0fr;
     opacity: 0;
     transition:
-      grid-template-rows 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-      opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      grid-template-rows var(--duration-leave) var(--ease-leave),
+      opacity var(--duration-leave) var(--ease-leave);
   }
 
   .solution-row:hover .solution-row__drawer,
   .solution-row:focus-within .solution-row__drawer {
     grid-template-rows: 1fr;
     opacity: 1;
+    transition:
+      grid-template-rows var(--duration-enter) var(--ease-enter),
+      opacity var(--duration-enter) var(--ease-enter);
   }
 
   .solution-row__drawer-inner {
@@ -290,6 +330,10 @@ const { solution, isLast = false } = Astro.props
       transform: none;
     }
 
+    .solution-row:active {
+      transform: scale(0.992);
+    }
+
     .solution-row__action {
       display: none;
     }
@@ -327,3 +371,4 @@ const { solution, isLast = false } = Astro.props
     }
   }
 </style>
+

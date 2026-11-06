@@ -63,8 +63,10 @@ const {
 
       if (!isReducedMotion) {
         const lenis = new Lenis({
-          duration: 1.2,
-          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+          lerp: 0.075,
+          wheelMultiplier: 0.95,
+          touchMultiplier: 1.2,
+          smoothWheel: true,
         })
 
         interface WindowWithLenis extends Window {
@@ -79,6 +81,26 @@ const {
         })
 
         gsap.ticker.lagSmoothing(0)
+
+        ScrollTrigger.create({
+          snap: {
+            snapTo: (value) => {
+              const sections = Array.from(document.querySelectorAll('section[id]'))
+              const maxScroll = document.documentElement.scrollHeight - window.innerHeight
+              if (maxScroll <= 0 || sections.length === 0) return value
+              const targets = sections.map((sec) => (sec as HTMLElement).offsetTop / maxScroll)
+
+              const closest = targets.reduce((prev, curr) =>
+                Math.abs(curr - value) < Math.abs(prev - value) ? curr : prev
+              )
+
+              return Math.abs(closest - value) < 0.08 ? closest : value
+            },
+            duration: { min: 0.3, max: 0.6 },
+            delay: 0.15,
+            ease: 'power2.out',
+          },
+        })
       }
     </script>
   </body>
