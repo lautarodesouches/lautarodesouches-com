@@ -14,13 +14,6 @@ const getHostname = (url: string) => {
 ---
 
 <section id="proyectos" class="projects-section" aria-labelledby="projects-title">
-  <div class="projects-ambient-backdrop" aria-hidden="true">
-    <div class="ambient-spotlight" id="projects-spotlight"></div>
-    <div class="ambient-watermark-wrap">
-      <div class="ambient-watermark" id="projects-watermark">01</div>
-    </div>
-  </div>
-
   <div class="projects-container">
     <header class="projects-header">
       <span class="section-tag">02 // CASOS DE ESTUDIO & PROYECTOS</span>
@@ -146,6 +139,13 @@ const getHostname = (url: string) => {
       </div>
 
       <div class="projects-visual-stage">
+        <div class="projects-ambient-backdrop" aria-hidden="true">
+          <div class="ambient-spotlight" id="projects-spotlight"></div>
+          <div class="ambient-watermark-wrap">
+            <div class="ambient-watermark" id="projects-watermark">01</div>
+          </div>
+        </div>
+
         <div class="mockup-viewport-frame">
           <div class="mockup-header-bar">
             <div class="mockup-dots" aria-hidden="true">
@@ -169,8 +169,8 @@ const getHostname = (url: string) => {
                 data-url={getHostname(project.demoUrl)}
                 style={
                   index === 0
-                    ? 'clip-path: inset(0% 0 0% 0); z-index: 2;'
-                    : 'clip-path: inset(100% 0 0% 0); z-index: 1;'
+                    ? '--clip-top: 0%; --clip-bottom: 0%; z-index: 2;'
+                    : 'z-index: 1;'
                 }
               >
                 <a
@@ -184,7 +184,7 @@ const getHostname = (url: string) => {
                     src={project.image}
                     alt={`Mockup de ${project.title}`}
                     class="layer-img"
-                    loading={index === 0 ? 'eager' : 'lazy'}
+                    loading="eager"
                     decoding="async"
                   />
                   <div class="layer-overlay" aria-hidden="true">
@@ -220,6 +220,7 @@ const getHostname = (url: string) => {
     const watermark = document.getElementById('projects-watermark')
 
     let activeIndex = 0
+    let zCounter = 2
 
     const setActiveProject = (newIndex: number) => {
       if (newIndex === activeIndex) return
@@ -237,42 +238,27 @@ const getHostname = (url: string) => {
 
       const incomingImg = incomingLayer.querySelector<HTMLElement>('.layer-img')
 
-      layers.forEach((l, idx) => {
-        if (idx !== newIndex && idx !== oldIndex) {
-          gsap.set(l, { zIndex: 1 })
-          l.classList.remove('active')
-        }
-      })
-
-      outgoingLayer.style.zIndex = '2'
-      incomingLayer.style.zIndex = '3'
+      incomingLayer.style.zIndex = String(++zCounter)
       incomingLayer.classList.add('active')
       outgoingLayer.classList.remove('active')
 
       if (isReducedMotion) {
-        layers.forEach((l, idx) => {
-          gsap.set(l, {
-            clipPath: idx === newIndex ? 'inset(0% 0 0% 0)' : 'inset(100% 0 0% 0)',
-            zIndex: idx === newIndex ? 3 : 1,
-          })
-        })
+        incomingLayer.style.setProperty('--clip-top', '0%')
+        incomingLayer.style.setProperty('--clip-bottom', '0%')
       } else {
-        gsap.killTweensOf([incomingLayer, outgoingLayer, incomingImg])
+        gsap.killTweensOf([incomingLayer, incomingImg])
 
         if (isForward) {
-          gsap.set(incomingLayer, { clipPath: 'inset(100% 0 0% 0)' })
-          gsap.to(incomingLayer, {
-            clipPath: 'inset(0% 0 0% 0)',
-            duration: 0.65,
-            ease: 'power3.out',
-            onComplete: () => {
-              layers.forEach((l, idx) => {
-                if (idx !== newIndex) {
-                  gsap.set(l, { zIndex: 1, clipPath: 'inset(100% 0 0% 0)' })
-                }
-              })
-            },
-          })
+          gsap.fromTo(
+            incomingLayer,
+            { '--clip-top': '100%', '--clip-bottom': '0%' },
+            {
+              '--clip-top': '0%',
+              '--clip-bottom': '0%',
+              duration: 0.65,
+              ease: 'power3.out',
+            }
+          )
           if (incomingImg) {
             gsap.fromTo(
               incomingImg,
@@ -281,19 +267,16 @@ const getHostname = (url: string) => {
             )
           }
         } else {
-          gsap.set(incomingLayer, { clipPath: 'inset(0 0 100% 0)' })
-          gsap.to(incomingLayer, {
-            clipPath: 'inset(0 0 0% 0)',
-            duration: 0.65,
-            ease: 'power3.out',
-            onComplete: () => {
-              layers.forEach((l, idx) => {
-                if (idx !== newIndex) {
-                  gsap.set(l, { zIndex: 1, clipPath: 'inset(100% 0 0% 0)' })
-                }
-              })
-            },
-          })
+          gsap.fromTo(
+            incomingLayer,
+            { '--clip-top': '0%', '--clip-bottom': '100%' },
+            {
+              '--clip-top': '0%',
+              '--clip-bottom': '0%',
+              duration: 0.65,
+              ease: 'power3.out',
+            }
+          )
           if (incomingImg) {
             gsap.fromTo(
               incomingImg,
@@ -379,54 +362,6 @@ const getHostname = (url: string) => {
     padding: 6rem 2rem 8rem;
     overflow: visible;
     border-top: 1px solid var(--border-subtle);
-  }
-
-  .projects-ambient-backdrop {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    overflow: hidden;
-    z-index: 0;
-  }
-
-  .ambient-spotlight {
-    position: absolute;
-    top: 50%;
-    right: 25%;
-    width: 600px;
-    height: 600px;
-    border-radius: 50%;
-    transform: translate(50%, -50%);
-    background: radial-gradient(
-      circle,
-      rgba(255, 255, 255, 0.08) 0%,
-      rgba(255, 255, 255, 0.02) 40%,
-      transparent 70%
-    );
-    filter: blur(55px);
-    will-change: transform, opacity;
-  }
-
-  .ambient-watermark-wrap {
-    position: absolute;
-    top: 50%;
-    right: 12%;
-    transform: translateY(-50%);
-    overflow: hidden;
-    height: clamp(14rem, 24vw, 22rem);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .ambient-watermark {
-    font-family: var(--font-display);
-    font-size: clamp(14rem, 24vw, 22rem);
-    font-weight: 700;
-    line-height: 1;
-    letter-spacing: -0.05em;
-    color: rgba(255, 255, 255, 0.03);
-    will-change: transform, opacity;
   }
 
   .projects-container {
@@ -720,7 +655,57 @@ const getHostname = (url: string) => {
     pointer-events: auto;
   }
 
+  .projects-ambient-backdrop {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: visible;
+    z-index: 0;
+  }
+
+  .ambient-spotlight {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 620px;
+    height: 620px;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(
+      circle,
+      rgba(255, 255, 255, 0.08) 0%,
+      rgba(255, 255, 255, 0.02) 40%,
+      transparent 70%
+    );
+    filter: blur(55px);
+    will-change: transform, opacity;
+  }
+
+  .ambient-watermark-wrap {
+    position: absolute;
+    top: 50%;
+    right: -6%;
+    transform: translateY(-50%);
+    overflow: hidden;
+    height: clamp(14rem, 24vw, 22rem);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ambient-watermark {
+    font-family: var(--font-display);
+    font-size: clamp(14rem, 24vw, 22rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.05em;
+    color: rgba(255, 255, 255, 0.035);
+    will-change: transform, opacity;
+  }
+
   .mockup-viewport-frame {
+    position: relative;
+    z-index: 1;
     width: 100%;
     max-width: 660px;
     background-color: #121212;
@@ -800,11 +785,16 @@ const getHostname = (url: string) => {
     overflow: hidden;
     width: 100%;
     height: 100%;
-    will-change: clip-path;
     pointer-events: none;
+    --clip-top: 100%;
+    --clip-bottom: 0%;
+    clip-path: inset(var(--clip-top) 0% var(--clip-bottom) 0%);
+    will-change: clip-path;
   }
 
   .mockup-layer.active {
+    --clip-top: 0%;
+    --clip-bottom: 0%;
     pointer-events: auto;
   }
 
@@ -817,19 +807,21 @@ const getHostname = (url: string) => {
     overflow: hidden;
   }
 
-  .layer-img,
-  .mobile-img {
+  .layer-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     object-position: top center;
     display: block;
     will-change: transform;
-    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  .mockup-viewport-frame:hover .layer-img {
-    transform: scale(1.02);
+  .mobile-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    display: block;
   }
 
   .layer-overlay {
