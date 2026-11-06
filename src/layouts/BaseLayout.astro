@@ -81,26 +81,6 @@ const {
         })
 
         gsap.ticker.lagSmoothing(0)
-
-        ScrollTrigger.create({
-          snap: {
-            snapTo: (value) => {
-              const sections = Array.from(document.querySelectorAll('section[id]'))
-              const maxScroll = document.documentElement.scrollHeight - window.innerHeight
-              if (maxScroll <= 0 || sections.length === 0) return value
-              const targets = sections.map((sec) => (sec as HTMLElement).offsetTop / maxScroll)
-
-              const closest = targets.reduce((prev, curr) =>
-                Math.abs(curr - value) < Math.abs(prev - value) ? curr : prev
-              )
-
-              return Math.abs(closest - value) < 0.08 ? closest : value
-            },
-            duration: { min: 0.3, max: 0.6 },
-            delay: 0.15,
-            ease: 'power2.out',
-          },
-        })
       }
     </script>
   </body>

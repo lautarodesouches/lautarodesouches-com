@@ -386,8 +386,11 @@ const getHostname = (url: string) => {
           trigger: item,
           start: 'top 55%',
           end: 'bottom 45%',
-          onEnter: () => setActiveProject(index),
-          onEnterBack: () => setActiveProject(index),
+          onToggle: (self) => {
+            if (self.isActive) {
+              setActiveProject(index)
+            }
+          },
         })
       })
 
@@ -407,7 +410,7 @@ const getHostname = (url: string) => {
     background-color: #0A0A0A;
     color: var(--text-primary);
     padding: 6rem 2rem 8rem;
-    overflow-x: clip;
+    overflow: visible;
     border-top: 1px solid var(--border-subtle);
   }
 
