@@ -1,0 +1,942 @@
+---
+import { portfolioData } from '../data/portfolio.data'
+
+const projects = portfolioData.projects
+const firstProject = projects[0]
+const totalProjects = projects.length
+---
+
+<section class="projects-section" id="proyectos" aria-labelledby="projects-title">
+  <div class="projects-container">
+    <header class="projects-header">
+      <div class="projects-tag">
+        <span class="projects-tag__text">02 // CASOS DE ESTUDIO & PROYECTOS</span>
+      </div>
+
+      <h2 class="projects-title" id="projects-title">
+        Ingeniería de software aplicada a negocio.
+      </h2>
+
+      <p class="projects-desc">
+        Plataformas B2B, portales de alto tráfico y arquitecturas web de ultra-velocidad desplegadas en producción.
+      </p>
+    </header>
+
+    <div class="projects-split-stage">
+      <aside class="projects-pinned-col" aria-label="Detalles del proyecto activo">
+        <div class="pinned-inner">
+          <div class="pinned-telemetry swap-target">
+            <div class="pinned-counter">
+              [ <span id="pinned-counter-curr">01</span> / <span id="pinned-counter-total">{String(totalProjects).padStart(2, '0')}</span> ]
+            </div>
+            <div class="pinned-segments" aria-hidden="true">
+              {projects.map((_, idx) => (
+                <span class:list={['pinned-segment', { 'is-active': idx === 0 }]} data-segment-index={idx}></span>
+              ))}
+            </div>
+          </div>
+
+          <div class="pinned-meta swap-target">
+            <span class="pinned-badge" id="pinned-badge">{firstProject.badge}</span>
+            <span class="pinned-type" id="pinned-type">{firstProject.type}</span>
+          </div>
+
+          <h3 class="pinned-title swap-target" id="pinned-title">
+            {firstProject.title}
+          </h3>
+
+          <div class="pinned-narrative swap-target">
+            <div class="narrative-block">
+              <span class="narrative-label">// DESAFÍO DE NEGOCIO</span>
+              <p class="narrative-text" id="pinned-problem">{firstProject.problem}</p>
+            </div>
+            <div class="narrative-block">
+              <span class="narrative-label">// SOLUCIÓN DE ARQUITECTURA</span>
+              <p class="narrative-text" id="pinned-solution">{firstProject.solution}</p>
+            </div>
+          </div>
+
+          <div class="pinned-metrics swap-target" id="pinned-metrics">
+            {firstProject.metrics.map((m) => (
+              <div class="pinned-metric-box">
+                <span class="pinned-metric-label">{m.label}</span>
+                <span class="pinned-metric-value">{m.value}</span>
+              </div>
+            ))}
+          </div>
+
+          <div class="pinned-stack swap-target">
+            <span class="pinned-stack-label">Stack Tecnológico</span>
+            <div class="pinned-pills" id="pinned-pills">
+              {firstProject.tech.map((t) => (
+                <span class="pinned-pill">{t}</span>
+              ))}
+            </div>
+          </div>
+
+          <div class="pinned-actions swap-target" id="pinned-actions">
+            <a
+              href={firstProject.demoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="pinned-btn pinned-btn--primary"
+              id="pinned-demo-btn"
+            >
+              <span>Ver Proyecto en Producción</span>
+              <span class="btn-arrow" aria-hidden="true">↗</span>
+            </a>
+
+            <div id="pinned-repo-wrapper">
+              {firstProject.isPrivateRepo ? (
+                <span class="pinned-btn pinned-btn--disabled">
+                  <span class="lock-icon" aria-hidden="true">🔒</span>
+                  <span>// Repositorio Privado / NDA</span>
+                </span>
+              ) : (
+                <a
+                  href={firstProject.repoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="pinned-btn pinned-btn--secondary"
+                >
+                  <span>Código en GitHub</span>
+                  <span class="btn-arrow" aria-hidden="true">↗</span>
+                </a>
+              )}
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <div class="projects-scroll-col" aria-label="Galería visual de proyectos">
+        {projects.map((project, idx) => (
+          <article class="project-visual-card" data-project-index={idx} id={`project-card-${project.id}`}>
+            <div class="browser-frame">
+              <div class="browser-chrome" aria-hidden="true">
+                <div class="browser-dots">
+                  <span class="browser-dot"></span>
+                  <span class="browser-dot"></span>
+                  <span class="browser-dot"></span>
+                </div>
+                <div class="browser-address">
+                  <span class="browser-lock">🔒</span>
+                  <span class="browser-url">{project.demoUrl.replace(/^https?:\/\//, '').replace(/\/$/, '')}</span>
+                </div>
+              </div>
+
+              <div class="browser-viewport">
+                <a
+                  href={project.demoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="browser-link"
+                  aria-label={`Ver ${project.title} en producción`}
+                >
+                  <img
+                    src={project.image}
+                    alt={`Captura del sistema ${project.title}`}
+                    class="project-visual-img"
+                    loading={idx === 0 ? 'eager' : 'lazy'}
+                    decoding="async"
+                  />
+                  <div class="browser-overlay" aria-hidden="true">
+                    <span class="browser-overlay-pill">Abrir Demo ↗</span>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+
+    <div class="projects-mobile-feed" aria-label="Listado de proyectos móvil">
+      {projects.map((project, idx) => (
+        <article class="mobile-project-card" id={`mobile-card-${project.id}`}>
+          <div class="browser-frame">
+            <div class="browser-chrome" aria-hidden="true">
+              <div class="browser-dots">
+                <span class="browser-dot"></span>
+                <span class="browser-dot"></span>
+                <span class="browser-dot"></span>
+              </div>
+              <div class="browser-address">
+                <span class="browser-lock">🔒</span>
+                <span class="browser-url">{project.demoUrl.replace(/^https?:\/\//, '').replace(/\/$/, '')}</span>
+              </div>
+            </div>
+
+            <div class="browser-viewport">
+              <a
+                href={project.demoUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="browser-link"
+                aria-label={`Ver ${project.title} en producción`}
+              >
+                <img
+                  src={project.image}
+                  alt={`Captura de ${project.title}`}
+                  class="mobile-project-img"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </a>
+            </div>
+          </div>
+
+          <div class="mobile-project-body">
+            <div class="mobile-project-telemetry">
+              <span class="mobile-project-counter">[ {String(idx + 1).padStart(2, '0')} / {String(totalProjects).padStart(2, '0')} ]</span>
+              <span class="pinned-badge">{project.badge}</span>
+              <span class="pinned-type">{project.type}</span>
+            </div>
+
+            <h3 class="mobile-project-title">{project.title}</h3>
+
+            <div class="pinned-narrative">
+              <div class="narrative-block">
+                <span class="narrative-label">// DESAFÍO DE NEGOCIO</span>
+                <p class="narrative-text">{project.problem}</p>
+              </div>
+              <div class="narrative-block">
+                <span class="narrative-label">// SOLUCIÓN DE ARQUITECTURA</span>
+                <p class="narrative-text">{project.solution}</p>
+              </div>
+            </div>
+
+            <div class="pinned-metrics">
+              {project.metrics.map((m) => (
+                <div class="pinned-metric-box">
+                  <span class="pinned-metric-label">{m.label}</span>
+                  <span class="pinned-metric-value">{m.value}</span>
+                </div>
+              ))}
+            </div>
+
+            <div class="pinned-stack">
+              <span class="pinned-stack-label">Stack Tecnológico</span>
+              <div class="pinned-pills">
+                {project.tech.map((t) => (
+                  <span class="pinned-pill">{t}</span>
+                ))}
+              </div>
+            </div>
+
+            <div class="mobile-actions">
+              <a
+                href={project.demoUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="pinned-btn pinned-btn--primary"
+              >
+                <span>Ver en Producción</span>
+                <span class="btn-arrow" aria-hidden="true">↗</span>
+              </a>
+
+              {project.isPrivateRepo ? (
+                <span class="pinned-btn pinned-btn--disabled">
+                  <span class="lock-icon" aria-hidden="true">🔒</span>
+                  <span>// Repositorio Privado / NDA</span>
+                </span>
+              ) : (
+                <a
+                  href={project.repoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="pinned-btn pinned-btn--secondary"
+                >
+                  <span>Código en GitHub</span>
+                  <span class="btn-arrow" aria-hidden="true">↗</span>
+                </a>
+              )}
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  import { gsap } from 'gsap'
+  import { ScrollTrigger } from 'gsap/ScrollTrigger'
+  import { portfolioData, type Project } from '../data/portfolio.data'
+
+  gsap.registerPlugin(ScrollTrigger)
+
+  const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  const mm = gsap.matchMedia()
+
+  const updateProjectDOM = (data: Project, idx: number) => {
+    const counterCurr = document.getElementById('pinned-counter-curr')
+    const badge = document.getElementById('pinned-badge')
+    const type = document.getElementById('pinned-type')
+    const title = document.getElementById('pinned-title')
+    const problem = document.getElementById('pinned-problem')
+    const solution = document.getElementById('pinned-solution')
+    const metricsContainer = document.getElementById('pinned-metrics')
+    const pillsContainer = document.getElementById('pinned-pills')
+    const demoBtn = document.getElementById('pinned-demo-btn') as HTMLAnchorElement | null
+    const repoWrapper = document.getElementById('pinned-repo-wrapper')
+
+    if (counterCurr) counterCurr.textContent = String(idx + 1).padStart(2, '0')
+    if (badge) badge.textContent = data.badge
+    if (type) type.textContent = data.type
+    if (title) title.textContent = data.title
+    if (problem) problem.textContent = data.problem
+    if (solution) solution.textContent = data.solution
+
+    if (metricsContainer) {
+      metricsContainer.innerHTML = data.metrics
+        .map(
+          (m) => `
+          <div class="pinned-metric-box">
+            <span class="pinned-metric-label">${m.label}</span>
+            <span class="pinned-metric-value">${m.value}</span>
+          </div>
+        `
+        )
+        .join('')
+    }
+
+    if (pillsContainer) {
+      pillsContainer.innerHTML = data.tech
+        .map((t) => `<span class="pinned-pill">${t}</span>`)
+        .join('')
+    }
+
+    if (demoBtn) {
+      demoBtn.href = data.demoUrl
+    }
+
+    if (repoWrapper) {
+      if (data.isPrivateRepo) {
+        repoWrapper.innerHTML = `
+          <span class="pinned-btn pinned-btn--disabled">
+            <span class="lock-icon" aria-hidden="true">🔒</span>
+            <span>// Repositorio Privado / NDA</span>
+          </span>
+        `
+      } else {
+        repoWrapper.innerHTML = `
+          <a
+            href="${data.repoUrl}"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="pinned-btn pinned-btn--secondary"
+          >
+            <span>Código en GitHub</span>
+            <span class="btn-arrow" aria-hidden="true">↗</span>
+          </a>
+        `
+      }
+    }
+  }
+
+  mm.add('(min-width: 1024px)', () => {
+    if (isReducedMotion) return
+
+    const visualCards = gsap.utils.toArray<HTMLElement>('.project-visual-card')
+    let activeIndex = 0
+
+    const swapProjectData = (idx: number) => {
+      if (idx === activeIndex) return
+      activeIndex = idx
+      const data = portfolioData.projects[idx]
+      if (!data) return
+
+      document.querySelectorAll('.pinned-segment').forEach((seg, sIdx) => {
+        seg.classList.toggle('is-active', sIdx === idx)
+      })
+
+      const targets = document.querySelectorAll('.swap-target')
+      const tl = gsap.timeline({ defaults: { duration: 0.24, ease: 'power3.out' } })
+
+      tl.to(targets, { opacity: 0, y: -6, stagger: 0.015 })
+        .add(() => {
+          updateProjectDOM(data, idx)
+        })
+        .to(targets, { opacity: 1, y: 0, stagger: 0.015 })
+    }
+
+    visualCards.forEach((card, index) => {
+      ScrollTrigger.create({
+        trigger: card,
+        start: 'top 55%',
+        end: 'bottom 55%',
+        onEnter: () => swapProjectData(index),
+        onEnterBack: () => swapProjectData(index),
+      })
+
+      const img = card.querySelector<HTMLElement>('.project-visual-img')
+      if (img) {
+        gsap.fromTo(
+          img,
+          { yPercent: -4 },
+          {
+            yPercent: 4,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: card,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: true,
+            },
+          }
+        )
+      }
+    })
+  })
+
+  mm.add('(max-width: 1023px)', () => {
+    gsap.set('.projects-pinned-col', { clearProps: 'all' })
+  })
+</script>
+
+<style>
+  .projects-section {
+    position: relative;
+    width: 100%;
+    background-color: var(--bg-primary);
+    padding: clamp(5.5rem, 11vh, 9rem) 2rem clamp(6.5rem, 13vh, 10.5rem);
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  .projects-container {
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+  }
+
+  .projects-header {
+    margin-bottom: clamp(3.5rem, 7vw, 5.5rem);
+    max-width: 820px;
+  }
+
+  .projects-tag {
+    display: inline-flex;
+    align-items: center;
+    margin-bottom: 1.25rem;
+  }
+
+  .projects-tag__text {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .projects-title {
+    font-family: var(--font-display);
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    font-weight: 600;
+    line-height: 1.08;
+    letter-spacing: -0.025em;
+    color: var(--text-primary);
+    margin-bottom: 1.35rem;
+  }
+
+  .projects-desc {
+    font-family: var(--font-sans);
+    font-size: clamp(0.98rem, 1.2vw, 1.15rem);
+    line-height: 1.6;
+    color: var(--text-secondary);
+    max-width: 62ch;
+  }
+
+  .projects-split-stage {
+    display: grid;
+    grid-template-columns: 1fr 1.18fr;
+    gap: clamp(3.5rem, 6vw, 6.5rem);
+    position: relative;
+    align-items: start;
+  }
+
+  .projects-pinned-col {
+    position: sticky;
+    top: clamp(5.5rem, 9vh, 7.5rem);
+    width: 100%;
+    will-change: transform;
+  }
+
+  .pinned-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
+    padding-right: 1.5rem;
+  }
+
+  .pinned-telemetry {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .pinned-counter {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+  }
+
+  #pinned-counter-curr {
+    color: var(--text-primary);
+  }
+
+  .pinned-segments {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    width: 72px;
+    height: 3px;
+  }
+
+  .pinned-segment {
+    flex: 1;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.14);
+    border-radius: 2px;
+    transition: background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .pinned-segment.is-active {
+    background-color: #FFFFFF;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+  }
+
+  .pinned-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .pinned-badge {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--accent-cyan);
+    background-color: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 0.25rem 0.6rem;
+    border-radius: 9999px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .pinned-type {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: -0.01em;
+  }
+
+  .pinned-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 2.5vw, 2.4rem);
+    font-weight: 500;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+  }
+
+  .pinned-narrative {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    background-color: rgba(255, 255, 255, 0.015);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 8px;
+    padding: 1.1rem 1.25rem;
+  }
+
+  .narrative-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .narrative-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+  }
+
+  .narrative-text {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--text-secondary);
+  }
+
+  .pinned-metrics {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.65rem;
+  }
+
+  .pinned-metric-box {
+    background-color: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 6px;
+    padding: 0.65rem 0.8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .pinned-metric-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: 500;
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .pinned-metric-value {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    color: #FFFFFF;
+    line-height: 1.25;
+  }
+
+  .pinned-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .pinned-stack-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .pinned-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .pinned-pill {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    line-height: 1;
+    color: var(--text-primary);
+    background-color: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 0.35rem 0.6rem;
+    border-radius: 9999px;
+    letter-spacing: -0.01em;
+  }
+
+  .pinned-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    padding-top: 0.5rem;
+  }
+
+  .pinned-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    line-height: 1;
+    padding: 0.65rem 1.15rem;
+    border-radius: 9999px;
+    text-decoration: none;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    white-space: nowrap;
+  }
+
+  .pinned-btn--primary {
+    background-color: #FFFFFF;
+    color: #0A0A0A;
+    font-weight: 600;
+  }
+
+  .pinned-btn--primary:hover {
+    background-color: #E6E6E6;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(255, 255, 255, 0.15);
+  }
+
+  .pinned-btn--secondary {
+    background-color: rgba(255, 255, 255, 0.04);
+    color: #FFFFFF;
+    font-weight: 500;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+  }
+
+  .pinned-btn--secondary:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-1px);
+  }
+
+  .pinned-btn--disabled {
+    background-color: rgba(255, 255, 255, 0.02);
+    color: var(--text-muted);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    cursor: default;
+    user-select: none;
+  }
+
+  .btn-arrow {
+    font-size: 12px;
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .pinned-btn:hover .btn-arrow {
+    transform: translate(2px, -2px);
+  }
+
+  .lock-icon {
+    font-size: 11px;
+    opacity: 0.7;
+  }
+
+  .projects-scroll-col {
+    display: flex;
+    flex-direction: column;
+    gap: 25vh;
+    padding-bottom: 12vh;
+  }
+
+  .project-visual-card {
+    position: relative;
+    width: 100%;
+  }
+
+  .browser-frame {
+    width: 100%;
+    background-color: #121212;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.6);
+    transition: border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .project-visual-card:hover .browser-frame {
+    border-color: rgba(255, 255, 255, 0.22);
+  }
+
+  .browser-chrome {
+    height: 32px;
+    background-color: #161616;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1rem;
+    gap: 1rem;
+  }
+
+  .browser-dots {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .browser-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.18);
+  }
+
+  .browser-address {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background-color: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 4px;
+    padding: 0.15rem 0.65rem;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.45);
+    max-width: 280px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .browser-lock {
+    font-size: 8px;
+    opacity: 0.6;
+  }
+
+  .browser-viewport {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background-color: #0A0A0A;
+  }
+
+  .browser-link {
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .project-visual-img {
+    width: 100%;
+    height: 110%;
+    object-fit: cover;
+    object-position: top center;
+    display: block;
+    will-change: transform;
+    transition: filter 0.4s ease;
+  }
+
+  .browser-overlay {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(10, 10, 10, 0.4);
+    backdrop-filter: blur(2px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .project-visual-card:hover .browser-overlay {
+    opacity: 1;
+  }
+
+  .browser-overlay-pill {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    color: #FFFFFF;
+    background-color: rgba(18, 18, 18, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 0.6rem 1.1rem;
+    border-radius: 9999px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  }
+
+  .projects-mobile-feed {
+    display: none;
+  }
+
+  @media (max-width: 1023px) {
+    .projects-split-stage {
+      display: none !important;
+    }
+
+    .projects-mobile-feed {
+      display: flex;
+      flex-direction: column;
+      gap: 4.5rem;
+    }
+
+    .mobile-project-card {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      background-color: rgba(255, 255, 255, 0.015);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 1.25rem;
+    }
+
+    .mobile-project-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      display: block;
+    }
+
+    .mobile-project-body {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .mobile-project-telemetry {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      flex-wrap: wrap;
+    }
+
+    .mobile-project-counter {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .mobile-project-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.5rem, 5.5vw, 2rem);
+      font-weight: 500;
+      line-height: 1.18;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+    }
+
+    .mobile-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      padding-top: 0.25rem;
+    }
+
+    .pinned-metrics {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .projects-section {
+      padding: 4.5rem 1.25rem 5.5rem;
+    }
+
+    .projects-header {
+      margin-bottom: 2.75rem;
+    }
+
+    .projects-title {
+      font-size: clamp(1.85rem, 7.5vw, 2.5rem);
+      line-height: 1.12;
+      margin-bottom: 1rem;
+    }
+
+    .projects-desc {
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .mobile-project-card {
+      padding: 1rem;
+      gap: 1.25rem;
+    }
+  }
+</style>
