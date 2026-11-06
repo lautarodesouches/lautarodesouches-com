@@ -1,4 +1,5 @@
 ---
+import MobileNav from './MobileNav.astro'
 ---
 
 <header class="header">
@@ -21,12 +22,14 @@
 
     <nav class="header__nav" aria-label="Navegación principal">
       <ul class="header__nav-list">
-        <li class="header__nav-item header__nav-item--optional"><a href="#soluciones" class="header__nav-link">Soluciones</a></li>
+        <li class="header__nav-item"><a href="#soluciones" class="header__nav-link">Soluciones</a></li>
         <li class="header__nav-item"><a href="#proyectos" class="header__nav-link">Proyectos</a></li>
-        <li class="header__nav-item header__nav-item--optional"><a href="#trayectoria" class="header__nav-link">Trayectoria</a></li>
+        <li class="header__nav-item"><a href="#trayectoria" class="header__nav-link">Trayectoria</a></li>
         <li class="header__nav-item"><a href="#contacto" class="header__nav-link">Contacto</a></li>
       </ul>
     </nav>
+
+    <MobileNav />
   </div>
 </header>
 
@@ -247,17 +250,8 @@
       font-size: 13px;
     }
 
-    .header__nav-item--optional {
+    .header__nav {
       display: none;
-    }
-
-    .header__nav-list {
-      gap: 1.25rem;
-    }
-
-    .header__nav-link {
-      font-size: 12px;
-      color: var(--text-secondary);
     }
   }
 </style>
