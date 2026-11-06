@@ -1,15 +1,26 @@
 ---
-import ProjectsStack from './projects/ProjectsStack.astro'
-import ProjectsGrid from './projects/ProjectsGrid.astro'
-import ProjectsTester from './projects/ProjectsTester.astro'
+import { portfolioData } from '../data/portfolio.data'
+
+const projects = portfolioData.projects
+const totalProjects = projects.length
+
+const getHostname = (url: string) => {
+  try {
+    return new URL(url).hostname.replace(/^www\./, '')
+  } catch {
+    return 'demo.local'
+  }
+}
 ---
 
-<section
-  id="proyectos"
-  class="projects-section"
-  data-projects-layout="stack"
-  aria-labelledby="projects-title"
->
+<section id="proyectos" class="projects-section" aria-labelledby="projects-title">
+  <div class="projects-ambient-backdrop" aria-hidden="true">
+    <div class="ambient-spotlight" id="projects-spotlight"></div>
+    <div class="ambient-watermark-wrap">
+      <div class="ambient-watermark" id="projects-watermark">01</div>
+    </div>
+  </div>
+
   <div class="projects-container">
     <header class="projects-header">
       <span class="section-tag">02 // CASOS DE ESTUDIO & PROYECTOS</span>
@@ -19,17 +30,317 @@ import ProjectsTester from './projects/ProjectsTester.astro'
       </p>
     </header>
 
-    <div id="projects-layout-stack" class="projects-view">
-      <ProjectsStack />
-    </div>
+    <div class="projects-split-container">
+      <div class="projects-narrative-col">
+        {projects.map((project, index) => {
+          const isPrivate = project.isPrivateRepo
+          const hostname = getHostname(project.demoUrl)
 
-    <div id="projects-layout-grid" class="projects-view">
-      <ProjectsGrid />
+          return (
+            <article
+              class="project-story-item"
+              data-index={index}
+              id={`project-story-${project.id}`}
+            >
+              <div class="story-mobile-mockup">
+                <div class="mobile-browser">
+                  <div class="mobile-browser__bar">
+                    <div class="mobile-dots" aria-hidden="true">
+                      <span class="dot"></span>
+                      <span class="dot"></span>
+                      <span class="dot"></span>
+                    </div>
+                    <div class="mobile-url">
+                      <span class="url-protocol">https://</span>
+                      <span class="url-host">{hostname}</span>
+                    </div>
+                  </div>
+                  <div class="mobile-viewport">
+                    <a
+                      href={project.demoUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="viewport-link"
+                      aria-label={`Ver proyecto ${project.title}`}
+                    >
+                      <img
+                        src={project.image}
+                        alt={`Mockup de ${project.title}`}
+                        class="mobile-img"
+                        loading={index === 0 ? 'eager' : 'lazy'}
+                        decoding="async"
+                      />
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="story-content">
+                <div class="story-telemetry">
+                  <span class="story-badge">
+                    [ {String(index + 1).padStart(2, '0')} / {String(totalProjects).padStart(2, '0')} ] // {project.badge}
+                  </span>
+                  <span class="story-type">{project.type}</span>
+                </div>
+
+                <h3 class="story-title">{project.title}</h3>
+
+                <div class="story-narrative">
+                  <div class="narrative-block">
+                    <span class="narrative-label">// DESAFÍO DE NEGOCIO</span>
+                    <p class="narrative-text">{project.problem}</p>
+                  </div>
+                  <div class="narrative-block">
+                    <span class="narrative-label">// SOLUCIÓN DE ARQUITECTURA</span>
+                    <p class="narrative-text">{project.solution}</p>
+                  </div>
+                </div>
+
+                <div class="story-metrics">
+                  {project.metrics.map((metric) => (
+                    <div class="metric-card">
+                      <span class="metric-label">{metric.label}</span>
+                      <span class="metric-value">{metric.value}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div class="story-stack">
+                  <span class="stack-heading">Stack Tecnológico</span>
+                  <div class="stack-pills">
+                    {project.tech.map((techItem) => (
+                      <span class="tech-pill">{techItem}</span>
+                    ))}
+                  </div>
+                </div>
+
+                <div class="story-actions">
+                  <a
+                    href={project.demoUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="action-btn action-btn--primary"
+                  >
+                    <span>Ver Proyecto en Producción</span>
+                    <span class="action-arrow" aria-hidden="true">↗</span>
+                  </a>
+
+                  {isPrivate ? (
+                    <span class="private-badge">[ REPOSITORIO PRIVADO // NDA ]</span>
+                  ) : (
+                    <a
+                      href={project.repoUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="action-btn action-btn--secondary"
+                    >
+                      <span>Código en GitHub</span>
+                      <span class="action-arrow" aria-hidden="true">↗</span>
+                    </a>
+                  )}
+                </div>
+              </div>
+            </article>
+          )
+        })}
+      </div>
+
+      <div class="projects-visual-stage" aria-hidden="true">
+        <div class="mockup-viewport-frame">
+          <div class="mockup-header-bar">
+            <div class="mockup-dots">
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+            </div>
+            <div class="mockup-url-pill">
+              <span class="url-protocol">https://</span>
+              <span class="mockup-url-label" id="mockup-url-display">
+                {getHostname(projects[0].demoUrl)}
+              </span>
+            </div>
+          </div>
+
+          <div class="mockup-layers-stack">
+            {projects.map((project, index) => (
+              <div
+                class:list={['mockup-layer', { active: index === 0 }]}
+                data-layer={index}
+                data-url={getHostname(project.demoUrl)}
+                style={
+                  index === 0
+                    ? 'clip-path: inset(0% 0 0% 0); z-index: 2;'
+                    : 'clip-path: inset(100% 0 0% 0); z-index: 1;'
+                }
+              >
+                <a
+                  href={project.demoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="layer-link"
+                  tabindex="-1"
+                  aria-label={`Ver demostración de ${project.title}`}
+                >
+                  <img
+                    src={project.image}
+                    alt={`Mockup de ${project.title}`}
+                    class="layer-img"
+                    loading={index === 0 ? 'eager' : 'lazy'}
+                    decoding="async"
+                  />
+                  <div class="layer-overlay">
+                    <span class="overlay-pill">
+                      <span>Ver Proyecto</span>
+                      <span class="action-arrow">↗</span>
+                    </span>
+                  </div>
+                </a>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-
-  <ProjectsTester />
 </section>
+
+<script>
+  import { gsap } from 'gsap'
+  import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+  gsap.registerPlugin(ScrollTrigger)
+
+  const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  const mm = gsap.matchMedia()
+
+  mm.add('(min-width: 1024px)', () => {
+    const storyItems = gsap.utils.toArray<HTMLElement>('.project-story-item')
+    const layers = gsap.utils.toArray<HTMLElement>('.mockup-layer')
+    const urlDisplay = document.getElementById('mockup-url-display')
+    const spotlight = document.getElementById('projects-spotlight')
+    const watermark = document.getElementById('projects-watermark')
+
+    let currentIndex = 0
+
+    const switchProject = (newIndex: number) => {
+      if (newIndex === currentIndex) return
+
+      const incomingLayer = layers[newIndex]
+      const outgoingLayer = layers[currentIndex]
+      if (!incomingLayer || !outgoingLayer) return
+
+      const isForward = newIndex > currentIndex
+      const incomingImg = incomingLayer.querySelector<HTMLElement>('.layer-img')
+
+      layers.forEach((layer, idx) => {
+        if (idx !== newIndex && idx !== currentIndex) {
+          layer.style.zIndex = '1'
+        }
+      })
+
+      outgoingLayer.style.zIndex = '2'
+      incomingLayer.style.zIndex = '3'
+
+      if (isReducedMotion) {
+        layers.forEach((l, i) => {
+          l.classList.toggle('active', i === newIndex)
+          l.style.clipPath = i === newIndex ? 'inset(0% 0 0% 0)' : 'inset(100% 0 0% 0)'
+        })
+      } else {
+        gsap.killTweensOf([incomingLayer, incomingImg])
+
+        if (isForward) {
+          gsap.set(incomingLayer, { clipPath: 'inset(100% 0 0% 0)' })
+          gsap.to(incomingLayer, {
+            clipPath: 'inset(0% 0 0% 0)',
+            duration: 0.65,
+            ease: 'power3.out',
+          })
+          if (incomingImg) {
+            gsap.fromTo(
+              incomingImg,
+              { yPercent: -8 },
+              { yPercent: 0, duration: 0.65, ease: 'power3.out' }
+            )
+          }
+        } else {
+          gsap.set(incomingLayer, { clipPath: 'inset(0 0 100% 0)' })
+          gsap.to(incomingLayer, {
+            clipPath: 'inset(0 0 0% 0)',
+            duration: 0.65,
+            ease: 'power3.out',
+          })
+          if (incomingImg) {
+            gsap.fromTo(
+              incomingImg,
+              { yPercent: 8 },
+              { yPercent: 0, duration: 0.65, ease: 'power3.out' }
+            )
+          }
+        }
+
+        if (spotlight) {
+          gsap.fromTo(
+            spotlight,
+            { scale: 0.85, opacity: 0.4 },
+            {
+              scale: 1.15,
+              opacity: 0.85,
+              duration: 0.5,
+              ease: 'power2.out',
+              yoyo: true,
+              repeat: 1,
+            }
+          )
+        }
+
+        if (watermark) {
+          const nextNum = String(newIndex + 1).padStart(2, '0')
+          const direction = isForward ? 1 : -1
+          gsap.to(watermark, {
+            yPercent: -40 * direction,
+            opacity: 0,
+            duration: 0.22,
+            ease: 'power2.in',
+            onComplete: () => {
+              watermark.textContent = nextNum
+              gsap.fromTo(
+                watermark,
+                { yPercent: 40 * direction, opacity: 0 },
+                { yPercent: 0, opacity: 1, duration: 0.3, ease: 'power2.out' }
+              )
+            },
+          })
+        }
+      }
+
+      if (urlDisplay) {
+        const nextUrl = incomingLayer.getAttribute('data-url') || ''
+        gsap.to(urlDisplay, {
+          opacity: 0,
+          y: -3,
+          duration: 0.15,
+          onComplete: () => {
+            urlDisplay.textContent = nextUrl
+            gsap.to(urlDisplay, { opacity: 1, y: 0, duration: 0.25 })
+          },
+        })
+      }
+
+      currentIndex = newIndex
+    }
+
+    storyItems.forEach((item, index) => {
+      ScrollTrigger.create({
+        trigger: item,
+        start: 'top 50%',
+        end: 'bottom 50%',
+        onEnter: () => switchProject(index),
+        onEnterBack: () => switchProject(index),
+      })
+    })
+  })
+</script>
 
 <style>
   .projects-section {
@@ -41,10 +352,60 @@ import ProjectsTester from './projects/ProjectsTester.astro'
     border-top: 1px solid var(--border-subtle);
   }
 
+  .projects-ambient-backdrop {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+  }
+
+  .ambient-spotlight {
+    position: absolute;
+    top: 50%;
+    right: 25%;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    transform: translate(50%, -50%);
+    background: radial-gradient(
+      circle,
+      rgba(255, 255, 255, 0.08) 0%,
+      rgba(255, 255, 255, 0.02) 40%,
+      transparent 70%
+    );
+    filter: blur(55px);
+    will-change: transform, opacity;
+  }
+
+  .ambient-watermark-wrap {
+    position: absolute;
+    top: 50%;
+    right: 12%;
+    transform: translateY(-50%);
+    overflow: hidden;
+    height: clamp(14rem, 24vw, 22rem);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ambient-watermark {
+    font-family: var(--font-display);
+    font-size: clamp(14rem, 24vw, 22rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.05em;
+    color: rgba(255, 255, 255, 0.03);
+    will-change: transform, opacity;
+  }
+
   .projects-container {
     max-width: 1360px;
     margin: 0 auto;
     width: 100%;
+    position: relative;
+    z-index: 1;
   }
 
   .projects-header {
@@ -80,44 +441,487 @@ import ProjectsTester from './projects/ProjectsTester.astro'
     max-width: 680px;
   }
 
-  .projects-view {
-    display: none;
+  .projects-split-container {
+    display: grid;
+    grid-template-columns: 1fr 1.15fr;
+    gap: 4rem;
+    position: relative;
     width: 100%;
   }
 
-  .projects-section[data-projects-layout="stack"] #projects-layout-stack,
-  :global([data-projects-layout="stack"]) #projects-layout-stack {
-    display: block;
+  .projects-narrative-col {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 2;
   }
 
-  .projects-section[data-projects-layout="grid"] #projects-layout-grid,
-  :global([data-projects-layout="grid"]) #projects-layout-grid {
+  .project-story-item {
+    min-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 4rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  }
+
+  .project-story-item:last-child {
+    border-bottom: none;
+    min-height: 80vh;
+  }
+
+  .story-mobile-mockup {
+    display: none;
+  }
+
+  .story-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .story-telemetry {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .story-badge {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+  }
+
+  .story-type {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.35);
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .story-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 2.5vw, 2.4rem);
+    font-weight: 500;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+  }
+
+  .story-narrative {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .narrative-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .narrative-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+  }
+
+  .narrative-text {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text-secondary);
+  }
+
+  .story-metrics {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+    padding: 1.15rem 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .metric-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .metric-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+  }
+
+  .metric-value {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.3;
+  }
+
+  .story-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .stack-heading {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+  }
+
+  .stack-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .tech-pill {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    line-height: 1;
+    color: rgba(255, 255, 255, 0.65);
+    background-color: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 0.35rem 0.6rem;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+
+  .story-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    padding-top: 0.25rem;
+  }
+
+  .action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    line-height: 1;
+    padding: 0.65rem 1.15rem;
+    border-radius: 9999px;
+    text-decoration: none;
+    transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    white-space: nowrap;
+  }
+
+  .action-btn--primary {
+    background-color: #FFFFFF;
+    color: #0A0A0A;
+    font-weight: 600;
+  }
+
+  .action-btn--primary:hover {
+    background-color: #E6E6E6;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(255, 255, 255, 0.15);
+  }
+
+  .action-btn--secondary {
+    background-color: rgba(255, 255, 255, 0.04);
+    color: #FFFFFF;
+    font-weight: 500;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+  }
+
+  .action-btn--secondary:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-1px);
+  }
+
+  .private-badge {
+    display: inline-flex;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    line-height: 1;
+    color: var(--text-muted);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.02);
+    padding: 0.65rem 0.95rem;
+    border-radius: 9999px;
+    letter-spacing: 0.04em;
+    user-select: none;
+  }
+
+  .action-arrow {
+    font-size: 12px;
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .action-btn:hover .action-arrow {
+    transform: translate(2px, -2px);
+  }
+
+  .projects-visual-stage {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    pointer-events: auto;
+  }
+
+  .mockup-viewport-frame {
+    width: 100%;
+    max-width: 660px;
+    background-color: #121212;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 32px 72px -16px rgba(0, 0, 0, 0.85);
+    transition: border-color 0.3s ease;
+  }
+
+  .mockup-viewport-frame:hover {
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .mockup-header-bar {
+    height: 32px;
+    background-color: #161616;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1rem;
+    gap: 1rem;
+  }
+
+  .mockup-dots,
+  .mobile-dots {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .mockup-url-pill,
+  .mobile-url {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    background-color: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 4px;
+    padding: 0.15rem 0.65rem;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    max-width: 280px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .url-protocol {
+    color: rgba(255, 255, 255, 0.25);
+  }
+
+  .mockup-url-label,
+  .url-host {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  .mockup-layers-stack {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background-color: #0A0A0A;
+  }
+
+  .mockup-layer {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    will-change: clip-path;
+  }
+
+  .layer-link,
+  .viewport-link {
     display: block;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .layer-img,
+  .mobile-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    display: block;
+    will-change: transform;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .mockup-viewport-frame:hover .layer-img {
+    transform: scale(1.02);
+  }
+
+  .layer-overlay {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(10, 10, 10, 0.45);
+    backdrop-filter: blur(2px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .mockup-viewport-frame:hover .layer-overlay {
+    opacity: 1;
+  }
+
+  .overlay-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    color: #FFFFFF;
+    background-color: rgba(18, 18, 18, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    padding: 0.55rem 1rem;
+    border-radius: 9999px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
   }
 
   @media (max-width: 1023px) {
-    .projects-section {
-      padding: 5rem 1.5rem 6.5rem;
+    .projects-visual-stage,
+    .projects-ambient-backdrop {
+      display: none !important;
     }
 
-    .projects-header {
-      margin-bottom: 3rem;
+    .projects-split-container {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .projects-narrative-col {
+      gap: 4rem;
+    }
+
+    .project-story-item {
+      min-height: auto;
+      padding: 1.5rem;
+      background-color: rgba(255, 255, 255, 0.015);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .story-mobile-mockup {
+      display: block;
+      width: 100%;
+    }
+
+    .mobile-browser {
+      width: 100%;
+      background-color: #121212;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .mobile-browser__bar {
+      height: 28px;
+      background-color: #161616;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 0.85rem;
+    }
+
+    .mobile-viewport {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      overflow: hidden;
+      background-color: #0A0A0A;
+    }
+
+    .story-metrics {
+      grid-template-columns: 1fr;
     }
   }
 
-  @media (max-width: 640px) {
+  @media (max-width: 768px) {
     .projects-section {
-      padding: 4rem 1.15rem 5.5rem;
+      padding: 4.5rem 1.25rem 6rem;
+    }
+
+    .projects-header {
+      margin-bottom: 2.75rem;
     }
 
     .section-title {
-      font-size: clamp(1.85rem, 7.5vw, 2.4rem);
+      font-size: clamp(1.85rem, 7.5vw, 2.5rem);
       margin-bottom: 1rem;
     }
 
     .section-desc {
       font-size: 14px;
-      line-height: 1.5;
+      line-height: 1.55;
+    }
+
+    .project-story-item {
+      padding: 1.15rem;
+      gap: 1.25rem;
+    }
+
+    .story-title {
+      font-size: 1.45rem;
+    }
+
+    .story-actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .action-btn,
+    .private-badge {
+      justify-content: center;
     }
   }
 </style>
