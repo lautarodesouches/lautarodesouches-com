@@ -8,35 +8,45 @@ import HeroCanvas from './hero/HeroCanvas.astro'
   </div>
 
   <div class="hero-framing">
-    <div class="hero-frame-block hero-frame-block--left">
+    <div class="hero-frame-block hero-frame-block--solutions">
       <div class="reveal-wrapper">
-        <span class="frame-index reveal-line">01 // EMPRESAS & NEGOCIOS</span>
+        <span class="frame-index reveal-line">
+          <span class="frame-index-desktop">01 // EMPRESAS & NEGOCIOS</span>
+          <span class="frame-index-mobile">02 // SOLUCIONES</span>
+        </span>
       </div>
       <div class="reveal-wrapper">
-        <h2 class="frame-title reveal-line">Sitios web y sistemas a medida de punta a punta.</h2>
+        <h2 class="frame-title frame-title--solutions reveal-line">
+          <span class="frame-title-desktop">Sitios web y sistemas a medida de punta a punta.</span>
+          <span class="frame-title-mobile">Sitios y plataformas web a medida.</span>
+        </h2>
       </div>
       <div class="reveal-wrapper">
         <p class="frame-desc reveal-line">
-          Desarrollo desde cero para pequeñas y grandes empresas: desde presencias corporativas de alta conversión hasta plataformas empresariales complejas.
+          <span class="frame-desc-desktop">Desarrollo desde cero para pequeñas y grandes empresas: desde presencias corporativas de alta conversión hasta plataformas empresariales complejas.</span>
+          <span class="frame-desc-mobile">Desarrollo de punta a punta: desde webs de alta velocidad hasta plataformas complejas.</span>
         </p>
       </div>
     </div>
 
-    <div class="hero-frame-block hero-frame-block--right">
+    <div class="hero-frame-block hero-frame-block--role">
       <div class="reveal-wrapper">
-        <span class="frame-index reveal-line">02 // INGENIERÍA DE SOFTWARE</span>
+        <span class="frame-index reveal-line">
+          <span class="frame-index-desktop">02 // INGENIERÍA DE SOFTWARE</span>
+          <span class="frame-index-mobile">01 // INGENIERÍA</span>
+        </span>
       </div>
       <div class="reveal-wrapper">
-        <h1 class="frame-title reveal-line">Desarrollador Web Full Stack</h1>
+        <h1 class="frame-title frame-title--role reveal-line">Desarrollador Web Full Stack</h1>
       </div>
-      <div class="reveal-wrapper">
+      <div class="reveal-wrapper frame-desc-wrapper-desktop">
         <p class="frame-desc reveal-line">
           Arquitectura frontend y backend en producción. Interfaces fluidas, APIs resilientes, tipado estricto y rendimiento optimizado.
         </p>
       </div>
       <div class="reveal-wrapper">
         <div class="frame-stack reveal-line">
-          TypeScript · React / Next.js · Node / NestJS · Astro · SQL
+          TypeScript · React / Next.js · Node · Astro · SQL
         </div>
       </div>
     </div>
@@ -147,12 +157,14 @@ import HeroCanvas from './hero/HeroCanvas.astro'
     max-width: 360px;
   }
 
-  .hero-frame-block--left {
+  .hero-frame-block--solutions {
+    order: 1;
     margin-top: 8vh;
     align-self: center;
   }
 
-  .hero-frame-block--right {
+  .hero-frame-block--role {
+    order: 2;
     margin-top: -6vh;
     align-self: center;
     max-width: 380px;
@@ -208,11 +220,28 @@ import HeroCanvas from './hero/HeroCanvas.astro'
     font-weight: 450;
   }
 
+  .frame-index-desktop,
+  .frame-title-desktop,
+  .frame-desc-desktop {
+    display: inline;
+  }
+
+  .frame-index-mobile,
+  .frame-title-mobile,
+  .frame-desc-mobile {
+    display: none;
+  }
+
+  .frame-desc-wrapper-desktop {
+    display: block;
+  }
+
   .marquee-wrapper {
     position: absolute;
     bottom: 0;
     left: 0;
     width: 100vw;
+    max-width: 100%;
     overflow: hidden;
     white-space: nowrap;
     user-select: none;
@@ -239,65 +268,132 @@ import HeroCanvas from './hero/HeroCanvas.astro'
     padding-right: 0.05em;
   }
 
-  @media (max-width: 1024px) {
+  @media (max-width: 768px) {
     .hero-container {
-      height: auto;
-      min-height: 100vh;
-      padding-top: calc(var(--header-height, 80px) + 1.5rem);
-      padding-bottom: clamp(4.5rem, 11vw, 8rem);
+      height: 100dvh;
+      min-height: -webkit-fill-available;
+      max-height: 100dvh;
+      padding: 4.5rem 1.25rem 0.75rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
     }
 
     .hero-centerpiece {
-      opacity: 0.55;
-      transition: opacity 0.3s ease;
+      position: absolute;
+      inset: 0;
+      top: 0;
+      left: 0;
+      transform: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      z-index: 1;
     }
 
     .hero-framing {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      height: 100%;
+      max-width: 100%;
+      display: flex;
       flex-direction: column;
-      justify-content: flex-start;
-      gap: 2.25rem;
-      margin-bottom: 2rem;
-      padding-inline: 1.5rem;
+      justify-content: space-between;
+      padding-inline: 0;
+      margin: 0;
+      flex: 1;
+      pointer-events: none;
+      margin-bottom: 0;
     }
 
     .hero-frame-block {
+      pointer-events: auto;
       max-width: 100%;
       margin-top: 0 !important;
-      align-self: flex-start;
+      gap: 0.35rem;
     }
 
-    .hero-frame-block--right {
+    .hero-frame-block--role {
       order: 1;
+      align-self: flex-start;
+      max-width: 100%;
     }
 
-    .hero-frame-block--left {
+    .hero-frame-block--role .frame-index {
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+
+    .hero-frame-block--role .frame-title--role {
+      font-size: clamp(1.4rem, 6.2vw, 1.85rem);
+      font-weight: 600;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+    }
+
+    .hero-frame-block--role .frame-stack {
+      font-size: 10px;
+      color: rgba(255, 255, 255, 0.72);
+      letter-spacing: -0.01em;
+      border-top: 1px solid var(--border-subtle);
+      padding-top: 0.35rem;
+      max-width: 100%;
+      font-weight: 450;
+    }
+
+    .frame-desc-wrapper-desktop {
+      display: none;
+    }
+
+    .hero-frame-block--solutions {
       order: 2;
-    }
-
-    .frame-title {
-      font-size: clamp(1.2rem, 4vw, 1.45rem);
-    }
-
-    .frame-desc {
+      align-self: flex-start;
+      margin-bottom: 0.4rem;
       max-width: 100%;
     }
 
-    .frame-stack {
-      max-width: 100%;
-    }
-  }
-
-  @media (max-height: 700px) and (max-width: 1024px) {
-    .hero-framing {
-      gap: 1.25rem;
+    .hero-frame-block--solutions .frame-index {
+      font-size: 10px;
+      color: var(--text-muted);
     }
 
-    .frame-desc {
+    .hero-frame-block--solutions .frame-title--solutions {
+      font-size: clamp(1.05rem, 4.4vw, 1.25rem);
+      font-weight: 500;
+      line-height: 1.2;
+    }
+
+    .hero-frame-block--solutions .frame-desc {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.45;
+      text-wrap: balance;
+      max-width: 36ch;
+    }
+
+    .frame-index-desktop,
+    .frame-title-desktop,
+    .frame-desc-desktop {
       display: none;
     }
 
-    .frame-stack {
-      display: none;
+    .frame-index-mobile,
+    .frame-title-mobile,
+    .frame-desc-mobile {
+      display: inline;
+    }
+
+    .marquee-wrapper {
+      padding-bottom: 0.35rem;
+    }
+
+    .marquee-text {
+      font-size: clamp(2.4rem, 9.5vw, 3.5rem);
+      line-height: 0.92;
     }
   }
 
