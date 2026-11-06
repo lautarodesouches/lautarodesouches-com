@@ -35,6 +35,9 @@ import MobileNav from './MobileNav.astro'
 
 <script>
   import { gsap } from 'gsap'
+  import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+  gsap.registerPlugin(ScrollTrigger)
 
   const clockElement = document.getElementById('clock-display')
   function updateClock() {
@@ -72,6 +75,46 @@ import MobileNav from './MobileNav.astro'
     brandLink.addEventListener('mouseleave', () => {
       xTo(0)
       yTo(0)
+    })
+  }
+
+  const navLinks = document.querySelectorAll<HTMLAnchorElement>('.header__nav-link')
+  const mobileLinks = document.querySelectorAll<HTMLAnchorElement>('.mobile-nav-link')
+  const sectionIds = ['#soluciones', '#proyectos', '#trayectoria', '#contacto']
+
+  sectionIds.forEach((id) => {
+    const section = document.querySelector(id)
+    if (!section) return
+
+    ScrollTrigger.create({
+      trigger: section,
+      start: 'top 50%',
+      end: 'bottom 50%',
+      onToggle: (self) => {
+        if (self.isActive) {
+          navLinks.forEach((link) => {
+            link.classList.toggle('is-active', link.getAttribute('href') === id)
+          })
+          mobileLinks.forEach((link) => {
+            link.classList.toggle('is-active', link.getAttribute('href') === id)
+          })
+        }
+      },
+    })
+  })
+
+  const heroEl = document.querySelector('#hero')
+  if (heroEl) {
+    ScrollTrigger.create({
+      trigger: heroEl,
+      start: 'top 50%',
+      end: 'bottom 50%',
+      onToggle: (self) => {
+        if (self.isActive) {
+          navLinks.forEach((link) => link.classList.remove('is-active'))
+          mobileLinks.forEach((link) => link.classList.remove('is-active'))
+        }
+      },
     })
   }
 </script>
@@ -206,13 +249,16 @@ import MobileNav from './MobileNav.astro'
     transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  .header__nav-link:hover {
+  .header__nav-link:hover,
+  .header__nav-link.is-active {
     color: var(--text-primary);
   }
 
-  .header__nav-link:hover::after {
+  .header__nav-link:hover::after,
+  .header__nav-link.is-active::after {
     transform: scaleX(1);
     transform-origin: left;
+    background-color: var(--text-primary);
   }
 
   @media (max-width: 1024px) {
