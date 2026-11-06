@@ -4,12 +4,93 @@ import '../styles/global.css'
 interface Props {
   title?: string
   description?: string
+  image?: string
 }
 
 const {
-  title = 'Lautaro Desouches — Lead Frontend Architect & Full Stack Engineer',
+  title = 'Lautaro Desouches — Desarrollador Web Full Stack',
   description = 'Portfolio profesional de Lautaro Desouches. Especialista en Arquitectura Web, Astro, Next.js y Sistemas Full Stack.',
+  image = '/og-image.png',
 } = Astro.props
+
+const siteUrl = Astro.site ?? new URL('https://lautarodesouches.com')
+const canonicalURL = new URL(Astro.url.pathname, siteUrl)
+const ogImageURL = new URL(image, siteUrl)
+
+const schemaOrgData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Person',
+      '@id': 'https://lautarodesouches.com/#person',
+      name: 'Lautaro Desouches',
+      jobTitle: 'Desarrollador Web Full Stack',
+      url: 'https://lautarodesouches.com',
+      image: ogImageURL.toString(),
+      sameAs: [
+        'https://linkedin.com/in/lautarodesouches',
+        'https://github.com/lautarodesouches',
+      ],
+      email: 'mailto:lautarodesouches@outlook.com',
+      telephone: '+541130111503',
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: 'Ramos Mejía',
+        addressRegion: 'Buenos Aires',
+        addressCountry: 'AR',
+      },
+      alumniOf: {
+        '@type': 'EducationalOrganization',
+        name: 'Universidad Nacional de La Matanza',
+      },
+      knowsAbout: [
+        'TypeScript',
+        'React',
+        'Next.js',
+        'Node.js',
+        'NestJS',
+        'Java',
+        'Spring Boot',
+        'Astro',
+        'PostgreSQL',
+        'Prisma ORM',
+        'Docker',
+        'CI/CD',
+        'Playwright',
+        'Vitest',
+        'Core Web Vitals',
+        'Clean Architecture',
+      ],
+    },
+    {
+      '@type': 'WebSite',
+      '@id': 'https://lautarodesouches.com/#website',
+      url: 'https://lautarodesouches.com',
+      name: 'Lautaro Desouches',
+      description: description,
+      inLanguage: 'es-AR',
+      publisher: {
+        '@id': 'https://lautarodesouches.com/#person',
+      },
+    },
+    {
+      '@type': 'ProfilePage',
+      '@id': 'https://lautarodesouches.com/#profilepage',
+      url: canonicalURL.toString(),
+      name: title,
+      isPartOf: {
+        '@id': 'https://lautarodesouches.com/#website',
+      },
+      about: {
+        '@id': 'https://lautarodesouches.com/#person',
+      },
+      mainEntity: {
+        '@id': 'https://lautarodesouches.com/#person',
+      },
+      inLanguage: 'es-AR',
+    },
+  ],
+}
 ---
 
 <!doctype html>
@@ -19,7 +100,46 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="bingbot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+
+    <meta name="author" content="Lautaro Desouches" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="keywords" content="Lautaro Desouches, Desarrollador Web Full Stack, React, Next.js, TypeScript, Node.js, NestJS, Java Spring Boot, Astro, Buenos Aires, Argentina" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImageURL} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={title} />
+    <meta property="og:site_name" content="Lautaro Desouches" />
+    <meta property="og:locale" content="es_AR" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={canonicalURL} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageURL} />
+    <meta name="twitter:image:alt" content={title} />
+    <meta name="twitter:creator" content="@lautarodesouches" />
+
+    <meta name="theme-color" content="#0A0A0A" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Lautaro Desouches" />
+
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <script type="application/ld+json" set:html={JSON.stringify(schemaOrgData)} />
     <link
       rel="preload"
       href="/fonts/clash-display-700.woff2"
@@ -61,27 +181,71 @@ const {
 
       const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
+      interface WindowWithLenis extends Window {
+        __lenis?: Lenis
+      }
+
+      let lenis: Lenis | undefined
+
       if (!isReducedMotion) {
-        const lenis = new Lenis({
+        lenis = new Lenis({
           lerp: 0.075,
           wheelMultiplier: 0.95,
           touchMultiplier: 1.2,
           smoothWheel: true,
         })
 
-        interface WindowWithLenis extends Window {
-          __lenis?: Lenis
-        }
         ;(window as unknown as WindowWithLenis).__lenis = lenis
 
         lenis.on('scroll', ScrollTrigger.update)
 
         gsap.ticker.add((time) => {
-          lenis.raf(time * 1000)
+          lenis?.raf(time * 1000)
         })
 
         gsap.ticker.lagSmoothing(0)
       }
+
+      document.addEventListener('click', (event: MouseEvent) => {
+        if (
+          event.defaultPrevented ||
+          event.button !== 0 ||
+          event.metaKey ||
+          event.ctrlKey ||
+          event.shiftKey ||
+          event.altKey
+        ) {
+          return
+        }
+
+        const anchor = (event.target as HTMLElement).closest('a') as HTMLAnchorElement | null
+        if (!anchor) return
+
+        const href = anchor.getAttribute('href')
+        if (!href) return
+
+        const isSamePageHash =
+          href.startsWith('#') ||
+          (Boolean(anchor.hash) && (anchor.pathname === window.location.pathname || anchor.pathname === ''))
+
+        if (!isSamePageHash) return
+
+        const hash = anchor.hash || (href.startsWith('#') ? href : '')
+        if (!hash || hash === '#' || hash === '#!') return
+
+        const target = document.querySelector(hash) as HTMLElement | null
+        if (!target) return
+
+        event.preventDefault()
+
+        if (lenis && !isReducedMotion) {
+          lenis.scrollTo(target, { duration: 1.2 })
+        } else {
+          target.scrollIntoView({ behavior: isReducedMotion ? 'auto' : 'smooth' })
+        }
+
+        history.pushState(null, '', hash)
+      })
     </script>
   </body>
 </html>

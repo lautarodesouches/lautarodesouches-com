@@ -1,11 +1,11 @@
 {
-  "name": "Lautaro Desouches Portfolio",
-  "short_name": "Lautaro Dev",
-  "description": "Portfolio profesional de Lautaro Desouches. Desarrollador Full-Stack.",
+  "name": "Lautaro Desouches — Desarrollador Web Full Stack",
+  "short_name": "Lautaro Desouches",
+  "description": "Portfolio profesional de Lautaro Desouches. Especialista en Arquitectura Web, Astro, Next.js y Sistemas Full Stack.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#f8fafc",
-  "theme_color": "#4f46e5",
+  "background_color": "#0A0A0A",
+  "theme_color": "#0A0A0A",
   "icons": [
     {
       "src": "/favicon.ico",
