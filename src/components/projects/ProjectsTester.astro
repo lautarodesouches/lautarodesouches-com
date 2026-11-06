@@ -1,0 +1,199 @@
+---
+---
+
+<aside class="projects-tester" aria-label="Selector de arquitectura para proyectos">
+  <div class="tester-inner">
+    <span class="tester-label">LAYOUT //</span>
+    <div class="tester-buttons" role="group" aria-label="Variantes de presentación">
+      <button
+        type="button"
+        class="tester-btn is-active"
+        data-layout-target="stack"
+        aria-pressed="true"
+      >
+        [ 01 · Stack de Tarjetas ]
+      </button>
+      <button
+        type="button"
+        class="tester-btn"
+        data-layout-target="grid"
+        aria-pressed="false"
+      >
+        [ 02 · Grilla Asimétrica ]
+      </button>
+    </div>
+  </div>
+</aside>
+
+<script>
+  import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+  type ProjectsLayout = 'stack' | 'grid'
+  const STORAGE_KEY = 'projects_layout'
+
+  const section = document.getElementById('proyectos')
+  const buttons = document.querySelectorAll<HTMLButtonElement>('.tester-btn')
+
+  const getInitialLayout = (): ProjectsLayout => {
+    const params = new URLSearchParams(window.location.search)
+    const urlLayout = params.get('layout')
+    if (urlLayout === 'stack' || urlLayout === 'grid') {
+      return urlLayout
+    }
+
+    const stored = sessionStorage.getItem(STORAGE_KEY)
+    if (stored === 'stack' || stored === 'grid') {
+      return stored
+    }
+
+    return 'stack'
+  }
+
+  const applyLayout = (layout: ProjectsLayout, updateUrl = true) => {
+    if (section) {
+      section.setAttribute('data-projects-layout', layout)
+    }
+
+    buttons.forEach((btn) => {
+      const isTarget = btn.getAttribute('data-layout-target') === layout
+      btn.classList.toggle('is-active', isTarget)
+      btn.setAttribute('aria-pressed', isTarget ? 'true' : 'false')
+    })
+
+    sessionStorage.setItem(STORAGE_KEY, layout)
+
+    if (updateUrl) {
+      const url = new URL(window.location.href)
+      url.searchParams.set('layout', layout)
+      window.history.replaceState(null, '', url.toString())
+    }
+
+    window.dispatchEvent(
+      new CustomEvent('projects:layout-change', {
+        detail: { layout },
+      })
+    )
+
+    requestAnimationFrame(() => {
+      ScrollTrigger.refresh()
+    })
+  }
+
+  buttons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const target = btn.getAttribute('data-layout-target') as ProjectsLayout
+      if (target) {
+        applyLayout(target, true)
+      }
+    })
+  })
+
+  const initialLayout = getInitialLayout()
+  applyLayout(initialLayout, false)
+
+  window.addEventListener('popstate', () => {
+    const layout = getInitialLayout()
+    applyLayout(layout, false)
+  })
+</script>
+
+<style>
+  .projects-tester {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    z-index: 999;
+    pointer-events: auto;
+  }
+
+  .tester-inner {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: rgba(14, 14, 14, 0.88);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 9999px;
+    padding: 0.35rem 0.45rem 0.35rem 0.85rem;
+    box-shadow:
+      0 16px 36px -8px rgba(0, 0, 0, 0.65),
+      0 0 0 1px rgba(255, 255, 255, 0.04);
+  }
+
+  .tester-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: rgba(255, 255, 255, 0.35);
+    user-select: none;
+    white-space: nowrap;
+  }
+
+  .tester-buttons {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+
+  .tester-btn {
+    appearance: none;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 9999px;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    line-height: 1;
+    padding: 0.5rem 0.85rem;
+    transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    white-space: nowrap;
+  }
+
+  .tester-btn:hover {
+    color: #FFFFFF;
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .tester-btn.is-active {
+    color: #0A0A0A;
+    background: #FFFFFF;
+    font-weight: 600;
+    border-color: #FFFFFF;
+    box-shadow: 0 2px 10px rgba(255, 255, 255, 0.2);
+  }
+
+  @media (max-width: 640px) {
+    .projects-tester {
+      bottom: 1rem;
+      right: 1rem;
+      left: 1rem;
+      display: flex;
+      justify-content: center;
+    }
+
+    .tester-inner {
+      width: 100%;
+      justify-content: space-between;
+      padding: 0.35rem 0.4rem 0.35rem 0.7rem;
+    }
+
+    .tester-label {
+      display: none;
+    }
+
+    .tester-buttons {
+      width: 100%;
+      justify-content: space-between;
+    }
+
+    .tester-btn {
+      flex: 1;
+      text-align: center;
+      padding: 0.5rem 0.4rem;
+      font-size: 10px;
+    }
+  }
+</style>
+

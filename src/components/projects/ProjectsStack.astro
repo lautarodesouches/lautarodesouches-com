@@ -1,0 +1,647 @@
+---
+import { portfolioData } from '../../data/portfolio.data'
+
+const projects = portfolioData.projects
+const totalProjects = projects.length
+
+const getHostname = (url: string) => {
+  try {
+    return new URL(url).hostname
+  } catch {
+    return 'demo.local'
+  }
+}
+---
+
+<div class="projects-stack" id="stack-cards-container">
+  {projects.map((project, index) => {
+    const isPrivate = project.isPrivateRepo
+    const hostname = getHostname(project.demoUrl)
+    const cardZIndex = index + 1
+
+    return (
+      <article
+        class="stack-card"
+        data-stack-index={index}
+        style={`--card-z: ${cardZIndex};`}
+      >
+        <div class="stack-card__inner">
+          <div class="stack-info">
+            <div class="stack-info__top">
+              <div class="stack-telemetry">
+                <span class="telemetry-badge">
+                  [ {String(index + 1).padStart(2, '0')} / {String(totalProjects).padStart(2, '0')} ] // {project.badge}
+                </span>
+                <span class="telemetry-type">{project.type}</span>
+              </div>
+
+              <h3 class="stack-title">{project.title}</h3>
+
+              <div class="stack-narrative">
+                <div class="narrative-group">
+                  <span class="narrative-tag">// DESAFÍO DE NEGOCIO</span>
+                  <p class="narrative-desc">{project.problem}</p>
+                </div>
+                <div class="narrative-group">
+                  <span class="narrative-tag">// SOLUCIÓN DE ARQUITECTURA</span>
+                  <p class="narrative-desc">{project.solution}</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="stack-metrics">
+              {project.metrics.map((metric) => (
+                <div class="metric-cell">
+                  <span class="metric-cell__label">{metric.label}</span>
+                  <span class="metric-cell__value">{metric.value}</span>
+                </div>
+              ))}
+            </div>
+
+            <div class="stack-info__bottom">
+              <div class="stack-pills">
+                {project.tech.map((techItem) => (
+                  <span class="tech-pill">{techItem}</span>
+                ))}
+              </div>
+
+              <div class="stack-actions">
+                <a
+                  href={project.demoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="action-btn action-btn--primary"
+                >
+                  <span>Ver Proyecto en Producción</span>
+                  <span class="action-arrow" aria-hidden="true">↗</span>
+                </a>
+
+                {isPrivate ? (
+                  <span class="private-badge">[ REPOSITORIO PRIVADO // NDA ]</span>
+                ) : (
+                  <a
+                    href={project.repoUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="action-btn action-btn--secondary"
+                  >
+                    <span>Código en GitHub</span>
+                    <span class="action-arrow" aria-hidden="true">↗</span>
+                  </a>
+                )}
+              </div>
+            </div>
+          </div>
+
+          <div class="stack-mockup-wrapper">
+            <div class="browser-window">
+              <div class="browser-bar">
+                <div class="browser-dots" aria-hidden="true">
+                  <span class="browser-dot"></span>
+                  <span class="browser-dot"></span>
+                  <span class="browser-dot"></span>
+                </div>
+                <div class="browser-url-pill">
+                  <span class="url-protocol">https://</span>
+                  <span class="url-host">{hostname}</span>
+                </div>
+              </div>
+
+              <div class="browser-viewport">
+                <a
+                  href={project.demoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="viewport-link"
+                  aria-label={`Ver demostración en vivo de ${project.title}`}
+                >
+                  <img
+                    src={project.image}
+                    alt={`Captura del proyecto ${project.title}`}
+                    class="viewport-img"
+                    loading={index === 0 ? 'eager' : 'lazy'}
+                    decoding="async"
+                  />
+                  <div class="viewport-overlay" aria-hidden="true">
+                    <span class="overlay-pill">
+                      <span>Ver Proyecto</span>
+                      <span class="action-arrow">↗</span>
+                    </span>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+    )
+  })}
+</div>
+
+<script>
+  import { gsap } from 'gsap'
+  import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+  gsap.registerPlugin(ScrollTrigger)
+
+  const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  const mm = gsap.matchMedia()
+  let stackTriggers: ScrollTrigger[] = []
+
+  const initStackTriggers = () => {
+    stackTriggers.forEach((st) => st.kill())
+    stackTriggers = []
+
+    if (isReducedMotion) return
+
+    mm.add('(min-width: 1024px)', () => {
+      const cards = gsap.utils.toArray<HTMLElement>('.stack-card')
+
+      cards.forEach((card, i) => {
+        if (i < cards.length - 1) {
+          const nextCard = cards[i + 1]
+
+          const tween = gsap.to(card, {
+            scale: 0.94,
+            opacity: 0.35,
+            filter: 'blur(2px)',
+            transformOrigin: 'center top',
+            ease: 'none',
+            paused: true,
+          })
+
+          const st = ScrollTrigger.create({
+            trigger: nextCard,
+            start: 'top 85%',
+            end: 'top 120px',
+            scrub: true,
+            animation: tween,
+          })
+
+          stackTriggers.push(st)
+        }
+      })
+    })
+  }
+
+  const handleLayoutChange = (e: Event) => {
+    const customEvent = e as CustomEvent<{ layout: string }>
+    if (customEvent.detail.layout === 'stack') {
+      stackTriggers.forEach((st) => st.enable())
+      requestAnimationFrame(() => {
+        ScrollTrigger.refresh()
+      })
+    } else {
+      stackTriggers.forEach((st) => st.disable(false))
+    }
+  }
+
+  window.addEventListener('projects:layout-change', handleLayoutChange)
+
+  initStackTriggers()
+</script>
+
+<style>
+  .projects-stack {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 100%;
+  }
+
+  .stack-card {
+    position: sticky;
+    top: calc(var(--header-height, 72px) + 2.5rem);
+    height: clamp(560px, 80vh, 760px);
+    width: 100%;
+    margin-bottom: 28vh;
+    z-index: var(--card-z);
+    will-change: transform, opacity, filter;
+  }
+
+  .stack-card:last-child {
+    margin-bottom: 0;
+  }
+
+  .stack-card__inner {
+    height: 100%;
+    width: 100%;
+    background-color: var(--bg-surface, #121212);
+    border: 1px solid var(--border-subtle);
+    border-radius: 6px;
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    overflow: hidden;
+    box-shadow: 0 24px 60px -15px rgba(0, 0, 0, 0.75);
+    transition: border-color 0.3s ease;
+  }
+
+  .stack-card:hover .stack-card__inner {
+    border-color: rgba(255, 255, 255, 0.18);
+  }
+
+  .stack-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 2.25rem;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.12) transparent;
+  }
+
+  .stack-info::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .stack-info::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 4px;
+  }
+
+  .stack-info__top {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  .stack-telemetry {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .telemetry-badge {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+  }
+
+  .telemetry-type {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.35);
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .stack-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 2.3vw, 2.1rem);
+    font-weight: 500;
+    line-height: 1.16;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+  }
+
+  .stack-narrative {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  .narrative-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .narrative-tag {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+  }
+
+  .narrative-desc {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--text-secondary);
+  }
+
+  .stack-metrics {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.65rem;
+    padding: 1rem 0;
+    margin: 0.5rem 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .metric-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .metric-cell__label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+  }
+
+  .metric-cell__value {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.3;
+  }
+
+  .stack-info__bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 1.15rem;
+  }
+
+  .stack-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .tech-pill {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    line-height: 1;
+    color: rgba(255, 255, 255, 0.65);
+    background-color: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 0.35rem 0.6rem;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+
+  .stack-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    flex-wrap: wrap;
+  }
+
+  .action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    line-height: 1;
+    padding: 0.6rem 1.05rem;
+    border-radius: 9999px;
+    text-decoration: none;
+    transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    white-space: nowrap;
+  }
+
+  .action-btn--primary {
+    background-color: #FFFFFF;
+    color: #0A0A0A;
+    font-weight: 600;
+  }
+
+  .action-btn--primary:hover {
+    background-color: #E6E6E6;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(255, 255, 255, 0.15);
+  }
+
+  .action-btn--secondary {
+    background-color: rgba(255, 255, 255, 0.04);
+    color: #FFFFFF;
+    font-weight: 500;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+  }
+
+  .action-btn--secondary:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-1px);
+  }
+
+  .private-badge {
+    display: inline-flex;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    line-height: 1;
+    color: var(--text-muted);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.02);
+    padding: 0.6rem 0.85rem;
+    border-radius: 9999px;
+    letter-spacing: 0.04em;
+    user-select: none;
+  }
+
+  .action-arrow {
+    font-size: 12px;
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .action-btn:hover .action-arrow {
+    transform: translate(2px, -2px);
+  }
+
+  .stack-mockup-wrapper {
+    background: #0A0A0A;
+    border-left: 1px solid var(--border-subtle);
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .browser-window {
+    width: 100%;
+    max-width: 600px;
+    background-color: #121212;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.8);
+    transition: border-color 0.3s ease;
+  }
+
+  .stack-card:hover .browser-window {
+    border-color: rgba(255, 255, 255, 0.22);
+  }
+
+  .browser-bar {
+    height: 24px;
+    background-color: #161616;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 0.85rem;
+    gap: 0.75rem;
+  }
+
+  .browser-dots {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .browser-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .browser-url-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    background-color: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 4px;
+    padding: 0.1rem 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    max-width: 240px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .url-protocol {
+    color: rgba(255, 255, 255, 0.25);
+  }
+
+  .url-host {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  .browser-viewport {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background-color: #0A0A0A;
+  }
+
+  .viewport-link {
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .viewport-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    display: block;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .browser-window:hover .viewport-img {
+    transform: scale(1.02);
+  }
+
+  .viewport-overlay {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(10, 10, 10, 0.45);
+    backdrop-filter: blur(2px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .browser-window:hover .viewport-overlay {
+    opacity: 1;
+  }
+
+  .overlay-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 500;
+    color: #FFFFFF;
+    background-color: rgba(18, 18, 18, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    padding: 0.5rem 0.9rem;
+    border-radius: 9999px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  }
+
+  @media (max-width: 1023px) {
+    .stack-card {
+      position: relative !important;
+      top: auto !important;
+      height: auto !important;
+      margin-bottom: 2.5rem !important;
+      filter: none !important;
+      transform: none !important;
+      opacity: 1 !important;
+    }
+
+    .stack-card__inner {
+      grid-template-columns: 1fr;
+      height: auto;
+    }
+
+    .stack-mockup-wrapper {
+      order: 1;
+      border-left: none;
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 1rem;
+    }
+
+    .browser-window {
+      max-width: 100%;
+    }
+
+    .stack-info {
+      order: 2;
+      padding: 1.5rem;
+      gap: 1.5rem;
+    }
+
+    .stack-metrics {
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .stack-info {
+      padding: 1.25rem;
+    }
+
+    .stack-title {
+      font-size: 1.4rem;
+    }
+
+    .stack-actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .action-btn,
+    .private-badge {
+      justify-content: center;
+    }
+  }
+</style>
+
