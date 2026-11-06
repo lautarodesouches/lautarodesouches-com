@@ -25,13 +25,21 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 82vw;
-      height: 82vw;
-      max-width: 340px;
-      max-height: 340px;
-      opacity: 0.28;
+      width: clamp(300px, 84vw, 400px);
+      height: clamp(300px, 84vw, 400px);
+      opacity: 0.16;
       z-index: 1;
       pointer-events: none;
+      -webkit-mask-image: radial-gradient(circle at center, rgba(0, 0, 0, 1) 32%, rgba(0, 0, 0, 0) 74%);
+      mask-image: radial-gradient(circle at center, rgba(0, 0, 0, 1) 32%, rgba(0, 0, 0, 0) 74%);
+    }
+
+    .ambient-glow--primary {
+      opacity: 0.3;
+    }
+
+    .ambient-glow--core {
+      opacity: 0.2;
     }
   }
 
