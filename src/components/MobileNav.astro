@@ -35,10 +35,6 @@
     </svg>
 
     <div class="mobile-nav-content" id="mobile-nav-content">
-      <div class="mobile-nav-header">
-        <span class="mobile-nav-tag">NAVEGACIÓN // 2026</span>
-      </div>
-
       <nav class="mobile-nav-menu" aria-label="Navegación móvil principal">
         <ul class="mobile-nav-list">
           <li class="mobile-nav-item">
@@ -185,14 +181,13 @@
           '-=0.22'
         )
         .fromTo(
-          ['.mobile-nav-tag', '.mobile-nav-footer'],
+          '.mobile-nav-footer',
           { opacity: 0, y: 14 },
           {
             opacity: 1,
             y: 0,
             duration: 0.4,
             ease: 'power2.out',
-            stagger: 0.05,
           },
           '-=0.3'
         )
@@ -240,7 +235,7 @@
         ease: 'power2.in',
       })
         .to(
-          ['.mobile-nav-tag', '.mobile-nav-footer'],
+          '.mobile-nav-footer',
           { opacity: 0, duration: 0.18, ease: 'power2.in' },
           '<0.05'
         )
@@ -379,15 +374,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 5.5rem 1.75rem 2.25rem;
-  }
-
-  .mobile-nav-tag {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    color: var(--text-muted);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    padding: max(5.5rem, calc(env(safe-area-inset-top, 0px) + 3.5rem)) max(1.75rem, env(safe-area-inset-right, 1.75rem)) max(2.25rem, env(safe-area-inset-bottom, 2.25rem)) max(1.75rem, env(safe-area-inset-left, 1.75rem));
   }
 
   .mobile-nav-menu {
@@ -462,3 +449,4 @@
     color: var(--text-primary);
   }
 </style>
+

@@ -273,7 +273,7 @@ import HeroCanvas from './hero/HeroCanvas.astro'
       height: 100dvh;
       min-height: -webkit-fill-available;
       max-height: 100dvh;
-      padding: 4.5rem 1.25rem 0.75rem;
+      padding: max(5.25rem, calc(env(safe-area-inset-top, 0px) + 4rem)) max(1.5rem, env(safe-area-inset-right, 1.5rem)) 0.75rem max(1.5rem, env(safe-area-inset-left, 1.5rem));
       display: flex;
       flex-direction: column;
       justify-content: space-between;
