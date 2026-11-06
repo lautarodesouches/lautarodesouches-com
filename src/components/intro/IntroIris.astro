@@ -4,9 +4,12 @@
 <div class="intro-iris" id="intro-iris" aria-hidden="true">
   <svg class="intro-iris-svg" width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">
     <defs>
+      <filter id="iris-feather" x="-20%" y="-20%" width="140%" height="140%">
+        <feGaussianBlur stdDeviation="2"></feGaussianBlur>
+      </filter>
       <mask id="iris-mask">
         <rect width="100" height="100" fill="#ffffff"></rect>
-        <circle id="iris-mask-circle" cx="50" cy="50" r="0" fill="#000000"></circle>
+        <circle id="iris-mask-circle" cx="50" cy="50" r="0" fill="#000000" filter="url(#iris-feather)"></circle>
       </mask>
     </defs>
     <rect width="100" height="100" fill="#0A0A0A" mask="url(#iris-mask)"></rect>
@@ -25,7 +28,6 @@
     __lenis?: LenisInstance
   }
 
-  const STORAGE_KEY = 'intro_shown'
   const curtain = document.getElementById('intro-iris')
   const circle = document.getElementById('iris-mask-circle')
 
@@ -50,25 +52,17 @@
   const playIntro = () => {
     if (!curtain || !circle) return
 
-    const isDev = import.meta.env.DEV
-    const urlParams = new URLSearchParams(window.location.search)
-    const hasForceParam = urlParams.has('intro') || urlParams.has('replay')
     const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    const isAlreadyShown = !isDev && !hasForceParam && sessionStorage.getItem(STORAGE_KEY) === 'true'
-
-    if (isReducedMotion || isAlreadyShown) {
-      sessionStorage.setItem(STORAGE_KEY, 'true')
+    if (isReducedMotion) {
       skipIntro()
       return
     }
-
-    sessionStorage.setItem(STORAGE_KEY, 'true')
 
     getLenis()?.stop()
     document.body.classList.add('intro-running')
 
     gsap.set(circle, { attr: { r: 0 } })
-    gsap.set(curtain, { display: 'block', visibility: 'visible' })
+    gsap.set(curtain, { display: 'block', visibility: 'visible', opacity: 1 })
 
     const tl = gsap.timeline({
       onComplete: () => {
@@ -82,9 +76,9 @@
     tl.to(
       circle,
       {
-        attr: { r: 85 },
-        duration: 0.5,
-        ease: 'expo.out',
+        attr: { r: 92 },
+        duration: 0.85,
+        ease: 'power2.out',
       },
       0
     )
@@ -92,14 +86,14 @@
     tl.fromTo(
       '#hero-canvas-scale-wrapper',
       {
-        scale: 0.25,
-        opacity: 0.65,
+        scale: 0.55,
+        opacity: 0.5,
       },
       {
         scale: 1,
         opacity: 1,
-        duration: 0.55,
-        ease: 'back.out(1.4)',
+        duration: 0.9,
+        ease: 'power2.out',
         clearProps: 'opacity',
       },
       0
@@ -111,7 +105,17 @@
           detail: { marqueeBoost: false },
         })
       )
-    }, 0.15)
+    }, 0.25)
+
+    tl.to(
+      curtain,
+      {
+        opacity: 0,
+        duration: 0.2,
+        ease: 'power2.out',
+      },
+      0.7
+    )
   }
 
   const init = () => {
