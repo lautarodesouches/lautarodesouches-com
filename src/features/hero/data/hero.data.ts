@@ -1,29 +1,4 @@
-export interface TelemetryMetric {
-  id: string
-  label: string
-  value: string
-  detail?: string
-}
-
-export interface HeroData {
-  availability: string
-  locationTimezone: string
-  name: string
-  role: string
-  headline: string
-  description: string
-  metrics: TelemetryMetric[]
-  cta: {
-    primary: {
-      label: string
-      href: string
-    }
-    secondary: {
-      label: string
-      href: string
-    }
-  }
-}
+import type { HeroData } from '../types'
 
 export const heroData: HeroData = {
   availability: 'DISPONIBLE PARA PROYECTOS / REMOTO',
@@ -64,4 +39,3 @@ export const heroData: HeroData = {
     },
   },
 }
-
