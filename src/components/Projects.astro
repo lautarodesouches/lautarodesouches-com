@@ -38,7 +38,7 @@ const getHostname = (url: string) => {
 
           return (
             <article
-              class="project-story-item"
+              class:list={['project-story-item', { 'is-active': index === 0 }]}
               data-index={index}
               id={`project-story-${project.id}`}
             >
@@ -145,10 +145,10 @@ const getHostname = (url: string) => {
         })}
       </div>
 
-      <div class="projects-visual-stage" aria-hidden="true">
+      <div class="projects-visual-stage">
         <div class="mockup-viewport-frame">
           <div class="mockup-header-bar">
-            <div class="mockup-dots">
+            <div class="mockup-dots" aria-hidden="true">
               <span class="dot"></span>
               <span class="dot"></span>
               <span class="dot"></span>
@@ -178,7 +178,6 @@ const getHostname = (url: string) => {
                   target="_blank"
                   rel="noopener noreferrer"
                   class="layer-link"
-                  tabindex="-1"
                   aria-label={`Ver demostración de ${project.title}`}
                 >
                   <img
@@ -188,7 +187,7 @@ const getHostname = (url: string) => {
                     loading={index === 0 ? 'eager' : 'lazy'}
                     decoding="async"
                   />
-                  <div class="layer-overlay">
+                  <div class="layer-overlay" aria-hidden="true">
                     <span class="overlay-pill">
                       <span>Ver Proyecto</span>
                       <span class="action-arrow">↗</span>
@@ -220,34 +219,45 @@ const getHostname = (url: string) => {
     const spotlight = document.getElementById('projects-spotlight')
     const watermark = document.getElementById('projects-watermark')
 
-    let currentIndex = 0
+    let activeIndex = 0
 
-    const switchProject = (newIndex: number) => {
-      if (newIndex === currentIndex) return
+    const setActiveProject = (newIndex: number) => {
+      if (newIndex === activeIndex) return
+      const isForward = newIndex > activeIndex
+      const oldIndex = activeIndex
+      activeIndex = newIndex
+
+      storyItems.forEach((item, idx) => {
+        item.classList.toggle('is-active', idx === newIndex)
+      })
 
       const incomingLayer = layers[newIndex]
-      const outgoingLayer = layers[currentIndex]
+      const outgoingLayer = layers[oldIndex]
       if (!incomingLayer || !outgoingLayer) return
 
-      const isForward = newIndex > currentIndex
       const incomingImg = incomingLayer.querySelector<HTMLElement>('.layer-img')
 
-      layers.forEach((layer, idx) => {
-        if (idx !== newIndex && idx !== currentIndex) {
-          layer.style.zIndex = '1'
+      layers.forEach((l, idx) => {
+        if (idx !== newIndex && idx !== oldIndex) {
+          gsap.set(l, { zIndex: 1 })
+          l.classList.remove('active')
         }
       })
 
       outgoingLayer.style.zIndex = '2'
       incomingLayer.style.zIndex = '3'
+      incomingLayer.classList.add('active')
+      outgoingLayer.classList.remove('active')
 
       if (isReducedMotion) {
-        layers.forEach((l, i) => {
-          l.classList.toggle('active', i === newIndex)
-          l.style.clipPath = i === newIndex ? 'inset(0% 0 0% 0)' : 'inset(100% 0 0% 0)'
+        layers.forEach((l, idx) => {
+          gsap.set(l, {
+            clipPath: idx === newIndex ? 'inset(0% 0 0% 0)' : 'inset(100% 0 0% 0)',
+            zIndex: idx === newIndex ? 3 : 1,
+          })
         })
       } else {
-        gsap.killTweensOf([incomingLayer, incomingImg])
+        gsap.killTweensOf([incomingLayer, outgoingLayer, incomingImg])
 
         if (isForward) {
           gsap.set(incomingLayer, { clipPath: 'inset(100% 0 0% 0)' })
@@ -255,6 +265,13 @@ const getHostname = (url: string) => {
             clipPath: 'inset(0% 0 0% 0)',
             duration: 0.65,
             ease: 'power3.out',
+            onComplete: () => {
+              layers.forEach((l, idx) => {
+                if (idx !== newIndex) {
+                  gsap.set(l, { zIndex: 1, clipPath: 'inset(100% 0 0% 0)' })
+                }
+              })
+            },
           })
           if (incomingImg) {
             gsap.fromTo(
@@ -269,6 +286,13 @@ const getHostname = (url: string) => {
             clipPath: 'inset(0 0 0% 0)',
             duration: 0.65,
             ease: 'power3.out',
+            onComplete: () => {
+              layers.forEach((l, idx) => {
+                if (idx !== newIndex) {
+                  gsap.set(l, { zIndex: 1, clipPath: 'inset(100% 0 0% 0)' })
+                }
+              })
+            },
           })
           if (incomingImg) {
             gsap.fromTo(
@@ -326,18 +350,23 @@ const getHostname = (url: string) => {
           },
         })
       }
-
-      currentIndex = newIndex
     }
 
     storyItems.forEach((item, index) => {
       ScrollTrigger.create({
         trigger: item,
-        start: 'top 50%',
-        end: 'bottom 50%',
-        onEnter: () => switchProject(index),
-        onEnterBack: () => switchProject(index),
+        start: 'top 55%',
+        end: 'bottom 55%',
+        onToggle: (self) => {
+          if (self.isActive) {
+            setActiveProject(index)
+          }
+        },
       })
+    })
+
+    requestAnimationFrame(() => {
+      ScrollTrigger.refresh()
     })
   })
 </script>
@@ -348,7 +377,7 @@ const getHostname = (url: string) => {
     background-color: #0A0A0A;
     color: var(--text-primary);
     padding: 6rem 2rem 8rem;
-    overflow: clip;
+    overflow: visible;
     border-top: 1px solid var(--border-subtle);
   }
 
@@ -457,17 +486,23 @@ const getHostname = (url: string) => {
   }
 
   .project-story-item {
-    min-height: 90vh;
+    min-height: 95vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
     padding: 4rem 0;
     border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    opacity: 0.35;
+    transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .project-story-item.is-active {
+    opacity: 1;
   }
 
   .project-story-item:last-child {
     border-bottom: none;
-    min-height: 80vh;
+    min-height: 85vh;
   }
 
   .story-mobile-mockup {
@@ -675,8 +710,9 @@ const getHostname = (url: string) => {
 
   .projects-visual-stage {
     position: sticky;
-    top: 0;
-    height: 100vh;
+    top: calc(var(--header-height, 72px) + 2rem);
+    height: calc(100vh - var(--header-height, 72px) - 4rem);
+    align-self: start;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -765,6 +801,11 @@ const getHostname = (url: string) => {
     width: 100%;
     height: 100%;
     will-change: clip-path;
+    pointer-events: none;
+  }
+
+  .mockup-layer.active {
+    pointer-events: auto;
   }
 
   .layer-link,
@@ -848,6 +889,7 @@ const getHostname = (url: string) => {
       display: flex;
       flex-direction: column;
       gap: 1.5rem;
+      opacity: 1 !important;
     }
 
     .story-mobile-mockup {
