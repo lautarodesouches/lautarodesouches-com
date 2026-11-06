@@ -1,0 +1,155 @@
+---
+import { solutions } from '../data/solutions'
+import SolutionRow from './solutions/SolutionRow.astro'
+---
+
+<section class="solutions-section" id="soluciones" aria-labelledby="solutions-title">
+  <div class="solutions-container">
+    <header class="solutions-header">
+      <div class="solutions-tag">
+        <span class="solutions-tag__text">02 // SOLUCIONES & CAPACIDADES</span>
+      </div>
+
+      <h2 class="solutions-title" id="solutions-title">
+        Software a medida y sitios de alta velocidad.
+      </h2>
+
+      <p class="solutions-desc">
+        Arquitectura backend y cloud de nivel enterprise combinada con diseño frontend de alta precisión. Construyo soluciones tecnológicas hechas a medida que impulsan la conversión y escalan sin fricciones.
+      </p>
+    </header>
+
+    <div class="solutions-list">
+      {solutions.map((item, index) => (
+        <SolutionRow solution={item} isLast={index === solutions.length - 1} />
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  import { gsap } from 'gsap'
+  import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+  gsap.registerPlugin(ScrollTrigger)
+
+  const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+  if (!isReducedMotion) {
+    gsap.fromTo(
+      '.solutions-header > *',
+      { opacity: 0, y: 30 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.85,
+        stagger: 0.12,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: '.solutions-header',
+          start: 'top 85%',
+          toggleActions: 'play none none none',
+        },
+      }
+    )
+
+    gsap.fromTo(
+      '.solution-row',
+      { opacity: 0, y: 40 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        stagger: 0.1,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: '.solutions-list',
+          start: 'top 80%',
+          toggleActions: 'play none none none',
+        },
+      }
+    )
+  }
+</script>
+
+<style>
+  .solutions-section {
+    position: relative;
+    width: 100%;
+    background-color: var(--bg-primary);
+    padding: clamp(5.5rem, 11vh, 9rem) 2rem clamp(6.5rem, 13vh, 10.5rem);
+    border-top: 1px solid var(--border-subtle);
+    overflow: hidden;
+  }
+
+  .solutions-container {
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+  }
+
+  .solutions-header {
+    margin-bottom: clamp(3.5rem, 7vw, 5.5rem);
+    max-width: 820px;
+  }
+
+  .solutions-tag {
+    display: inline-flex;
+    align-items: center;
+    margin-bottom: 1.25rem;
+  }
+
+  .solutions-tag__text {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--accent-cyan);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .solutions-title {
+    font-family: var(--font-display);
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    font-weight: 600;
+    line-height: 1.08;
+    letter-spacing: -0.025em;
+    color: var(--text-primary);
+    margin-bottom: 1.35rem;
+  }
+
+  .solutions-desc {
+    font-family: var(--font-sans);
+    font-size: clamp(0.98rem, 1.2vw, 1.15rem);
+    line-height: 1.6;
+    color: var(--text-secondary);
+    max-width: 62ch;
+  }
+
+  .solutions-list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  @media (max-width: 768px) {
+    .solutions-section {
+      padding: 4rem 1.25rem 5rem;
+    }
+
+    .solutions-header {
+      margin-bottom: 2.75rem;
+    }
+
+    .solutions-title {
+      font-size: clamp(1.85rem, 7.5vw, 2.5rem);
+      line-height: 1.12;
+      margin-bottom: 1rem;
+    }
+
+    .solutions-desc {
+      font-size: 14px;
+      line-height: 1.55;
+    }
+  }
+</style>

@@ -1,0 +1,329 @@
+---
+import type { Solution } from '../../data/solutions'
+
+interface Props {
+  solution: Solution
+  isLast?: boolean
+}
+
+const { solution, isLast = false } = Astro.props
+---
+
+<article class:list={['solution-row', { 'solution-row--last': isLast }]} data-solution-id={solution.id}>
+  <div class="solution-row__backdrop" aria-hidden="true"></div>
+
+  <div class="solution-row__header">
+    <span class="solution-row__index">{solution.index}</span>
+
+    <div class="solution-row__title-wrap">
+      <h3 class="solution-row__title">{solution.title}</h3>
+    </div>
+
+    <div class="solution-row__action" aria-hidden="true">
+      <span class="solution-row__arrow">↗</span>
+    </div>
+  </div>
+
+  <div class="solution-row__drawer">
+    <div class="solution-row__drawer-inner">
+      <p class="solution-row__summary">{solution.summary}</p>
+
+      <div class="solution-row__details">
+        <div class="solution-row__deliverables">
+          <span class="solution-row__meta-label">Entregables Clave</span>
+          <ul class="solution-row__deliverables-list">
+            {solution.deliverables.map((item) => (
+              <li class="solution-row__deliverable-item">
+                <span class="solution-row__dash" aria-hidden="true">—</span>
+                <span class="solution-row__item-text">{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="solution-row__stack">
+          <span class="solution-row__meta-label">Stack Tecnológico</span>
+          <div class="solution-row__pills">
+            {solution.stack.map((tech) => (
+              <span class="solution-row__pill">{tech}</span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
+
+<style>
+  .solution-row {
+    position: relative;
+    border-top: 1px solid var(--border-subtle);
+    padding: clamp(2.2rem, 4.5vw, 3.8rem) 1.5rem;
+    transition: border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    cursor: default;
+  }
+
+  .solution-row--last {
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .solution-row__backdrop {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(255, 255, 255, 0.02);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .solution-row:hover .solution-row__backdrop,
+  .solution-row:focus-within .solution-row__backdrop {
+    opacity: 1;
+  }
+
+  .solution-row__header {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1.5rem;
+  }
+
+  .solution-row__index {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+    width: 2.75rem;
+    flex-shrink: 0;
+    transition: color 0.3s ease;
+  }
+
+  .solution-row:hover .solution-row__index {
+    color: var(--accent-cyan);
+  }
+
+  .solution-row__title-wrap {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .solution-row__title {
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 3.2vw, 2.75rem);
+    font-weight: 500;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+    transform: translateZ(0);
+    transition:
+      transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+      color 0.35s ease;
+  }
+
+  .solution-row:hover .solution-row__title {
+    color: #FFFFFF;
+    transform: translateX(16px);
+  }
+
+  .solution-row__action {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: 2.5rem;
+    flex-shrink: 0;
+  }
+
+  .solution-row__arrow {
+    display: inline-block;
+    font-size: 24px;
+    font-weight: 300;
+    line-height: 1;
+    color: var(--text-muted);
+    opacity: 0.5;
+    transform-origin: center center;
+    transition:
+      transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+      opacity 0.35s ease,
+      color 0.35s ease;
+  }
+
+  .solution-row:hover .solution-row__arrow {
+    opacity: 1;
+    color: #FFFFFF;
+    transform: rotate(45deg);
+  }
+
+  .solution-row__drawer {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    transition:
+      grid-template-rows 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+      opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .solution-row:hover .solution-row__drawer,
+  .solution-row:focus-within .solution-row__drawer {
+    grid-template-rows: 1fr;
+    opacity: 1;
+  }
+
+  .solution-row__drawer-inner {
+    overflow: hidden;
+    padding-left: 4.25rem;
+    padding-top: 1.25rem;
+  }
+
+  .solution-row__summary {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    max-width: 58ch;
+    margin-bottom: 1.5rem;
+  }
+
+  .solution-row__details {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 2.5rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .solution-row__meta-label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin-bottom: 0.75rem;
+  }
+
+  .solution-row__deliverables-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .solution-row__deliverable-item {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    font-family: var(--font-sans);
+    font-size: 13px;
+    line-height: 1.45;
+    color: var(--text-secondary);
+  }
+
+  .solution-row__dash {
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    flex-shrink: 0;
+  }
+
+  .solution-row__pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .solution-row__pill {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    line-height: 1;
+    color: var(--text-primary);
+    background-color: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 0.35rem 0.6rem;
+    border-radius: 9999px;
+    letter-spacing: -0.01em;
+    transition:
+      border-color 0.25s ease,
+      background-color 0.25s ease;
+  }
+
+  .solution-row:hover .solution-row__pill {
+    border-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.06);
+  }
+
+  @media (max-width: 992px) {
+    .solution-row__drawer-inner {
+      padding-left: 0;
+    }
+
+    .solution-row__details {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .solution-row {
+      padding: 1.85rem 0;
+    }
+
+    .solution-row__header {
+      gap: 1rem;
+    }
+
+    .solution-row__index {
+      width: 2rem;
+      font-size: 11px;
+    }
+
+    .solution-row__title {
+      font-size: clamp(1.35rem, 5.5vw, 1.75rem);
+      line-height: 1.2;
+    }
+
+    .solution-row:hover .solution-row__title {
+      transform: none;
+    }
+
+    .solution-row__action {
+      display: none;
+    }
+
+    .solution-row__drawer {
+      grid-template-rows: 1fr !important;
+      opacity: 1 !important;
+      margin-top: 0.85rem;
+    }
+
+    .solution-row__drawer-inner {
+      padding-left: 0;
+      padding-top: 0.5rem;
+    }
+
+    .solution-row__summary {
+      font-size: 13px;
+      line-height: 1.55;
+      margin-bottom: 1.25rem;
+    }
+
+    .solution-row__details {
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+    }
+
+    .solution-row__deliverable-item {
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .solution-row__pill {
+      font-size: 9.5px;
+      padding: 0.3rem 0.5rem;
+    }
+  }
+</style>
