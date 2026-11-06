@@ -43,3 +43,4 @@ export interface TrajectoryData {
 }
 
 export type CareerData = TrajectoryData
+

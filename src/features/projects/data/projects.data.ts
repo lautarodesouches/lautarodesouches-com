@@ -98,3 +98,4 @@ export const projects: Project[] = [
     image: '/projects/desouches-propiedades.png',
   },
 ]
+

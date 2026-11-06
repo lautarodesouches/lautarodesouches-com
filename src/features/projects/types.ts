@@ -19,3 +19,4 @@ export interface Project {
   isPrivateRepo: boolean
   image: string
 }
+

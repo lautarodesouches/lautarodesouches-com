@@ -54,3 +54,4 @@ export const solutions: Solution[] = [
     stack: ['GTM & GA4', 'Linux VPS', 'Coolify', 'Nginx / Caddy', 'GitHub Actions'],
   },
 ]
+

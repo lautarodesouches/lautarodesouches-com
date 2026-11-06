@@ -156,3 +156,4 @@ export const careerData: CareerData = {
 }
 
 export const trajectoryData = careerData
+

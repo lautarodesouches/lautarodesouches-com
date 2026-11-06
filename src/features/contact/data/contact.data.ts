@@ -62,3 +62,4 @@ export const contactData: ContactData = {
     techStack: 'Construido con Astro 5, TypeScript, GSAP & Lenis',
   },
 }
+

@@ -44,3 +44,4 @@ export interface ContactData {
   telemetry: ContactTelemetry
   signature: ContactSignature
 }
+

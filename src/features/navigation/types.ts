@@ -8,3 +8,4 @@ export interface SocialNavProfile {
   name: string
   url: string
 }
+

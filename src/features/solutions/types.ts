@@ -6,3 +6,4 @@ export interface Solution {
   deliverables: string[]
   stack: string[]
 }
+
