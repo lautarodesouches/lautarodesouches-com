@@ -67,7 +67,7 @@ export interface PortfolioData {
 
 export const portfolioData: PortfolioData = {
   hero: {
-    role: 'Lead Frontend Architect & Full-Stack Systems Engineer',
+    role: 'Desarrollador Web Full Stack',
     headline: 'Ingeniería Full-Stack Escalable con Next.js, NestJS y Java Spring.',
     subtitle:
       'Especializado en Arquitectura Web Full-Stack y Plataformas B2B con Node.js y TypeScript. Código limpio, tipado estricto y resolución de cuellos de botella de negocio en producción.',

@@ -29,7 +29,7 @@ export const heroData: HeroData = {
   availability: 'DISPONIBLE PARA PROYECTOS / REMOTO',
   locationTimezone: 'BUENOS AIRES, AR (GMT-3)',
   name: 'Lautaro Desouches',
-  role: 'Full Stack Developer & Web Architect',
+  role: 'Desarrollador Web Full Stack',
   headline: 'Creación de software a medida, plataformas web escalables y experiencias de alto rendimiento.',
   description:
     'Especializado en desarrollo frontend y arquitecturas backend resilientes. Soluciones con código limpio, TypeScript estricto y cero deuda técnica desde el día uno.',
