@@ -1,0 +1,343 @@
+---
+import { projects } from '../data/projects.data'
+import ProjectStoryItem from './ProjectStoryItem.astro'
+import VisualStage from './VisualStage.astro'
+
+const totalProjects = projects.length
+
+const getHostname = (url: string) => {
+  try {
+    return new URL(url).hostname.replace(/^www\./, '')
+  } catch {
+    return 'demo.local'
+  }
+}
+---
+
+<section id="proyectos" class="projects-section" aria-labelledby="projects-title">
+  <div class="projects-container">
+    <header class="projects-header">
+      <span class="section-tag">02 // CASOS DE ESTUDIO & PROYECTOS</span>
+      <h2 class="section-title" id="projects-title">Ingeniería de software aplicada a negocio.</h2>
+      <p class="section-desc">
+        Plataformas B2B, portales de alto tráfico y arquitecturas web de ultra-velocidad desplegadas en producción.
+      </p>
+    </header>
+
+    <div class="projects-split-container">
+      <VisualStage projects={projects} getHostname={getHostname} />
+
+      <div class="projects-narrative-col">
+        {projects.map((project, index) => (
+          <ProjectStoryItem
+            project={project}
+            index={index}
+            totalProjects={totalProjects}
+            isActive={index === 0}
+          />
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { gsap } from 'gsap'
+  import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+  gsap.registerPlugin(ScrollTrigger)
+
+  function initProjectsShowcase() {
+    const section = document.getElementById('proyectos')
+    if (!section) return
+
+    const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const storyItems = gsap.utils.toArray<HTMLElement>('#proyectos .project-story-item')
+    const layers = gsap.utils.toArray<HTMLElement>('#proyectos .mockup-layer')
+    const urlDisplay = document.getElementById('mockup-url-display')
+    const spotlight = document.getElementById('projects-spotlight')
+    const watermark = document.getElementById('projects-watermark')
+
+    if (!storyItems.length || !layers.length) return
+
+    let activeIndex = 0
+    let zCounter = 10
+
+    layers.forEach((layer, idx) => {
+      const inner = layer.querySelector<HTMLElement>('.layer-link')
+      const img = layer.querySelector<HTMLElement>('.layer-img')
+
+      if (idx === 0) {
+        gsap.set(layer, { yPercent: 0, autoAlpha: 1, zIndex: zCounter })
+        if (inner) gsap.set(inner, { yPercent: 0 })
+        if (img) gsap.set(img, { scale: 1, yPercent: 0 })
+      } else {
+        gsap.set(layer, { yPercent: 100, autoAlpha: 0, zIndex: 1 })
+        if (inner) gsap.set(inner, { yPercent: -100 })
+        if (img) gsap.set(img, { scale: 1.08, yPercent: 0 })
+      }
+    })
+
+    const setActiveProject = (newIndex: number) => {
+      if (newIndex === activeIndex || newIndex < 0 || newIndex >= layers.length) return
+
+      const isForward = newIndex > activeIndex
+      const prevIndex = activeIndex
+      activeIndex = newIndex
+
+      storyItems.forEach((item, idx) => {
+        item.classList.toggle('is-active', idx === newIndex)
+      })
+
+      const incomingLayer = layers[newIndex]
+      const outgoingLayer = layers[prevIndex]
+      if (!incomingLayer || !outgoingLayer) return
+
+      const incomingInner = incomingLayer.querySelector<HTMLElement>('.layer-link')
+      const incomingImg = incomingLayer.querySelector<HTMLElement>('.layer-img')
+      const outgoingImg = outgoingLayer.querySelector<HTMLElement>('.layer-img')
+
+      zCounter += 1
+      incomingLayer.classList.add('is-active')
+      outgoingLayer.classList.remove('is-active')
+
+      gsap.killTweensOf([incomingLayer, incomingInner, incomingImg, outgoingImg])
+
+      if (isReducedMotion) {
+        gsap.set(incomingLayer, { yPercent: 0, autoAlpha: 1, zIndex: zCounter })
+        if (incomingInner) gsap.set(incomingInner, { yPercent: 0 })
+        if (incomingImg) gsap.set(incomingImg, { scale: 1, yPercent: 0 })
+        gsap.set(outgoingLayer, { autoAlpha: 0 })
+      } else {
+        const startY = isForward ? 100 : -100
+
+        gsap.set(incomingLayer, {
+          yPercent: startY,
+          autoAlpha: 1,
+          zIndex: zCounter,
+        })
+
+        if (incomingInner) {
+          gsap.set(incomingInner, { yPercent: -startY })
+        }
+
+        if (incomingImg) {
+          gsap.set(incomingImg, { scale: 1.1, yPercent: isForward ? -6 : 6 })
+        }
+
+        const tl = gsap.timeline({
+          defaults: { duration: 0.72, ease: 'power3.out' },
+        })
+
+        tl.to(incomingLayer, { yPercent: 0 }, 0)
+
+        if (incomingInner) {
+          tl.to(incomingInner, { yPercent: 0 }, 0)
+        }
+
+        if (incomingImg) {
+          tl.to(incomingImg, { scale: 1, yPercent: 0 }, 0)
+        }
+
+        if (outgoingImg) {
+          tl.to(
+            outgoingImg,
+            {
+              scale: 0.96,
+              yPercent: isForward ? -5 : 5,
+              duration: 0.72,
+              ease: 'power3.out',
+            },
+            0
+          )
+        }
+
+        if (spotlight) {
+          gsap.killTweensOf(spotlight)
+          gsap.fromTo(
+            spotlight,
+            { scale: 0.85, opacity: 0.35 },
+            {
+              scale: 1.18,
+              opacity: 0.9,
+              duration: 0.45,
+              ease: 'power2.out',
+              yoyo: true,
+              repeat: 1,
+            }
+          )
+        }
+
+        if (watermark) {
+          const nextNum = String(newIndex + 1).padStart(2, '0')
+          const dir = isForward ? 1 : -1
+          gsap.killTweensOf(watermark)
+          gsap.to(watermark, {
+            yPercent: -35 * dir,
+            opacity: 0,
+            duration: 0.2,
+            ease: 'power2.in',
+            onComplete: () => {
+              watermark.textContent = nextNum
+              gsap.fromTo(
+                watermark,
+                { yPercent: 35 * dir, opacity: 0 },
+                { yPercent: 0, opacity: 1, duration: 0.32, ease: 'power2.out' }
+              )
+            },
+          })
+        }
+      }
+
+      if (urlDisplay) {
+        const nextUrl = incomingLayer.getAttribute('data-url') || ''
+        gsap.killTweensOf(urlDisplay)
+        gsap.to(urlDisplay, {
+          opacity: 0,
+          y: -4,
+          duration: 0.15,
+          onComplete: () => {
+            urlDisplay.textContent = nextUrl
+            gsap.fromTo(
+              urlDisplay,
+              { opacity: 0, y: 4 },
+              { opacity: 1, y: 0, duration: 0.22 }
+            )
+          },
+        })
+      }
+    }
+
+    storyItems.forEach((item, index) => {
+      ScrollTrigger.create({
+        trigger: item,
+        start: 'top 65%',
+        end: 'bottom 35%',
+        onToggle: (self) => {
+          if (self.isActive) {
+            setActiveProject(index)
+          }
+        },
+      })
+    })
+
+    requestAnimationFrame(() => {
+      ScrollTrigger.refresh()
+    })
+  }
+
+  initProjectsShowcase()
+  document.addEventListener('astro:page-load', initProjectsShowcase)
+</script>
+
+<style>
+  .projects-section {
+    position: relative;
+    background-color: #0A0A0A;
+    color: var(--text-primary);
+    padding: 6rem 2rem 8rem;
+    overflow: visible;
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  .projects-container {
+    max-width: 1360px;
+    margin: 0 auto;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+  }
+
+  .projects-header {
+    max-width: 820px;
+    margin-bottom: 4rem;
+  }
+
+  .section-tag {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    font-weight: 500;
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+    color: var(--text-primary);
+    margin-bottom: 1.25rem;
+  }
+
+  .section-desc {
+    font-family: var(--font-sans);
+    font-size: clamp(15px, 1.4vw, 17px);
+    line-height: 1.6;
+    color: var(--text-secondary);
+    max-width: 680px;
+  }
+
+  .projects-split-container {
+    display: grid;
+    grid-template-columns: 1fr 1.15fr;
+    gap: 4rem;
+    position: relative;
+    width: 100%;
+    align-items: start;
+  }
+
+  .projects-narrative-col {
+    grid-column: 1;
+    grid-row: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 2;
+  }
+
+  @media (max-width: 1023px) {
+    .projects-split-container {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      position: relative;
+    }
+
+    .projects-narrative-col {
+      grid-column: auto;
+      grid-row: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 5rem;
+      padding-bottom: 4rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .projects-section {
+      padding: 4rem 1.15rem 5.5rem;
+    }
+
+    .projects-header {
+      margin-bottom: 2rem;
+    }
+
+    .section-title {
+      font-size: clamp(1.75rem, 7vw, 2.3rem);
+      margin-bottom: 0.85rem;
+    }
+
+    .section-desc {
+      font-size: 13.5px;
+      line-height: 1.5;
+    }
+
+    .projects-narrative-col {
+      gap: 4rem;
+    }
+  }
+</style>

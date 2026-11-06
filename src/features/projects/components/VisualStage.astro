@@ -1,0 +1,407 @@
+---
+import type { Project } from '../types'
+
+interface Props {
+  projects: Project[]
+  getHostname: (url: string) => string
+}
+
+const { projects, getHostname } = Astro.props
+---
+
+<div class="projects-visual-stage">
+  <div class="projects-ambient-backdrop" aria-hidden="true">
+    <div class="ambient-spotlight" id="projects-spotlight"></div>
+    <div class="ambient-watermark-wrap">
+      <div class="ambient-watermark" id="projects-watermark">01</div>
+    </div>
+  </div>
+
+  <div class="mockup-viewport-frame">
+    <div class="mockup-header-bar">
+      <div class="mockup-dots" aria-hidden="true">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </div>
+      <div class="mockup-url-pill">
+        <span class="url-protocol">https://</span>
+        <span class="mockup-url-label" id="mockup-url-display">
+          {getHostname(projects[0].demoUrl)}
+        </span>
+      </div>
+    </div>
+
+    <div class="mockup-layers-stack">
+      {projects.map((project, index) => {
+        const num = String(index + 1).padStart(2, '0')
+        const host = getHostname(project.demoUrl)
+
+        return (
+          <div
+            class:list={['mockup-layer', { 'is-active': index === 0 }]}
+            data-layer={index}
+            data-url={host}
+          >
+            <a
+              href={project.demoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="layer-link"
+              aria-label={`Ver demostración de ${project.title}`}
+            >
+              <div class="layer-fallback" aria-hidden="true">
+                <span class="fallback-index">{num} // {project.badge}</span>
+                <span class="fallback-title">{project.title}</span>
+                <span class="fallback-host">{host}</span>
+              </div>
+
+              <picture class="layer-picture">
+                <source srcset={project.image.replace(/\.png$/, '.avif')} type="image/avif" />
+                <source srcset={project.image.replace(/\.png$/, '.webp')} type="image/webp" />
+                <img
+                  src={project.image}
+                  alt={`Mockup de ${project.title}`}
+                  class="layer-img"
+                  loading="eager"
+                  decoding="async"
+                  width="1600"
+                  height="900"
+                  onerror="this.style.opacity='0'"
+                />
+              </picture>
+
+              <div class="layer-overlay" aria-hidden="true">
+                <span class="overlay-pill">
+                  <span>Ver Proyecto</span>
+                  <span class="action-arrow">↗</span>
+                </span>
+              </div>
+            </a>
+          </div>
+        )
+      })}
+    </div>
+  </div>
+</div>
+
+<style>
+  .projects-visual-stage {
+    grid-column: 2;
+    grid-row: 1;
+    position: sticky;
+    top: calc(var(--header-height, 72px) + 2rem);
+    height: calc(100vh - var(--header-height, 72px) - 4rem);
+    align-self: start;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+  }
+
+  .projects-ambient-backdrop {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: visible;
+    z-index: 0;
+  }
+
+  .ambient-spotlight {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 680px;
+    height: 680px;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle,
+      rgba(255, 255, 255, 0.055) 0%,
+      rgba(255, 255, 255, 0.015) 38%,
+      transparent 70%
+    );
+    filter: blur(60px);
+    will-change: transform, opacity;
+  }
+
+  .ambient-watermark-wrap {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    overflow: hidden;
+    height: clamp(14rem, 24vw, 22rem);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ambient-watermark {
+    font-family: var(--font-display);
+    font-size: clamp(14rem, 24vw, 22rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.05em;
+    color: rgba(255, 255, 255, 0.035);
+    will-change: transform, opacity;
+  }
+
+  .mockup-viewport-frame {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 660px;
+    background-color: #121212;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 32px 72px -16px rgba(0, 0, 0, 0.85);
+    transition: border-color 0.3s ease;
+  }
+
+  .mockup-viewport-frame:hover {
+    border-color: rgba(255, 255, 255, 0.22);
+  }
+
+  .mockup-header-bar {
+    height: 32px;
+    background-color: #161616;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1rem;
+    gap: 1rem;
+  }
+
+  .mockup-dots {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.16);
+  }
+
+  .mockup-url-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.15rem 0.75rem;
+    border-radius: 4px;
+    background-color: #0E0E0E;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    max-width: 320px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .url-protocol {
+    color: var(--text-muted);
+  }
+
+  .mockup-url-label {
+    color: var(--text-secondary);
+    font-weight: 500;
+  }
+
+  .mockup-layers-stack {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background-color: #0A0A0A;
+  }
+
+  .mockup-layer {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    will-change: transform, opacity;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .mockup-layer.is-active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    z-index: 2;
+  }
+
+  .layer-link {
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    will-change: transform;
+    background-color: #0D0D0D;
+  }
+
+  .layer-fallback {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 2rem;
+    background:
+      linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+      radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.06), transparent 60%),
+      #0E0E0E;
+    background-size: 32px 32px, 32px 32px, 100% 100%, 100% 100%;
+  }
+
+  .fallback-index {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+  }
+
+  .fallback-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.35rem, 2vw, 1.85rem);
+    font-weight: 500;
+    color: var(--text-primary);
+    max-width: 18ch;
+    line-height: 1.15;
+  }
+
+  .fallback-host {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  .layer-picture {
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    z-index: 2;
+  }
+
+  .layer-img {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    display: block;
+    will-change: transform;
+  }
+
+  .layer-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    background-color: rgba(10, 10, 10, 0.45);
+    backdrop-filter: blur(2px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .mockup-viewport-frame:hover .layer-overlay {
+    opacity: 1;
+  }
+
+  .overlay-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    color: #FFFFFF;
+    background-color: rgba(18, 18, 18, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    padding: 0.55rem 1rem;
+    border-radius: 9999px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  }
+
+  .action-arrow {
+    font-size: 12px;
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  @media (max-width: 1023px) {
+    .projects-visual-stage {
+      grid-column: auto;
+      grid-row: auto;
+      position: sticky;
+      top: calc(var(--header-height, 72px) + 0.5rem);
+      height: auto;
+      width: 100%;
+      z-index: 30;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.75rem 0 1rem;
+      background-color: rgba(10, 10, 10, 0.92);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: 2rem;
+    }
+
+    .mockup-viewport-frame {
+      max-width: 440px;
+      border-radius: 8px;
+      box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.85);
+    }
+
+    .mockup-header-bar {
+      height: 26px;
+      padding: 0 0.75rem;
+    }
+
+    .dot {
+      width: 6px;
+      height: 6px;
+    }
+
+    .mockup-url-pill {
+      font-size: 9px;
+      padding: 0.1rem 0.5rem;
+      max-width: 220px;
+    }
+
+    .ambient-spotlight {
+      width: 320px;
+      height: 320px;
+      filter: blur(40px);
+    }
+
+    .ambient-watermark-wrap {
+      display: none;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .projects-visual-stage {
+      padding: 0.5rem 0 0.85rem;
+      margin-bottom: 1.5rem;
+    }
+  }
+</style>
