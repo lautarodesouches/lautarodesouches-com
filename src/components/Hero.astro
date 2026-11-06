@@ -153,7 +153,9 @@ import HeroCanvas from './hero/HeroCanvas.astro'
     resetHeroReveal()
   })
 
-  const isIntroAlreadyShown = typeof sessionStorage !== 'undefined' && sessionStorage.getItem('intro_shown') === 'true'
+  const isDev = import.meta.env.DEV
+  const hasForceParam = typeof window !== 'undefined' && (new URLSearchParams(window.location.search).has('intro') || new URLSearchParams(window.location.search).has('replay'))
+  const isIntroAlreadyShown = !isDev && !hasForceParam && typeof sessionStorage !== 'undefined' && sessionStorage.getItem('intro_shown') === 'true'
 
   if (isReducedMotion || isIntroAlreadyShown || (window as unknown as WindowWithIntro).__introCompleted) {
     playHeroReveal({ immediate: true })
