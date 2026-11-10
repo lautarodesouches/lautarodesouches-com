@@ -1,0 +1,23 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import ServicesHeader from '../features/navigation/components/ServicesHeader.astro'
+import ServicesHero from '../features/services/components/ServicesHero.astro'
+import ServicesCatalog from '../features/services/components/ServicesCatalog.astro'
+import ServicesProcess from '../features/services/components/ServicesProcess.astro'
+import ServicesContact from '../features/services/components/ServicesContact.astro'
+import Footer from '../features/navigation/components/Footer.astro'
+---
+
+<BaseLayout
+  title="Servicios & Desarrollo de Software a Medida — Lautaro Desouches"
+  description="Desarrollo de software y sitios web desde cero sin intermediarios. Sitios corporativos de alta velocidad, plataformas web B2B y auditorías de rendimiento."
+>
+  <ServicesHeader />
+  <main id="main" tabindex="-1">
+    <ServicesHero />
+    <ServicesCatalog />
+    <ServicesProcess />
+    <ServicesContact />
+  </main>
+  <Footer />
+</BaseLayout>
