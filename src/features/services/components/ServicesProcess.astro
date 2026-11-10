@@ -1,0 +1,215 @@
+---
+import { processRoadmap } from '../data/services.data'
+---
+
+<section class="services-process-section" id="proceso" aria-labelledby="process-title">
+  <div class="services-process-container">
+    <header class="process-header">
+      <div class="process-tag">
+        <span class="section-tag">03 // METODOLOGÍA DE INGENIERÍA</span>
+      </div>
+
+      <h2 class="process-title" id="process-title">
+        Un proceso predecible, sin sorpresas ni fricción.
+      </h2>
+
+      <p class="process-desc">
+        Flujo de desarrollo dividido en cuatro fases secuenciales diseñadas para maximizar la visibilidad del avance y erradicar desvíos de alcance.
+      </p>
+    </header>
+
+    <div class="process-grid">
+      {processRoadmap.map((item) => (
+        <article class="process-step">
+          <div class="process-step__line" aria-hidden="true"></div>
+          <div class="process-step__content">
+            <span class="process-step__number">[{item.step}]</span>
+            <h3 class="process-step__name">{item.name}</h3>
+            <p class="process-step__desc">{item.desc}</p>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  import { gsap } from 'gsap'
+  import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+  gsap.registerPlugin(ScrollTrigger)
+
+  const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+  if (!isReducedMotion) {
+    gsap.fromTo(
+      '.process-header > *',
+      { opacity: 0, y: 30 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.85,
+        stagger: 0.12,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: '.process-header',
+          start: 'top 85%',
+          toggleActions: 'play none none none',
+        },
+      }
+    )
+
+    gsap.fromTo(
+      '.process-step',
+      { opacity: 0, y: 35 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        stagger: 0.1,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: '.process-grid',
+          start: 'top 82%',
+          toggleActions: 'play none none none',
+        },
+      }
+    )
+  }
+</script>
+
+<style>
+  .services-process-section {
+    position: relative;
+    width: 100%;
+    background-color: var(--bg-primary);
+    padding: clamp(5.5rem, 11vh, 9rem) 2rem;
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  .services-process-container {
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+  }
+
+  .process-header {
+    margin-bottom: clamp(3.5rem, 7vw, 5.5rem);
+    max-width: 820px;
+  }
+
+  .process-tag {
+    display: block;
+    margin-bottom: 1.25rem;
+  }
+
+  .section-tag {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+  }
+
+  .process-title {
+    font-family: var(--font-display);
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    font-weight: 600;
+    line-height: 1.08;
+    letter-spacing: -0.025em;
+    color: var(--text-primary);
+    margin-bottom: 1.25rem;
+  }
+
+  .process-desc {
+    font-family: var(--font-sans);
+    font-size: clamp(0.98rem, 1.2vw, 1.15rem);
+    line-height: 1.6;
+    color: var(--text-secondary);
+    max-width: 62ch;
+  }
+
+  .process-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+  }
+
+  .process-step {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding-top: 2rem;
+  }
+
+  .process-step__line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: var(--border-subtle);
+    transition: background-color 0.3s ease;
+  }
+
+  .process-step:hover .process-step__line {
+    background-color: rgba(255, 255, 255, 0.3);
+  }
+
+  .process-step__content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .process-step__number {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: var(--accent-cyan);
+  }
+
+  .process-step__name {
+    font-family: var(--font-display);
+    font-size: clamp(1.25rem, 1.8vw, 1.55rem);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+    color: var(--text-primary);
+  }
+
+  .process-step__desc {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text-secondary);
+  }
+
+  @media (max-width: 1024px) {
+    .process-grid {
+      grid-template-columns: repeat(2, 1fr);
+      row-gap: 3.5rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .services-process-section {
+      padding: 4rem 1.25rem;
+    }
+
+    .process-header {
+      margin-bottom: 2.5rem;
+    }
+
+    .process-title {
+      font-size: clamp(1.85rem, 7.5vw, 2.5rem);
+    }
+
+    .process-grid {
+      grid-template-columns: 1fr;
+      row-gap: 2.5rem;
+    }
+  }
+</style>

@@ -1,0 +1,163 @@
+---
+import { servicesData } from '../data/services.data'
+import ServiceCard from './ServiceCard.astro'
+---
+
+<section class="services-catalog-section" id="catalogo" aria-labelledby="catalog-title">
+  <div class="services-catalog-container">
+    <header class="catalog-header">
+      <div class="catalog-tag">
+        <span class="section-tag">02 // ALCANCE & SOLUCIONES</span>
+      </div>
+
+      <h2 class="catalog-title" id="catalog-title">
+        Soluciones diseñadas para generar impacto operativo.
+      </h2>
+
+      <p class="catalog-desc">
+        Tres modelos de intervención directa según la fase, velocidad y complejidad técnica de tu organización.
+      </p>
+    </header>
+
+    <div class="catalog-list">
+      {servicesData.map((pkg, index) => (
+        <ServiceCard pkg={pkg} isLast={index === servicesData.length - 1} />
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  import { gsap } from 'gsap'
+  import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+  gsap.registerPlugin(ScrollTrigger)
+
+  const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+  if (!isReducedMotion) {
+    gsap.fromTo(
+      '.catalog-header > *',
+      { opacity: 0, y: 30 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.85,
+        stagger: 0.12,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: '.catalog-header',
+          start: 'top 85%',
+          toggleActions: 'play none none none',
+        },
+      }
+    )
+
+    gsap.fromTo(
+      '.service-card',
+      { opacity: 0, y: 35 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        stagger: 0.12,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: '.catalog-list',
+          start: 'top 82%',
+          toggleActions: 'play none none none',
+        },
+      }
+    )
+  }
+
+  const presetButtons = document.querySelectorAll<HTMLAnchorElement>('.service-select-btn')
+  const projectTypeSelect = document.getElementById('project-type') as HTMLSelectElement | null
+
+  presetButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const preset = btn.getAttribute('data-preset-service')
+      if (preset && projectTypeSelect) {
+        for (let i = 0; i < projectTypeSelect.options.length; i++) {
+          if (projectTypeSelect.options[i].text.includes(preset) || preset.includes(projectTypeSelect.options[i].value)) {
+            projectTypeSelect.selectedIndex = i
+            break
+          }
+        }
+      }
+    })
+  })
+</script>
+
+<style>
+  .services-catalog-section {
+    position: relative;
+    width: 100%;
+    background-color: var(--bg-primary);
+    padding: clamp(5rem, 10vh, 8.5rem) 2rem;
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  .services-catalog-container {
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+  }
+
+  .catalog-header {
+    margin-bottom: clamp(3.5rem, 6vw, 5rem);
+    max-width: 820px;
+  }
+
+  .catalog-tag {
+    display: block;
+    margin-bottom: 1.25rem;
+  }
+
+  .section-tag {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+  }
+
+  .catalog-title {
+    font-family: var(--font-display);
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    font-weight: 600;
+    line-height: 1.08;
+    letter-spacing: -0.025em;
+    color: var(--text-primary);
+    margin-bottom: 1.25rem;
+  }
+
+  .catalog-desc {
+    font-family: var(--font-sans);
+    font-size: clamp(0.98rem, 1.2vw, 1.15rem);
+    line-height: 1.6;
+    color: var(--text-secondary);
+    max-width: 62ch;
+  }
+
+  .catalog-list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  @media (max-width: 768px) {
+    .services-catalog-section {
+      padding: 4rem 1.25rem;
+    }
+
+    .catalog-header {
+      margin-bottom: 2.5rem;
+    }
+
+    .catalog-title {
+      font-size: clamp(1.85rem, 7.5vw, 2.5rem);
+    }
+  }
+</style>

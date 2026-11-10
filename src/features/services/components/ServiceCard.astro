@@ -1,0 +1,359 @@
+---
+import type { ServicePackage } from '../types'
+
+interface Props {
+  pkg: ServicePackage
+  isLast?: boolean
+}
+
+const { pkg, isLast = false } = Astro.props
+---
+
+<article class:list={['service-card', { 'service-card--last': isLast }]} data-service-id={pkg.id}>
+  <div class="service-card__backdrop" aria-hidden="true"></div>
+
+  <header class="service-card__header">
+    <div class="service-card__meta-top">
+      <span class="service-card__index">{pkg.index}</span>
+      <span class="service-card__badge">[ {pkg.badge} ]</span>
+    </div>
+
+    <h3 class="service-card__title">{pkg.title}</h3>
+    <p class="service-card__audience">
+      <span class="audience-label">DIRIGIDO A:</span> {pkg.targetAudience}
+    </p>
+    <p class="service-card__summary">{pkg.summary}</p>
+  </header>
+
+  <div class="service-card__body">
+    <div class="service-card__deliverables">
+      <span class="body-label">// ENTREGABLES CONCRETOS</span>
+      <ul class="deliverables-list">
+        {pkg.deliverables.map((item) => (
+          <li class="deliverable-item">
+            <span class="deliverable-dash" aria-hidden="true">—</span>
+            <span class="deliverable-text">{item}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="service-card__spec">
+      <span class="body-label">// FICHA OPERATIVA</span>
+      <div class="spec-grid">
+        <div class="spec-row">
+          <span class="spec-key">Plazo de Entrega:</span>
+          <span class="spec-val spec-val--highlight">{pkg.deliveryTime}</span>
+        </div>
+
+        <div class="spec-row">
+          <span class="spec-key">Modelo de Inversión:</span>
+          <span class="spec-val">{pkg.investmentTier}</span>
+        </div>
+
+        <div class="spec-row spec-row--stack">
+          <span class="spec-key">Stack Clave:</span>
+          <div class="tech-pills">
+            {pkg.techStack.map((tech) => (
+              <span class="tech-pill">{tech}</span>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div class="service-card__action">
+        <a
+          href="#contacto"
+          class="service-select-btn"
+          data-preset-service={pkg.title}
+        >
+          <span>Consultar por este servicio</span>
+          <span class="btn-arrow" aria-hidden="true">↗</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</article>
+
+<style>
+  .service-card {
+    position: relative;
+    border-top: 1px solid var(--border-subtle);
+    padding: clamp(2.5rem, 5vw, 4.5rem) 1.5rem;
+    transition:
+      border-color 280ms cubic-bezier(0.16, 1, 0.3, 1),
+      transform 200ms cubic-bezier(0.16, 1, 0.3, 1);
+    transform-origin: center center;
+    background-color: transparent;
+  }
+
+  .service-card--last {
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .service-card:hover {
+    border-color: rgba(255, 255, 255, 0.22);
+  }
+
+  .service-card:active {
+    transform: scale(0.994);
+  }
+
+  .service-card__backdrop {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      circle at 20% 0%,
+      rgba(255, 255, 255, 0.03) 0%,
+      transparent 70%
+    );
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 300ms ease;
+  }
+
+  .service-card:hover .service-card__backdrop {
+    opacity: 1;
+  }
+
+  .service-card__header {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+    position: relative;
+    z-index: 2;
+  }
+
+  .service-card__meta-top {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+  }
+
+  .service-card__index {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--accent-cyan);
+    letter-spacing: 0.06em;
+  }
+
+  .service-card__badge {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+  }
+
+  .service-card__title {
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 3.5vw, 2.85rem);
+    font-weight: 600;
+    line-height: 1.14;
+    letter-spacing: -0.025em;
+    color: var(--text-primary);
+    transition: transform 260ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .service-card:hover .service-card__title {
+    transform: translateX(6px);
+  }
+
+  .service-card__audience {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--text-muted);
+    max-width: 72ch;
+  }
+
+  .audience-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--accent-cyan);
+    letter-spacing: 0.06em;
+    margin-right: 0.35rem;
+  }
+
+  .service-card__summary {
+    font-family: var(--font-sans);
+    font-size: clamp(14px, 1.2vw, 16px);
+    line-height: 1.6;
+    color: var(--text-secondary);
+    max-width: 68ch;
+  }
+
+  .service-card__body {
+    display: grid;
+    grid-template-columns: 1.35fr 1fr;
+    gap: clamp(2.5rem, 5vw, 4.5rem);
+    position: relative;
+    z-index: 2;
+  }
+
+  .body-label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 1.25rem;
+  }
+
+  .deliverables-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  .deliverable-item {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--text-secondary);
+  }
+
+  .deliverable-dash {
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    flex-shrink: 0;
+  }
+
+  .service-card__spec {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1.75rem;
+    background: rgba(255, 255, 255, 0.015);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 10px;
+    padding: 1.5rem;
+  }
+
+  .spec-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .spec-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .spec-key {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+  }
+
+  .spec-val {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    color: var(--text-primary);
+  }
+
+  .spec-val--highlight {
+    font-family: var(--font-mono);
+    color: #4ade80;
+    font-weight: 500;
+  }
+
+  .tech-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.25rem;
+  }
+
+  .tech-pill {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-secondary);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 0.3rem 0.6rem;
+    border-radius: 9999px;
+  }
+
+  .service-card__action {
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .service-select-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0.85rem 1.25rem;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: var(--text-primary);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .service-select-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.28);
+    transform: translateY(-1px);
+    color: #ffffff;
+  }
+
+  .btn-arrow {
+    font-size: 13px;
+    transition: transform 0.2s ease;
+  }
+
+  .service-select-btn:hover .btn-arrow {
+    transform: translate(2px, -2px);
+  }
+
+  @media (max-width: 992px) {
+    .service-card__body {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .service-card {
+      padding: 2.25rem 0;
+    }
+
+    .service-card:hover .service-card__title {
+      transform: none;
+    }
+
+    .service-card__title {
+      font-size: clamp(1.45rem, 6vw, 1.9rem);
+    }
+
+    .service-card__summary {
+      font-size: 13.5px;
+    }
+
+    .deliverable-item {
+      font-size: 13px;
+    }
+  }
+</style>
