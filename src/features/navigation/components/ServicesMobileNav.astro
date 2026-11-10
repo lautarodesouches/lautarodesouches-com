@@ -1,0 +1,469 @@
+---
+---
+
+<div class="mobile-nav-root">
+  <button
+    type="button"
+    class="mobile-nav-trigger"
+    id="services-mobile-nav-trigger"
+    aria-label="Abrir menú de navegación"
+    aria-expanded="false"
+    aria-controls="services-mobile-nav-overlay"
+  >
+    <div class="trigger-lines" aria-hidden="true">
+      <span class="trigger-line trigger-line--top"></span>
+      <span class="trigger-line trigger-line--bottom"></span>
+    </div>
+  </button>
+
+  <div
+    class="mobile-nav-overlay"
+    id="services-mobile-nav-overlay"
+    aria-hidden="true"
+  >
+    <svg
+      class="mobile-nav-svg"
+      viewBox="0 0 100 100"
+      preserveAspectRatio="none"
+      aria-hidden="true"
+    >
+      <path
+        id="services-mobile-nav-path"
+        d="M 0 0 L 100 0 L 100 0 Q 50 0 0 0 Z"
+        fill="#0A0A0A"
+      ></path>
+    </svg>
+
+    <div class="mobile-nav-content" id="services-mobile-nav-content">
+      <nav class="mobile-nav-menu" aria-label="Navegación móvil servicios">
+        <ul class="mobile-nav-list">
+          <li class="mobile-nav-item">
+            <div class="nav-link-mask">
+              <a href="#catalogo" class="mobile-nav-link">
+                <span class="nav-link-index">01</span>
+                <span class="nav-link-text">Catálogo</span>
+              </a>
+            </div>
+          </li>
+          <li class="mobile-nav-item">
+            <div class="nav-link-mask">
+              <a href="#proceso" class="mobile-nav-link">
+                <span class="nav-link-index">02</span>
+                <span class="nav-link-text">Proceso</span>
+              </a>
+            </div>
+          </li>
+          <li class="mobile-nav-item">
+            <div class="nav-link-mask">
+              <a href="#contacto" class="mobile-nav-link">
+                <span class="nav-link-index">03</span>
+                <span class="nav-link-text">Contacto</span>
+              </a>
+            </div>
+          </li>
+          <li class="mobile-nav-item">
+            <div class="nav-link-mask">
+              <a href="/" class="mobile-nav-link">
+                <span class="nav-link-index">04</span>
+                <span class="nav-link-text">Portfolio Principal ↗</span>
+              </a>
+            </div>
+          </li>
+        </ul>
+      </nav>
+
+      <footer class="mobile-nav-footer">
+        <div class="footer-meta">
+          <span class="footer-label">// DISPONIBILIDAD B2B</span>
+          <span class="footer-status">Directo sin intermediarios</span>
+        </div>
+        <div class="footer-socials">
+          <a
+            href="https://wa.me/541130111503"
+            class="footer-social-link"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            WhatsApp
+          </a>
+          <a
+            href="mailto:lautarodesouches@outlook.com"
+            class="footer-social-link"
+          >
+            Email
+          </a>
+        </div>
+      </footer>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { gsap } from 'gsap'
+
+  interface LenisInstance {
+    stop: () => void
+    start: () => void
+    scrollTo: (target: string | HTMLElement, opts?: { duration?: number; offset?: number }) => void
+  }
+
+  interface WindowWithLenis extends Window {
+    __lenis?: LenisInstance
+  }
+
+  const trigger = document.getElementById('services-mobile-nav-trigger')
+  const overlay = document.getElementById('services-mobile-nav-overlay')
+  const content = document.getElementById('services-mobile-nav-content')
+  const path = document.getElementById('services-mobile-nav-path')
+  const links = overlay?.querySelectorAll<HTMLAnchorElement>('.mobile-nav-link')
+
+  if (trigger && overlay && content && path) {
+    const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+    const initialPath = 'M 0 0 L 100 0 L 100 0 Q 50 0 0 0 Z'
+    const curveDownPath = 'M 0 0 L 100 0 L 100 100 Q 50 135 0 100 Z'
+    const flatPath = 'M 0 0 L 100 0 L 100 100 Q 50 100 0 100 Z'
+    const curveUpPath = 'M 0 0 L 100 0 L 100 0 Q 50 -35 0 0 Z'
+
+    let isOpen = false
+    let isAnimating = false
+
+    const getLenis = (): LenisInstance | undefined => {
+      return (window as unknown as WindowWithLenis).__lenis
+    }
+
+    const openMenu = () => {
+      if (isAnimating) return
+      isAnimating = true
+      isOpen = true
+
+      trigger.classList.add('is-open')
+      trigger.setAttribute('aria-expanded', 'true')
+      overlay.setAttribute('aria-hidden', 'false')
+      document.body.classList.add('menu-open')
+      getLenis()?.stop()
+
+      if (isReducedMotion) {
+        gsap.set(overlay, { visibility: 'visible', pointerEvents: 'auto' })
+        gsap.set(path, { attr: { d: flatPath } })
+        gsap.fromTo(content, { opacity: 0 }, { opacity: 1, duration: 0.25, onComplete: () => { isAnimating = false } })
+        return
+      }
+
+      const tl = gsap.timeline({
+        onComplete: () => {
+          isAnimating = false
+        },
+      })
+
+      tl.set(overlay, { visibility: 'visible', pointerEvents: 'auto' })
+        .set(path, { attr: { d: initialPath } })
+        .set(content, { opacity: 1 })
+        .to(path, {
+          attr: { d: curveDownPath },
+          duration: 0.45,
+          ease: 'power3.in',
+        })
+        .to(path, {
+          attr: { d: flatPath },
+          duration: 0.32,
+          ease: 'power2.out',
+        })
+        .fromTo(
+          overlay.querySelectorAll('.mobile-nav-link'),
+          { yPercent: 120, opacity: 0 },
+          {
+            yPercent: 0,
+            opacity: 1,
+            duration: 0.55,
+            ease: 'power3.out',
+            stagger: 0.07,
+          },
+          '-=0.22'
+        )
+        .fromTo(
+          overlay.querySelector('.mobile-nav-footer'),
+          { opacity: 0, y: 14 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.4,
+            ease: 'power2.out',
+          },
+          '-=0.3'
+        )
+    }
+
+    const closeMenu = (onClosed?: () => void) => {
+      if (isAnimating) return
+      isAnimating = true
+      isOpen = false
+
+      trigger.classList.remove('is-open')
+      trigger.setAttribute('aria-expanded', 'false')
+      overlay.setAttribute('aria-hidden', 'true')
+
+      if (isReducedMotion) {
+        gsap.to(content, {
+          opacity: 0,
+          duration: 0.2,
+          onComplete: () => {
+            gsap.set(overlay, { visibility: 'hidden', pointerEvents: 'none' })
+            document.body.classList.remove('menu-open')
+            getLenis()?.start()
+            isAnimating = false
+            onClosed?.()
+          },
+        })
+        return
+      }
+
+      const tl = gsap.timeline({
+        onComplete: () => {
+          gsap.set(overlay, { visibility: 'hidden', pointerEvents: 'none' })
+          document.body.classList.remove('menu-open')
+          getLenis()?.start()
+          isAnimating = false
+          onClosed?.()
+        },
+      })
+
+      tl.to(overlay.querySelectorAll('.mobile-nav-link'), {
+        yPercent: -80,
+        opacity: 0,
+        duration: 0.25,
+        stagger: 0.04,
+        ease: 'power2.in',
+      })
+        .to(
+          overlay.querySelector('.mobile-nav-footer'),
+          { opacity: 0, duration: 0.18, ease: 'power2.in' },
+          '<0.05'
+        )
+        .to(
+          path,
+          {
+            attr: { d: curveUpPath },
+            duration: 0.38,
+            ease: 'power3.in',
+          },
+          '-=0.1'
+        )
+        .set(path, { attr: { d: initialPath } })
+    }
+
+    trigger.addEventListener('click', () => {
+      if (isOpen) {
+        closeMenu()
+      } else {
+        openMenu()
+      }
+    })
+
+    window.addEventListener('keydown', (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen) {
+        closeMenu()
+      }
+    })
+
+    links?.forEach((link) => {
+      link.addEventListener('click', (e: MouseEvent) => {
+        const href = link.getAttribute('href')
+        if (!href) return
+
+        if (href.startsWith('#')) {
+          e.preventDefault()
+          closeMenu(() => {
+            const target = document.querySelector(href) as HTMLElement | null
+            if (target) {
+              const lenis = getLenis()
+              if (lenis && !isReducedMotion) {
+                lenis.scrollTo(target, { duration: 1.1 })
+              } else {
+                target.scrollIntoView({ behavior: isReducedMotion ? 'auto' : 'smooth' })
+              }
+              history.pushState(null, '', href)
+            }
+          })
+        }
+      })
+    })
+  }
+</script>
+
+<style>
+  .mobile-nav-root {
+    display: none;
+  }
+
+  @media (max-width: 768px) {
+    .mobile-nav-root {
+      display: block;
+    }
+  }
+
+  .mobile-nav-trigger {
+    position: relative;
+    z-index: 100;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+
+  .trigger-lines {
+    position: relative;
+    width: 20px;
+    height: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .trigger-line {
+    display: block;
+    width: 100%;
+    height: 1.5px;
+    background-color: var(--text-primary);
+    transform-origin: center;
+    transition:
+      transform 360ms cubic-bezier(0.16, 1, 0.3, 1),
+      background-color 200ms ease;
+  }
+
+  .mobile-nav-trigger.is-open .trigger-line--top {
+    transform: translateY(5.25px) rotate(45deg);
+  }
+
+  .mobile-nav-trigger.is-open .trigger-line--bottom {
+    transform: translateY(-5.25px) rotate(-45deg);
+  }
+
+  .mobile-nav-overlay {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 90;
+    visibility: hidden;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .mobile-nav-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  .mobile-nav-content {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: clamp(5.5rem, 14vh, 7rem) 2rem clamp(2.5rem, 6vh, 3.5rem);
+    opacity: 0;
+  }
+
+  .mobile-nav-menu {
+    flex: 1;
+    display: flex;
+    align-items: center;
+  }
+
+  .mobile-nav-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1.25rem, 3.5vh, 2rem);
+    width: 100%;
+  }
+
+  .nav-link-mask {
+    overflow: hidden;
+    padding: 0.1em 0;
+  }
+
+  .mobile-nav-link {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 1.25rem;
+    text-decoration: none;
+    color: var(--text-primary);
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 9vw, 2.75rem);
+    font-weight: 500;
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+    will-change: transform, opacity;
+  }
+
+  .nav-link-index {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+  }
+
+  .mobile-nav-footer {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-subtle);
+    will-change: transform, opacity;
+  }
+
+  .footer-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .footer-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+  }
+
+  .footer-status {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-secondary);
+  }
+
+  .footer-socials {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+  }
+
+  .footer-social-link {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    transition: color 200ms ease;
+  }
+
+  .footer-social-link:hover {
+    color: var(--text-primary);
+  }
+</style>
